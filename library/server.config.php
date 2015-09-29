@@ -21,13 +21,15 @@ $configValue['DB_ENGINE'] = 'mysql';
 $configValue['DB_USER'] = 'root';
 
 //the password, pretty dank
-$configValue['DB_PASS'] = 'dankmemes';
+$configValue['DB_PASS'] = getenv('DB_AUTH_PW');
 
 //the name of the database, 
 //this will be set when we figure out our project
-$configValue['DB_NAME'] = 'place holder';
+$configValue['DB_NAME'] = 'test';
 
 //name of table for user/pass. used for verification or creating user
 //value can not be set until we set up the db name in mysql
-$configValue['DB_USER_TABLE'] = 'place holder';
+$configValue['DB_USER_TABLE'] = 'auth_list';
+
+
 ?>
