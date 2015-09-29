@@ -5,7 +5,83 @@
   </head>
   
   <body>
-    <div></div>
-<?php echo "test" ?>
+    <!-- code below pulls bootstrap css and jquery from Content delivery service -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    
+    <!-- custom stylesheets-->
+    <link rel='stylesheet' type='text/css' href='./resources/css/stylesheet.css'>
+    
+    <div id='login_container'>
+        <div id='centered_container'>
+            <form id='login_form' action='login.php' method='POST' autocomplete="off">
+                <p>butt hole</p>
+                <div id='login_form_container'>
+                    <input type='text' class='form-control' placeholder='Username' name='login_user' required />
+                    <input type='password' class='form-control' placeholder='Password' name='login_pass' required />
+                    <div id='login_button_panel'>
+                        <button id='login_submit_btn' class='btn' type='submit' name='login_submit' value='true'>
+                            <span class='glyphicon glyphicon-log-in'></span>
+                            Login
+                        </button>
+                        <button id='open_signup_btn' class='btn' type='button' data-toggle='modal' data-target='#signModal'>
+                            <span class="glyphicon glyphicon-user"></span>
+                            Sign Up
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    
+    <!-- Modal -->
+    <div id="signModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id='myModalLabel'>Create User</h4>
+                </div>
+                <div class="modal-body">
+                    <form action='create-user.php' method='POST' autocomplete="off">
+                        <input class='form-control' type='text' name='new_user' placeholder='Username'/>
+                        <input id='mod_new_pass' class='form-control' type='password' name='new_pass' placeholder='Password'/>
+                        <input id='mod_conf_pass' class='form-control' type='password' name='conf_pass' placeholder='Confirm Password'/>
+                        <button id='signup_submit' class='btn' type='submit' name='submit' value=false >Sign up</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        $(function(){
+            $('#signup_submit').prop('disabled', true);
+            $(document).ready(function(e){
+                
+            });
+        });
+        
+        //whenever user modifys confirm password input
+        $('#mod_conf_pass').change(function(){
+            //grab current new password from input
+            var current_pass = $('#mod_new_pass').val();
+            //check if the confirmation and current pw match
+            if ($(this).val() === current_pass){
+                //if they do match, change the submit value to true
+                $('#signup_submit').prop('disabled', false);
+            } else {
+                //otherwise we set the submit to false
+                $('#signup_submit').prop('disabled', true);
+            }
+        });
+    </script>
+    
   </body>
 </html>
