@@ -1,0 +1,23 @@
+#login_container{
+    display: table;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+#centered_container{
+    display: table-cell;
+    vertical-align: middle;
+    
+}
+
+#login_form{
+    display: table;
+    margin: 0 auto;
+}
+
+#login_form_container{
+    border-radius: 8px;
+    padding: 25px;
+    background: lightblue;
+}
