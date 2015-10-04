@@ -1,16 +1,17 @@
-.outer{
+#login_container{
     display: table;
     position: absolute;
     height: 100%;
     width: 100%;
 }
 
-.middle{
+#centered_container{
     display: table-cell;
     vertical-align: middle;
+    
 }
 
-.inner{
+#login_form{
     display: table;
     margin: 0 auto;
 }
@@ -19,16 +20,6 @@
     border-radius: 8px;
     padding: 25px;
     background: lightblue;
-}
-
-#hud-menu-container{
-    border-radius: 8px;
-    padding: 25px;
-    background: lightblue;
-}
-
-ul{
-    list-style-type: none;
 }
 
 a {
@@ -41,7 +32,7 @@ a:link, a:visited{
     border:none;
     text-decoration:none;
     font-style:normal;
-    color:black;
+    color:white;
 }
 
 a:hover{
@@ -49,4 +40,19 @@ a:hover{
     text-decoration:none;
     font-style:normal;
     color:red;
+}
+
+.nav-left li:hover, .nav-left li:active{
+    background: black;
+}
+
+.btn{
+    margin-left: 10px;
+    background: black;
+    color: grey;
+    border: none;
+}
+
+.btn:focus,.btn:active, .btn:active:focus {
+    outline: none;
 }

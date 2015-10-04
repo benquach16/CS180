@@ -1,0 +1,28 @@
+.modal-left{
+    float: left;
+}
+
+.modal-mid{
+    display: inline;
+    width: 10px;
+    height: 100%;
+}
+
+.modal-right{
+    display: inline;
+}
+
+.modal-body-inner{
+    overflow: auto;
+}
+
+#pet-img{
+    height: 150px;
+    width: 150px;
+}
+
+.mod-show-pet{
+    padding: 10px;
+    overflow: auto;
+    display: block;
+}
