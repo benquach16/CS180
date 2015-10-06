@@ -6,7 +6,7 @@
     </head>
     <body>
         <link rel='stylesheet' type='text/css' href='../resources/css/stylesheet.css'>
-        <p>Ice Mountain</p>
+        <img src="../resources/images/banner-icemtn.jpg">
         <a href='return-map.php'>Back to World</a>
     </body>
 </html>

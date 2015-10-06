@@ -17,6 +17,14 @@
             #hover-loc-name{
                 text-align: center;
             }
+            #map-image{
+                min-height:100%;
+                min-width:100%;
+                height:auto;
+                width:auto;
+                position:absolute;
+                margin:auto;
+            }
         </style>
     </head>
     
@@ -24,51 +32,9 @@
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-        
-        <link rel='stylesheet' type='text/css' href='./resources/css/nav-stylesheet.css'>
-        
-        <nav class="navbar navbar-inverse">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="#">Virtual Pets</a>
-                </div>
-                <div class="collapse navbar-collapse" id="myNavbar">
-                    <ul class="nav navbar-nav nav-left">
-                        <li><a href="./hud.html">Home</a></li>
-                        <li><a href="#">account</a></li>
-                        <li><a href="#">games</a></li>
-                        <li><a href="#">community</a></li>
-                        <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">explore
-                                <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="explore-map.php">map</a></li>
-                                <li><a href="#">example</a></li>
-                                <li><a href="#">example</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#">news</a></li>
-                        <li><a href="#">shop</a></li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li>
-                            <button type="button" class="btn navbar-btn">
-                                <a href='logout.php'>
-                                    <span class="glyphicon glyphicon-log-out"></span> Logout
-                                </a>
-                            </button>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-        
-        
+
+        <script src="library/imageMapResizer.min.js"></script>
+        <?php include('./library/nav-bar.html'); ?>
         
         <div>
             <div class='map-pull-left'>
@@ -87,7 +53,7 @@
                 </map>
             </div>
             <div class='map-pull-right'>
-                <img id='hover-loc-name' src=''></img>
+                <img id='hover-loc-name' src='' />
             </div>
         </div>
         
@@ -223,7 +189,14 @@
             
             $(function(){
                 $('#hover-loc-name').attr('src','./resources/images/banner-explore.jpg');
+                $('map').imageMapResize();
             });
+
+            $( window ).resize(function() {
+                myInit();
+            });
+
+
         </script>
     </body>
 </html>

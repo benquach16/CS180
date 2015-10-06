@@ -6,7 +6,7 @@
     </head>
     <body>
         <link rel='stylesheet' type='text/css' href='../resources/css/stylesheet.css'>
-        <p>Low Lands</p>
+        <img src="../resources/images/banner-lowland.jpg">
         <a href='return-map.php'>Back to World</a>
     </body>
 </html>
