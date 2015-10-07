@@ -1,4 +1,43 @@
-<link rel='stylesheet' type='text/css' href='./resources/css/nav-stylesheet.css'>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+<style>
+    a {
+        text-decoration: inherit;
+        font-style: inherit;
+        color: inherit;
+    }
+
+    a:link, a:visited{
+        border:none;
+        text-decoration:none;
+        font-style:normal;
+        color:white;
+    }
+
+    a:hover{
+        border:none;
+        text-decoration:none;
+        font-style:normal;
+        color:red;
+    }
+
+    .nav-left li:hover, .nav-left li:active{
+        background: black;
+    }
+
+    .btn{
+        margin-left: 10px;
+        background: black;
+        color: grey;
+        border: none;
+    }
+
+    .btn:focus,.btn:active, .btn:active:focus {
+        outline: none;
+    }
+</style>
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -11,15 +50,23 @@
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav nav-left">
-                <li><a href="./hud.html">Home</a></li>
-                <li><a href="./account.php">account</a></li>
+                <li><a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/cs180/hud.html' ?> >Home</a></li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">account
+                        <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/cs180/account/account-info.php' ?> >Account Info</a></li>
+                        <li><a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/cs180/account/account-create.php' ?>>Create User</a></li>
+                        <li><a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/cs180/account/account-adopt.php' ?>>Adopt Pet</a></li>
+                    </ul>
+                </li>
                 <li><a href="#">games</a></li>
                 <li><a href="#">community</a></li>
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">explore
                         <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="explore-map.php">map</a></li>
+                        <li><a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/cs180/explore-map.php' ?>>map</a></li>
                         <li><a href="#">example</a></li>
                         <li><a href="#">example</a></li>
                     </ul>
