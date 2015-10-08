@@ -5,7 +5,7 @@
     </head>
     <body>
 
-        <?php include('./library/nav-bar.html'); ?>
+      <?php include('./library/nav-bar.html'); ?>
 
         <script>
             
