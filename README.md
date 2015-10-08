@@ -20,3 +20,14 @@ then use the values given above
 
 should I set up something to automate this process? 
 it seems redundant once everyone has the table.
+
+
+USE THIS FOR USER DATABASE  
+
+CREATE TABLE auth_list(
+
+  id int(6) auto_increment not null primary key,
+  user varchar(8) not null,
+  pass varchar(8) not null
+
+)
