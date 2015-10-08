@@ -9,13 +9,19 @@
 <!doctype html>
 <html>
 <head>
-    <title>Account Info</title>
+    <title>Adopt Pet</title>
 </head>
 <body>
 
     <?php include('../library/nav-bar.html'); ?>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/umd/carousel.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js"></script>
+    <link rel="stylesheet" href="../resources/css/modal-stylesheet.css">
     <style>
+        #pet-type-selection{
+            z-index: 11;
+            position: absolute;
+        }
         .pet-btn{
             background: #383333;
             color: white;
@@ -24,24 +30,89 @@
             background: black;
             color:red;
         }
-        #pet-carousel, .carousel-inner .item{
-            height:300px;
-            width: 300px;
-            margin: 0 auto;
+        body{
+            background: grey;
         }
-        .carousel-inner > .item > img{
-            margin: 0 auto;
+        .trans3d
+        {
+            -webkit-transform-style: preserve-3d;
+            -webkit-transform: translate3d(0, 0, 0);
+            -moz-transform-style: preserve-3d;
+            -moz-transform: translate3d(0, 0, 0);
+            -ms-transform-style:preserve-3d;
+            -ms-transform: translate3d(0, 0, 0);
+            transform-style:preserve-3d;
+            transform: translate3d(0, 0, 0);
+
+            /*-webkit-backface-visibility: hidden;
+             -moz-backface-visibility: hidden;
+             -ms-backface-visibility:hidden;
+             backface-visibility:hidden;*/
         }
-        .carousel {padding: 5px;}
-        .carousel-indicators li { visibility: hidden; }
+
+        #contentContainer
+        {
+            position:absolute;
+            margin-left:-500px;
+            margin-top:-500px;
+            left:50%;
+            top:50%;
+            width:1000px;
+            height:1000px;
+            z-index: 10;
+        }
+
+        #carouselContainer
+        {
+            position:absolute;
+            margin-left:-500px;
+            margin-top:-500px;
+            left:50%;
+            top:50%;
+            width:1000px;
+            height:1000px;
+        }
+
+        .carouselItem
+        {
+            width:320px;
+            height:230px;
+            position:absolute;
+            left:50%;
+            top:50%;
+            margin-left:-160px;
+            margin-top:-90px;
+            visibility:hidden;
+        }
+
+        .carouselItemInner
+        {
+            width:320px;
+            height:320px;
+            position:absolute;
+            background-color:rgba(255, 255, 255, .75);
+            border:10px solid rgba(255, 255, 255, .5);
+            color:aqua;
+            font-size:72px;
+            left:50%;
+            top:50%;
+            margin-left:-160px;
+            margin-top:-90px;
+            text-align:center;
+            padding-top:0px;
+
+        }
+
+        .carouselItemInner img{
+            position: relative;
+        }
 
         #pet-type-selection .hover{
             background:black;
-            color:red;
+            color:white;
         }
     </style>
-
-    <div class="main-container">
+    <header>
         <div id="pet-type-selection" class="btn-group btn-group-justified">
             <a id='dog-btn' type="button" class="btn btn-primary pet-btn">Dog</a>
             <a id='tiger-btn' type="button" class="btn btn-primary pet-btn">Tiger</a>
@@ -50,110 +121,237 @@
             <a id='raccoon-btn' type="button" class="btn btn-primary pet-btn">Racoon</a>
             <a id='shark-btn' type="button" class="btn btn-primary pet-btn">Shark</a>
             <a id='falcon-btn' type="button" class="btn btn-primary pet-btn">Falcon</a>
+            <a id='lizard-btn' type="button" class="btn btn-primary pet-btn">Lizard</a>
         </div>
+    </header>
 
-        <div id="pet-type-display">
-            <div id="pet-carousel" class="carousel slide" data-ride="carousel">
-                <ol class="carousel-indicators">
-                    <li class="item1 active"></li>
-                    <li class="item2"></li>
-                    <li class="item3"></li>
-                    <li class="item4"></li>
-                    <li class="item5"></li>
-                    <li class="item6"></li>
-                    <li class="item7"></li>
-                </ol>
+    <div id="contentContainer" class="trans3d">
+        <section id="carouselContainer" class="trans3d">
+            <figure id="item1" class="carouselItem trans3d active prev">
+                <div class="carouselItemInner trans3d">
+                    <img src="http://orig10.deviantart.net/7be3/f/2010/043/7/0/xfx_dog_the_warrior_by_7kive.jpg" alt="dog" width="300" height="300" >
+                </div>
+            </figure>
+            <figure id="item2" class="carouselItem trans3d">
+                <div class="carouselItemInner trans3d">
+                    <img src="http://orig05.deviantart.net/7248/f/2012/350/2/3/scifi_tiger_warrior_by_thenoremac42-d5o8arl.jpg" alt="tiger" width="300" height="300">
+                </div>
+            </figure>
+            <figure id="item3" class="carouselItem trans3d">
+                <div class="carouselItemInner trans3d">
+                    <img src="https://s-media-cache-ak0.pinimg.com/736x/f5/88/41/f58841003c3c68289bcfc5e2f765bb4e.jpg" alt="bear" width="300" height="300">
+                </div>
+            </figure>
+            <figure id="item4" class="carouselItem trans3d">
+                <div class="carouselItemInner trans3d">
+                    <img src="http://static.comicvine.com/uploads/scale_small/11/110802/3138840-six-gun+gorilla.jpg" alt="gorilla" width="300" height="300">
+                </div>
+            </figure>
+            <figure id="item5" class="carouselItem trans3d">
+                <div class="carouselItemInner trans3d">
+                    <img src="http://orig02.deviantart.net/e650/f/2015/251/c/b/guardian_rocket_raccoon_portrait_art_by_cptcommunist-d98xbum.png" alt="raccoon" width="300" height="300">
+                </div>
+            </figure>
+            <figure id="item6" class="carouselItem trans3d">
+                <div class="carouselItemInner trans3d">
+                    <img src="../resources/images/Sharknado.png" alt="shark" width="300" height="300">
+                </div>
+            </figure>
+            <figure id="item7" class="carouselItem trans3d">
+                <div class="carouselItemInner trans3d">
+                    <img src="http://geekin-out.com/wp-content/uploads/2012/02/Eagle_Warrior_by_GabrielRodriguez.jpg" alt="falcon" width="300" height="300">
+                </div>
+            </figure>
+            <figure id="item8" class="carouselItem trans3d">
+                <div class="carouselItemInner trans3d">
+                    <img src="http://img2.wikia.nocookie.net/__cb20150221011548/cardfight/images/7/7e/Lizard_Soldier,_Fargo_(Full_Art).jpg" alt="lizard" width="300" height="300">
+                </div>
+            </figure>
+        </section>
+    </div>
 
-                <div class="carousel-inner" role="listbox">
-                    <div class="item active">
-                        <img src="http://orig10.deviantart.net/7be3/f/2010/043/7/0/xfx_dog_the_warrior_by_7kive.jpg" alt="dog" width="300" height="300" >
-                    </div>
-                    <div class="item">
-                        <img src="http://orig05.deviantart.net/7248/f/2012/350/2/3/scifi_tiger_warrior_by_thenoremac42-d5o8arl.jpg" alt="tiger" width="300" height="300">
-                    </div>
-                    <div class="item">
-                        <img src="https://s-media-cache-ak0.pinimg.com/736x/f5/88/41/f58841003c3c68289bcfc5e2f765bb4e.jpg" alt="bear" width="300" height="300">
-                    </div>
-                    <div class="item">
-                        <img src="http://static.comicvine.com/uploads/scale_small/11/110802/3138840-six-gun+gorilla.jpg" alt="gorilla" width="300" height="300">
-                    </div>
-                    <div class="item">
-                        <img src="http://orig02.deviantart.net/e650/f/2015/251/c/b/guardian_rocket_raccoon_portrait_art_by_cptcommunist-d98xbum.png" alt="raccoon" width="300" height="300">
-                    </div>
-                    <div class="item">
-                        <img src="http://laughingsquid.com/wp-content/uploads/jawesome_by_mikecorriero-d5wqypd.jpg" alt="shark" width="300" height="300">
-                    </div>
-                    <div class="item">
-                        <img src="http://geekin-out.com/wp-content/uploads/2012/02/Eagle_Warrior_by_GabrielRodriguez.jpg" alt="falcon" width="300" height="300">
+    <!-- Modal -->
+    <div id="adoptModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id='myModalLabel'>Adopt Pet</h4>
+                </div>
+                <div class="modal-body">
+                    <div class='modal-body-inner'>
+                        <div class="modal-left">
+                            <form action='create-pet.php' method='POST' autocomplete="off" class="form-horizontal modal-cell" id='adopt-pet-form'>
+                                <div class="form-group">
+                                    <div class='col-md-12'>
+                                        <input id='mod_user' class='form-control input-sm' type='text' name='new_user' placeholder='Username'/>
+                                    </div>
+                                    <div id='user-error'></div>
+                                </div>
+
+                                <button id='adopt_submit' class=' mod-btn' type='submit' name='submit' value=false >Adopt</button>
+                            </form>
+                        </div>
+                        <div class='mod-show-pet'>
+                            <img src="">
+                        </div>
                     </div>
                 </div>
-
+                <div class="modal-footer">
+                    <button type="button" class="mod-btn" data-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        $(document).ready(function(){
-            $("#pet-carousel").carousel("pause");
+        var w, container, carousel, item, radius, itemLength, rY, ticker, fps;
+        var mouseX = 0;
+        var mouseY = 0;
+        var mouseZ = 0;
+        var addX = 0;
 
-            $(".item1").click(function(){
-                $("#pet-carousel").carousel(0);
-            });
-            $(".item2").click(function(){
-                $("#pet-carousel").carousel(1);
-            });
-            $(".item3").click(function(){
-                $("#pet-carousel").carousel(2);
-            });
-            $(".item4").click(function(){
-                $("#pet-carousel").carousel(3);
-            });
-            $(".item5").click(function(){
-                $("#pet-carousel").carousel(4);
-            });
-            $(".item6").click(function(){
-                $("#pet-carousel").carousel(5);
-            });
-            $(".item7").click(function(){
-                $("#pet-carousel").carousel(6);
-            });
-        });
 
-        function updateHover(val, obj){
-            $("#pet-carousel").carousel(val);
-            $("#pet-carousel").carousel("pause");
-            $("#pet-type-selection .hover").removeClass("hover");
-            $(obj).addClass("hover");
+        // fps counter created by: https://gist.github.com/sharkbrainguy/1156092,
+        // no need to create my own :)
+        var fps_counter = {
+
+            tick: function ()
+            {
+                // this has to clone the array every tick so that
+                // separate instances won't share state
+                this.times = this.times.concat(+new Date());
+                var seconds, times = this.times;
+
+                if (times.length > this.span + 1)
+                {
+                    times.shift(); // ditch the oldest time
+                    seconds = (times[times.length - 1] - times[0]) / 1000;
+                    return Math.round(this.span / seconds);
+                }
+                else return null;
+            },
+
+            times: [],
+            span: 20
         };
+        var counter = Object.create(fps_counter);
 
-        $('#dog-btn').on('mouseover',function(){
-            updateHover(0, this);
-        });
 
-        $('#tiger-btn').on('mouseover', function(){
-            updateHover(1, this);
-        });
 
-        $('#bear-btn').on('mouseover', function(){
-            updateHover(2, this);
-        });
+        $(document).ready( init )
 
-        $('#gorilla-btn').on('mouseover', function(){
-            updateHover(3, this);
-        });
+        function init()
+        {
+            w = $(window);
+            container = $( '#contentContainer' );
+            carousel = $( '#carouselContainer' );
+            item = $( '.carouselItem' );
+            itemLength = $( '.carouselItem' ).length;
+            fps = $('#fps');
+            rY = 360 / itemLength;
+            radius = Math.round( (250) / Math.tan( Math.PI / itemLength ) );
 
-        $('#raccoon-btn').on('mouseover', function(){
-            updateHover(4, this);
-        });
+            // set container 3d props
+            TweenMax.set(container, {perspective:600})
+            TweenMax.set(carousel, {z:-(radius)})
 
-        $('#shark-btn').on('mouseover', function(){
-            updateHover(5, this);
-        });
+            // create carousel item props
 
-        $('#falcon-btn').on('mouseover', function(){
-            updateHover(6, this);
+            for ( var i = 0; i < itemLength; i++ )
+            {
+                var $item = item.eq(i);
+                var $block = $item.find('.carouselItemInner');
+
+                //thanks @chrisgannon!
+                TweenMax.set($item, {rotationY:rY * i, z:radius, transformOrigin:"50% 50% " + -radius + "px"});
+
+                animateIn( $item, $block )
+            }
+
+            // set mouse x and y props and looper ticker
+            //window.addEventListener( "mousemove", onMouseMove, false );
+
+            $('#dog-btn').on('mouseover', function(){
+                btnCmd(1, this);
+            });
+            $('#tiger-btn').on('mouseover', function(){
+                btnCmd(2, this);
+            });
+            $('#bear-btn').on('mouseover', function(){
+                btnCmd(3, this);
+            });
+            $('#gorilla-btn').on('mouseover', function(){
+                btnCmd(4, this);
+            });
+            $('#raccoon-btn').on('mouseover', function(){
+                btnCmd(5, this);
+            });
+            $('#shark-btn').on('mouseover', function(){
+                btnCmd(6, this);
+            });
+            $('#falcon-btn').on('mouseover', function(){
+                btnCmd(7, this);
+            });
+            $('#lizard-btn').on('mouseover', function(){
+                btnCmd(8, this);
+            });
+            //ticker = setInterval( looper, 1000/60 );
+
+        }
+
+        function btnCmd($int, $obj){
+            setActive($int);
+            goImage($int);
+            $("#pet-type-selection .hover").removeClass("hover");
+            $($obj).addClass("hover");
+        }
+
+        function goImage($int){
+            var rotation_incr = 360 / ($( '.carouselItem' ).length);
+            var test_rot = -($int - 1)*rotation_incr;
+
+            TweenMax.to( carousel, 1, { rotationY:test_rot , ease:Quint.easeOut } );
+
+        }
+
+        function setActive($val){
+            var name = '#item' + $val;
+            $('#carouselContainer .prev').removeClass('prev');
+            $('#carouselContainer .active').addClass('prev');
+            $('#carouselContainer .active').removeClass('active');
+            $(name).addClass('active');
+        }
+
+        function animateIn( $item, $block )
+        {
+            var $nrX = 360 * getRandomInt(2);
+            var $nrY = 360 * getRandomInt(2);
+
+            var $nx = -(2000) + getRandomInt( 4000 );
+            var $ny = -(2000) + getRandomInt( 4000 );
+            var $nz = -4000 +  getRandomInt( 4000 );
+
+            var $s = 1.5 + (getRandomInt( 10 ) * .1);
+            var $d = 1 - (getRandomInt( 8 ) * .1);
+
+            TweenMax.set( $item, { autoAlpha:1, delay:$d } );
+            TweenMax.set( $block, { z:$nz, rotationY:$nrY, rotationX:$nrX, x:$nx, y:$ny, autoAlpha:0} );
+            TweenMax.to( $block, $s, { delay:$d, rotationY:0, rotationX:0, z:0,  ease:Expo.easeInOut} );
+            TweenMax.to( $block, $s-.5, { delay:$d, x:0, y:0, autoAlpha:1, ease:Expo.easeInOut} );
+        }
+
+        function getRandomInt( $n )
+        {
+            return Math.floor((Math.random()*$n)+1);
+        }
+
+        $('.pet-btn').on('click', function(){
+            $('#adoptModal').modal('show');
         });
     </script>
+
 
 </body>
 </html>

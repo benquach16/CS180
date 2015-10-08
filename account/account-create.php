@@ -9,11 +9,12 @@
 <!doctype html>
 <html>
 <head>
-    <title>Account Info</title>
+    <title>Create Account</title>
 </head>
 <body>
 
-<?php include('../library/nav-bar.html'); ?>
+    <?php include('../library/nav-bar.html'); ?>
+
 
 </body>
 </html>

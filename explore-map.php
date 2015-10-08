@@ -7,6 +7,7 @@
             {
                 pointer-events: none;
                 position: absolute;
+                z-index: 11;
             }
             .map-pull-left{
                 float: left;
