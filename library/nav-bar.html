@@ -4,7 +4,7 @@
 
 <style>
     .navbar{
-        position:hidden;
+        position: relative;
         z-index: 12;
     }
     a {
@@ -54,14 +54,14 @@
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav nav-left">
-                <li><a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/cs180/hud.html' ?> >Home</a></li>
+                <li><a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/hud.html' ?> >Home</a></li>
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">account
                         <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/cs180/account/account-info.php' ?> >Account Info</a></li>
-                        <li><a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/cs180/account/account-create.php' ?>>Create User</a></li>
-                        <li><a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/cs180/account/account-adopt.php' ?>>Adopt Pet</a></li>
+                        <li><a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/account/account-info.php' ?> >Account Info</a></li>
+                        <li><a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/account/account-create.php' ?>>Create User</a></li>
+                        <li><a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/account/account-adopt.php' ?>>Adopt Pet</a></li>
                     </ul>
                 </li>
                 <li><a href="#">games</a></li>
@@ -70,7 +70,7 @@
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">explore
                         <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/cs180/explore-map.php' ?>>map</a></li>
+                        <li><a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/explore-map.php' ?>>map</a></li>
                         <li><a href="#">example</a></li>
                         <li><a href="#">example</a></li>
                     </ul>
@@ -81,7 +81,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li>
                     <button type="button" class="btn navbar-btn">
-                        <a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/cs180/logout.php' ?>>
+                        <a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/logout.php' ?>>
                             <span class="glyphicon glyphicon-log-out"></span> Logout
                         </a>
                     </button>

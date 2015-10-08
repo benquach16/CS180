@@ -1,3 +1,4 @@
 /.idea
 /library/server.config.php
 /resources/images
+/library/imageMapResizer.min.js

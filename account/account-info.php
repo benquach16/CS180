@@ -20,7 +20,7 @@
             <!-- ability to display character (pet) avatar-->
             <!-- perhaps display character inventory? how do we design this?-->
             <!-- maybe we can store an inventory as a JSON object in mysql-->
-            <p>Username: <?php include('../library/getUser.php'); getUser(); echo $_SESSION['curr_id']?> </p>
+            <p>Username: <?php include('../library/getUser.php'); getUser(); ?> </p>
         </div>
 
     </body>
