@@ -165,7 +165,7 @@
                 var imgParent = img.parentNode;
                 var can = byId('myCanvas');
                 imgParent.appendChild(can);
-
+                can.style.zIndex = 11;
                 // place the canvas in front of the image
                 can.style.zIndex = 1;
 
