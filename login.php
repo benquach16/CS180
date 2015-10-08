@@ -17,6 +17,8 @@
         session_id($session_id);
         //expires in 1hr
         ini_set('session.gc_maxlifetime', 3600);
+        //session_set_cookie_params(3600);
+        session_start();
     } else {
         header('Location: index.html?error=failed to start session');
     }
@@ -39,8 +41,9 @@
         $_SESSION['logged_in'] = true;
         $_SESSION['curr_user'] = $user;
         $_SESSION['curr_id'] = $id;
+        //session_write_close();
         
-        header('Location: hud.html?id='.$id);
+        header('Location: hud.html?id='.$_SESSION['curr_id'].$id);
         exit;
     } else {
         header('Location: index.html?error=no user found');

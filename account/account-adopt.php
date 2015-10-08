@@ -185,9 +185,14 @@
                             <form action='create-pet.php' method='POST' autocomplete="off" class="form-horizontal modal-cell" id='adopt-pet-form'>
                                 <div class="form-group">
                                     <div class='col-md-12'>
-                                        <input id='mod_user' class='form-control input-sm' type='text' name='new_user' placeholder='Username'/>
+                                        <input id='mod_user' class='form-control input-sm' type='text' name='new_user' placeholder='Pet Name'/>
                                     </div>
-                                    <div id='user-error'></div>
+                                    <div class='radio'>
+                                        <label><input id='mod_user' class='input-sm' type='radio' name='gender' value="male"/>male</label>
+                                    </div>
+                                    <div class='radio'>
+                                        <label><input id='mod_user' class='input-sm' type='radio' name='gender' value="female"/>female</label>
+                                    </div>
                                 </div>
 
                                 <button id='adopt_submit' class=' mod-btn' type='submit' name='submit' value=false >Adopt</button>
