@@ -10,11 +10,12 @@
     
     //retrieve post values from form, 
     $user = $_POST['new_user'];
-    $pass = $_POST['new_pass'];
+    $pass = md5($_POST['new_pass']);
     
     //check if user name already exists
     $result = null;
     try{
+        $db_socket = initSocket();
         $query = "SELECT user FROM ".$configValue['DB_USER_TABLE']." WHERE user = '".$user."'";
         $statement = $db_socket->prepare($query);
         $statement->execute();

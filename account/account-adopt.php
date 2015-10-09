@@ -1,10 +1,4 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: Calvin
- * Date: 10/6/2015
- * Time: 9:38 PM
- */
+<?php session_start();
 ?>
 <!doctype html>
 <html>
@@ -14,6 +8,8 @@
 <body>
 
     <?php include('../library/nav-bar.html'); ?>
+
+    <!-- we should check if pet party is full before allowing user to create a pet-->
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js"></script>
     <link rel="stylesheet" href="../resources/css/modal-stylesheet.css">

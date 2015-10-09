@@ -1,10 +1,4 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: Calvin
- * Date: 10/6/2015
- * Time: 9:37 PM
- */
+<?php session_start();
 ?>
 <!doctype html>
 <html>
@@ -14,7 +8,22 @@
 <body>
 
     <?php include('../library/nav-bar.html'); ?>
-
+    <div class="create-account">
+        <form method="POST" action="" autocomplete="off" class="form-horizontal">
+            <div class="form-group">
+                <div class="col-md-4">
+                    <label class="control-label" for="account-name">Account Name:</label>
+                    <input class="form-control" type="text" name="account-name" placeholder="Account Name" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-4">
+                    <label class="control-label" for="email">E-mail:</label>
+                    <input class="form-control" type="text" name="email" placeholder="E-mail" />
+                </div>
+            </div>
+        </form>
+    </div>
 
 </body>
 </html>
