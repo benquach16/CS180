@@ -21,6 +21,13 @@ function getUser(){
     return;
 }
 
+function getPets(){
+    include (__DIR__."./opendb.php");
+
+    $db_socket = initSocket();
+    $query = "SELECT  FROM"."";
+}
+
 function getName(){
     #currently dont use this function, we need a seperate db other that auth_list to handle
     #non authorization reqlike getting a character name

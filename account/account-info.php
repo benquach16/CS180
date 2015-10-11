@@ -17,5 +17,9 @@
             <p>Username: <?php include('../library/getUser.php'); getUser(); ?> </p>
         </div>
 
+        <div class="pet-party-display">
+
+        </div>
+
     </body>
 </html>
