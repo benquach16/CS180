@@ -32,7 +32,7 @@
     <body onload='myInit()'>
 
         <?php include('./library/nav-bar.html'); ?>
-        <script src="library/imageMapResizer.min.js"></script>
+        <script src="library/imageMapResizer.js"></script>
 
         
         <div>

@@ -54,7 +54,7 @@
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav nav-left">
-                <li><a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/hud.html' ?> >Home</a></li>
+                <li><a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/hud.php' ?> >Home</a></li>
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">account
                         <span class="caret"></span></a>
@@ -65,7 +65,15 @@
                     </ul>
                 </li>
                 <li><a href="#">games</a></li>
-                <li><a href="#">community</a></li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">community
+                        <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/community/guild-create.php' ?>>Guild HQ</a></li>
+                        <li><a href="#">Forums</a></li>
+                        <li><a href="#">butts</a></li>
+                    </ul>
+                </li>
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">explore
                         <span class="caret"></span></a>

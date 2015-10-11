@@ -1,8 +1,10 @@
 <?php
     //set these for error testing
+    /*
     ini_set('display_errors',1);
     ini_set('display_startup_errors',1);
     error_reporting(-1);
+    */
 
     //first we create a new session id, too simple, fix later
     srand(make_seed());
@@ -24,9 +26,9 @@
     }
     
     include './library/opendb.php';
-    
+    $db_socket = initSocket();
     $user = $_POST['login_user'];
-    $pass = $_POST['login_pass'];
+    $pass = md5($_POST['login_pass']);
     
     $query = "SELECT id, user FROM ".$configValue['DB_USER_TABLE'].
         " WHERE user = '".$user."' AND pass = '".$pass."'";

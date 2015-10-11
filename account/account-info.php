@@ -1,10 +1,4 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: Calvin
- * Date: 10/6/2015
- * Time: 10:49 AM
- */
+<?php session_start();
 ?>
 <!doctype html>
 <html>

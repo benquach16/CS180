@@ -1,9 +1,10 @@
 <?php
-session_start();
+
 require_once(__DIR__."./server.config.php");
 function getUser(){
     include (__DIR__."./opendb.php");
 
+    $db_socket = initSocket();
     $query = "SELECT user FROM ".$configValue['DB_USER_TABLE'].
         " WHERE id = '".$_SESSION['curr_id']."'";
     $statement = $db_socket->prepare($query);
@@ -21,8 +22,11 @@ function getUser(){
 }
 
 function getName(){
-    include 'opendb.php';
+    #currently dont use this function, we need a seperate db other that auth_list to handle
+    #non authorization reqlike getting a character name
+    include (__DIR__.'opendb.php');
 
+    $db_socket = initSocket();
     $query = "SELECT charname FROM ".$configValue['DB_USER_TABLE'].
         " WHERE id = '".$_SESSION['curr_id']."'";
     $statement = $db_socket->prepare($query);
