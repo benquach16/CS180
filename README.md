@@ -26,6 +26,6 @@ USE THIS FOR USER DATABASE
 
     CREATE TABLE auth_list(
     id int(6) auto_increment not null primary key,
-    user varchar(8) not null,
-    pass varchar(8) not null
+    user varchar(32) not null,
+    pass varchar(32) not null
     )
