@@ -6,12 +6,12 @@
 	 include './library/opendb.php';
 	 $db_socket = initSocket();
 	 $user = $_SESSION['curr_user'];
-	 $query = "SELECT user FROM auth_list";
+	 $query = "SELECT user FROM ".$configValue['DB_USER_TABLE']." WHERE user = '".$user."'";
 	 $statement = $db_socket->prepare($query);
   $statement->execute();
   if($statement->rowCount() == 1)
   {
-  
+  echo 'test'; 
   }
   include './library/closedb.php';
   ?>
