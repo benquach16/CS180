@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!doctype html>
 <html>
     <head>
@@ -11,6 +12,6 @@
             
         </script>
 
-        <p>you logged in, yeah! <?php session_start(); echo $_SESSION['curr_user']; ?></p>
+        <p>you logged in, yeah! <?php echo $_SESSION['curr_user']; ?></p>
     </body>
 </html>

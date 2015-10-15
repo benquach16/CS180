@@ -107,17 +107,21 @@
             background:black;
             color:white;
         }
+        input[type="radio"] {
+            vertical-align:middle;
+        }
+
     </style>
     <header>
         <div id="pet-type-selection" class="btn-group btn-group-justified">
-            <a id='dog-btn' type="button" class="btn btn-primary pet-btn">Dog</a>
-            <a id='tiger-btn' type="button" class="btn btn-primary pet-btn">Tiger</a>
-            <a id='bear-btn' type="button" class="btn btn-primary pet-btn">Bear</a>
-            <a id='gorilla-btn' type="button" class="btn btn-primary pet-btn">Gorilla</a>
-            <a id='raccoon-btn' type="button" class="btn btn-primary pet-btn">Racoon</a>
-            <a id='shark-btn' type="button" class="btn btn-primary pet-btn">Shark</a>
-            <a id='falcon-btn' type="button" class="btn btn-primary pet-btn">Falcon</a>
-            <a id='lizard-btn' type="button" class="btn btn-primary pet-btn">Lizard</a>
+            <a id='dog-btn' type="button" class="btn btn-primary pet-btn" value="Dog">Dog</a>
+            <a id='tiger-btn' type="button" class="btn btn-primary pet-btn" value="Tiger">Tiger</a>
+            <a id='bear-btn' type="button" class="btn btn-primary pet-btn" value="Bear">Bear</a>
+            <a id='gorilla-btn' type="button" class="btn btn-primary pet-btn" value="Gorilla">Gorilla</a>
+            <a id='raccoon-btn' type="button" class="btn btn-primary pet-btn" value="Racoon">Racoon</a>
+            <a id='shark-btn' type="button" class="btn btn-primary pet-btn" value="Shark">Shark</a>
+            <a id='falcon-btn' type="button" class="btn btn-primary pet-btn" value="Falcon">Falcon</a>
+            <a id='lizard-btn' type="button" class="btn btn-primary pet-btn" value="Lizard">Lizard</a>
         </div>
     </header>
 
@@ -180,14 +184,19 @@
                         <div class="modal-left">
                             <form action='create-pet.php' method='POST' autocomplete="off" class="form-horizontal modal-cell" id='adopt-pet-form'>
                                 <div class="form-group">
-                                    <div class='col-md-12'>
-                                        <input id='mod_user' class='form-control input-sm' type='text' name='new_user' placeholder='Pet Name'/>
+                                    <input type="hidden" name="pet-type" id="pet-type-input" />
+                                    <div class='col-md-12' style="margin: auto; ">
+                                        <input id='mod_user' class='form-control input-sm' type='text' name='pet-name' placeholder='Pet Name'/>
                                     </div>
-                                    <div class='radio'>
-                                        <label><input id='mod_user' class='input-sm' type='radio' name='gender' value="male"/>male</label>
+                                    <div class='radio col-md-12'>
+                                        <label for="gender_m" >
+                                            <input id='gender_m' type='radio' name='gender' value="male"/>male
+                                        </label>
                                     </div>
-                                    <div class='radio'>
-                                        <label><input id='mod_user' class='input-sm' type='radio' name='gender' value="female"/>female</label>
+                                    <div class='radio col-md-12'>
+                                        <label for="gender_f" >
+                                            <input id='gender_f' type='radio' name='gender' value="female"/>female
+                                        </label>
                                     </div>
                                 </div>
 
@@ -207,6 +216,7 @@
     </div>
 
     <script>
+
         var w, container, carousel, item, radius, itemLength, rY, ticker, fps;
         var mouseX = 0;
         var mouseY = 0;
@@ -350,6 +360,9 @@
 
         $('.pet-btn').on('click', function(){
             $('#adoptModal').modal('show');
+            $('#myModalLabel').text("Adopt a " + $(this).attr("value"));
+            $('#pet-type-input').attr('value', $(this).attr("value"));
+            //console.log($(this).attr("value"));
         });
     </script>
 
