@@ -2,7 +2,7 @@
 
 require_once(__DIR__."./server.config.php");
 function getUser(){
-    include (__DIR__."./opendb.php");
+    include_once (__DIR__."./opendb.php");
 
     $db_socket = initSocket();
     $query = "SELECT user FROM ".$configValue['DB_USER_TABLE'].
@@ -21,8 +21,9 @@ function getUser(){
     return;
 }
 
+//do not use this
 function getPets(){
-    include (__DIR__."./opendb.php");
+    include_once (__DIR__."./opendb.php");
 
     $db_socket = initSocket();
     $query = "SELECT  FROM"."";

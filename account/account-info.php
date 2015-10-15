@@ -18,7 +18,7 @@
         </div>
 
         <div class="pet-party-display">
-
+            <?php include('get-pet.php'); ?>
         </div>
 
     </body>
