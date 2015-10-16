@@ -4,9 +4,29 @@
 <html>
 <head>
     <title>test</title>
-
 </head>
 <body onload="onInit();">
+    <style>
+        #inventory{
+            border: solid;
+            border-color: red;
+            border-width: 1px;
+            display: table;
+            float: right;
+        }
+        #inventory > div{
+            border: solid;
+            border-color: blue;
+            border-width: 1px;
+            display: table-row;
+        }
+        #inventory > div > div{
+            border: solid;
+            border-color: green;
+            border-width: 1px;
+            display: table-cell;
+        }
+    </style>
     <?php include('../library/nav-bar.html'); ?>
     <button id="clean">clean</button>
     <!-- store the pet default type somewhere, maybe a div? seems hacky -->
@@ -17,7 +37,7 @@
     <div id="pet-list">
         <!-- if the pet does not exist, then we output a disabled button-->
     </div>
-    <div id="inventory" style="float: right;">
+    <div id="inventory" >
         <!-- do db call here for avilible items, also set a value to know what kind of item it is -->
         <?php include('get-inv.php'); ?>
     </div>

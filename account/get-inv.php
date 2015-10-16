@@ -2,7 +2,7 @@
     //this php script will echo out html to propely display a
     // table of the current players inventory
     //session_start();
-    include_once ('../library/server.config.php');
+    include ('../library/server.config.php');
 
     include_once ('../library/opendb.php');
 
@@ -27,7 +27,7 @@
         for($i = 0; $i < $statement->rowCount(); $i++){
             echo "<div><img id='".$res[$i]['item_name']."' src='http://".$_SERVER['HTTP_HOST'].$res[$i]['equip_img'].
                     "' draggable='true' ondragstart='drag(event)' class='".$res[$i]['item_type'].
-                    "' width='50' height='50'><div>";
+                    "' width='50' height='50'></div>";
         }
 
         echo "</div>";

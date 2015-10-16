@@ -8,6 +8,8 @@
      * 
      * ****************************************************************/
 
+global $configValue;
+
 //this one is just for show KEK
 $configValue['APP_VERSION'] = '1.0.0';
 
@@ -33,8 +35,10 @@ $configValue['DB_USER_TABLE'] = 'auth_list';
 $configValue['DB_FRIENDS_LIST'] = 'friends_list';
 $configValue['DB_NOTIFICATIONS_LIST'] = 'notifications_list';
 		
-$configValue['DB_INV_TABLE'] = 'item_list';
+$configValue['DB_ITEM_TABLE'] = 'item_list';
 $configValue['DB_PET_TABLE'] = 'pet_list';
 $configValue['DB_PET_TYPE'] = 'pet_type';
+$configValue['DB_INV_TABLE'] = 'inv_list';
+$configValue['DB_TEAM_TABLE'] = 'team_list';
 
 ?>

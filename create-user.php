@@ -27,13 +27,24 @@
     }
     
     if($statement->rowCount() < 1){
+        //add account information
         $query =  "INSERT INTO ".$configValue['DB_USER_TABLE']." (user, pass)".
             " VALUES (:user, :pass);";
         $statement = $db_socket->prepare($query);
         $statement->bindParam(':user', $user);
         $statement->bindParam(':pass', $pass);
         $statement->execute();
-        
+
+        //add inventory for that player with thier id
+        $query =  "INSERT INTO ".$configValue['DB_INV_TABLE']." () VALUES ();";
+        $statement = $db_socket->prepare($query);
+        $statement->execute();
+
+        //add team for that player with thier id
+        $query =  "INSERT INTO ".$configValue['DB_TEAM_TABLE']." () VALUES ();";
+        $statement = $db_socket->prepare($query);
+        $statement->execute();
+
         header('Location: index.html');
     } else {
         header('Location: index.html?error=res problem');

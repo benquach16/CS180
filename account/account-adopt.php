@@ -14,8 +14,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js"></script>
     <link rel="stylesheet" href="../resources/css/modal-stylesheet.css">
     <style>
+        .navbar{
+            z-index: 3;
+        }
         #pet-type-selection{
-            z-index: 11;
+            z-index: 2;
             position: absolute;
         }
         .pet-btn{
@@ -55,7 +58,7 @@
             top:50%;
             width:1000px;
             height:1000px;
-            z-index: 10;
+            z-index: 1;
         }
 
         #carouselContainer
@@ -86,8 +89,10 @@
             width:320px;
             height:320px;
             position:absolute;
+            /*
             background-color:rgba(255, 255, 255, .75);
             border:10px solid rgba(255, 255, 255, .5);
+            */
             color:aqua;
             font-size:72px;
             left:50%;
@@ -97,6 +102,10 @@
             text-align:center;
             padding-top:0px;
 
+        }
+
+        .carouselItem:not(.active) > .carouselItemInner > img{
+            opacity: 0.4;
         }
 
         .carouselItemInner img{

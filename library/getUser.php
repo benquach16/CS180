@@ -1,7 +1,8 @@
 <?php
 
-require_once(__DIR__."./server.config.php");
+
 function getUser(){
+    include(__DIR__."./server.config.php");
     include_once (__DIR__."./opendb.php");
 
     $db_socket = initSocket();

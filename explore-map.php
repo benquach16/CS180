@@ -3,20 +3,12 @@
     <head>
         <title>Explore Map</title>
         <style>
-            canvas
-            {
+            canvas{
                 pointer-events: none;
                 position: absolute;
-                z-index: 11;
             }
             .map-pull-left{
                 float: left;
-            }
-            .map-pull-right{
-                overflow: hidden;
-            }
-            #hover-loc-name{
-                text-align: center;
             }
             #map-image{
                 min-height:100%;
@@ -38,7 +30,6 @@
         <div>
             <div class='map-pull-left'>
                 <img src="resources/images/map.bmp"  alt="map" usemap="#mythic-map" id="map-image">
-                <canvas id='myCanvas'></canvas>
                 <map class="mythic-map-obj" name="mythic-map">
                     <area shape="poly" coords="131,76,181,45,227,49,236,59,257,81,262,120,189,160,186,175,97,155,118,94" alt="bird-mtn" href="explore/bird-mtn">
                     <area shape="poly" coords="386,70,436,36,483,54,516,99,450,143,419,156,382,141,375,102,377,84" alt="ice-mtn" href="explore/ice-mtn">
@@ -50,10 +41,9 @@
                     <area shape="poly" coords="379,336,368,400,341,429,328,458,343,505,548,538,558,519,478,463,461,424,475,404,453,389,421,412,416,360,395,335" alt="plat" href="explore/plateau">
                     <area shape="poly" coords="567,6,679,9,679,153,584,134,639,115,590,94,618,73,544,47,578,19,567,16,530,27,528,8" alt="ocean" href="explore/ocean">
                 </map>
+
             </div>
-            <div class='map-pull-right'>
-                <img id='hover-loc-name' src='' />
-            </div>
+            <canvas id='myCanvas'></canvas>
         </div>
         
         
@@ -88,41 +78,11 @@
                 hdc.strokeRect(left,top,right-left,bot-top); 
             }
 
-            function populateTitle(element){
-                var title = element.attr('alt');
-                var banner = getBanner(title);
-                $('#hover-loc-name').attr('src',banner);
-            }
-
-            function getBanner(title){
-                switch(title){
-                    case 'bird-mtn':
-                        return './resources/images/banner-birdmtn.jpg';
-                    case 'ice-mtn':
-                        return './resources/images/banner-icemtn.jpg';
-                    case 'farm':
-                        return './resources/images/banner-farm.jpg';
-                    case 'swamp':
-                        return './resources/images/banner-swamp.jpg';
-                    case 'mtn-city':
-                        return './resources/images/banner-mtncity.jpg';
-                    case 'dojo':
-                        return './resources/images/banner-dojo.jpg';
-                    case 'low-land':
-                        return './resources/images/banner-lowland.jpg';
-                    case 'plat':
-                        return './resources/images/banner-plateaus.jpg';
-                    case 'ocean':
-                        return './resources/images/banner-ocean.jpg';
-                }
-            }
 
             $('.mythic-map-obj area').hover(function(){
                 myHover($(this));
-                populateTitle($(this));
             }, function(){
                 myLeave($(this));
-                $('#hover-loc-name').attr('src','./resources/images/banner-explore.jpg');
             });
 
             function myHover(element){
@@ -165,9 +125,10 @@
                 var imgParent = img.parentNode;
                 var can = byId('myCanvas');
                 imgParent.appendChild(can);
-                can.style.zIndex = 11;
+                //can.style.zIndex = 11;
                 // place the canvas in front of the image
-                can.style.zIndex = 1;
+                img.style.zIndex = 0;
+                can.style.zIndex = 2;
 
                 // position it over the image
                 can.style.left = x+'px';
@@ -187,8 +148,15 @@
             }
             
             $(function(){
-                $('#hover-loc-name').attr('src','./resources/images/banner-explore.jpg');
                 $('map').imageMapResize();
+
+                //there is currently a bug with chrome and safari that doesnt set webkit stuff instantly
+                //so we use this work around so that it causes a 'tick' which will enable all the settings
+                //this solution was found on stack overflow
+                //http://stackoverflow.com/questions/3485365/how-can-i-force-webkit-to-redraw-repaint-to-propagate-style-changes
+                $('map').style.display='none';
+                $('map').offsetHeight;
+                $('map').style.display='';
             });
 
             $( window ).resize(function() {
