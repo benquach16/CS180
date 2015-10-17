@@ -1,3 +1,5 @@
+
+<body>
 <style>
   #chatbar{
   height: 40px;
@@ -13,11 +15,27 @@
 		  <ul class="nav navbar-nav navbar-right">
 			<li class ="dropup">
 			  <a class="dropdown-toggle" data-toggle="dropdown" href="#"> <span class ="glyphicon glyphicon-user"></span>  Friends</a>
-			  <ul class="dropdown-menu">
-				<li>test</li>
+			  <ul class="dropdown-menu" id="friendsMenu">
 			  </ul>
 			</li>
 		  </ul>
         </div>
     </div>
 </nav>
+
+<script type="text/javascript">
+  var dropUpMenu = document.getElementById("friendsMenu");
+  //pull friends list from database
+  for(var i = 0; i < 5; i++)
+					 {
+					 var opt = i;
+					 var li = document.createElement("li");
+					 var link = document.createElement("a");
+					 var text = document.createTextNode(opt);
+					 link.appendChild(text);
+					 link.href = "#";
+					 li.appendChild(link);
+					 dropUpMenu.appendChild(li);
+					 }
+</script>
+</body>
