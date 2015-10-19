@@ -25,7 +25,7 @@
 
 
   <script type="text/javascript">
-	var test = <?php
+	var listOfFriends = <?php
 	   //pull friends from table
 	   include 'opendb.php';
 	   $db_socket = initSocket();
@@ -42,7 +42,14 @@
 	else
 	{
 	//echo 'console.log("found some friends")';
- echo json_encode($statement);
+	$arrayOfColumns = array();
+	$arrayOfColumns[] = $statement->fetchColumn(1);
+	for($i = 0; $i < $statement->columnCount(); $i++)
+	  {
+	  
+	  }
+	$object = $statement->fetchColumn(1);;
+ echo json_encode($arrayOfColumns);
 	}
 	
 }
@@ -50,9 +57,9 @@
 
 	var dropUpMenu = document.getElementById("friendsMenu");
 	//pull friends list from database
-	for(var i = 0; i < 5; i++)
+	for(var i = 0; i < listOfFriends.length; i++)
 					   {
-					   var opt = i;
+					   var opt = listOfFriends[i];
 					   var li = document.createElement("li");
 					   var link = document.createElement("a");
 					   var text = document.createTextNode(opt);
