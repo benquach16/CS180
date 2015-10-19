@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html>
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+    <style>
+        .vert_navbar {
+            top: 0px;
+            max-width: 15%;
+            margin-right: 0;
+            margin-left: 0;
+        }
+
+        .btn {
+            margin-left: 10px;
+            background: Grey;
+            padding: 8px,8px,8px,8px;
+            color: white;
+            border: none;
+        }
+        .btn-group-vertical{
+            margin-left:5px;
+            padding:5px;
+        }
+        .btn:focus, .btn:active, .btn:active:focus {
+                outline: none;
+        }
+    </style>
+
+    <nav class="vert_navbar navbar-default" role="navigation">
+
+        <div class="btn-group-vertical" role="group" aria-label="acct links">
+            <button type="button" class="btn btn-primary pull-left btn-sm">Settings</button>
+            <button type="button" class="btn btn-default pull-left btn-sm">Edit Pets</button>
+            <button type="button" class="btn btn-default pull-left btn-sm">Something</button>
+        </div>
+
+        <form class="vert_navbar-form navbar-left" role="search">
+            <div class="form-group">
+                <div class="col-sm-7">
+                    <input type="text" class="form-control" placeholder="Find Friend!">
+                </div>
+                <button type="submit" class="btn btn-default col-sm-3">Submit</button>
+            </div>
+        </form>
+
+        <div class="container">
+            <ul class="row">
+                <li class="col-lg-2 col-md-2 col-sm-3 col-xs-4"><img src="./resources/images/test.jpeg" /></li>
+                <li class="col-lg-2 col-md-2 col-sm-3 col-xs-4"><img src="./resources/images/test.jpeg" /></li>
+                <li class="col-lg-2 col-md-2 col-sm-3 col-xs-4"><img src="./resources/images/test.jpeg" /></li>
+                <li class="col-lg-2 col-md-2 col-sm-3 col-xs-4"><img src="./resources/images/test.jpeg" /></li>
+                <li class="col-lg-2 col-md-2 col-sm-3 col-xs-4"><img src="./resources/images/test.jpeg" /></li>
+            </ul>
+        </div>
+
+
+
+    </nav>
+</html>
