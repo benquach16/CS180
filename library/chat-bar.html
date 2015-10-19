@@ -1,14 +1,14 @@
 
 <body>
-<style>
-  #chatbar{
-  height: 40px;
-  position: fixed;
-  bottom:0%;
-  width:100%;
+  <style>
+	#chatbar{
+	height: 40px;
+	position: fixed;
+	bottom:0%;
+	width:100%;
     }
-</style>
-<nav class="navbar navbar-default">
+  </style>
+  <nav class="navbar navbar-default">
     <div class="container-fluid">
       <div class="navbar-footer">
         <div class="collapse navbar-collapse">
@@ -20,22 +20,46 @@
 			</li>
 		  </ul>
         </div>
-    </div>
-</nav>
+      </div>
+  </nav>
 
-<script type="text/javascript">
-  var dropUpMenu = document.getElementById("friendsMenu");
-  //pull friends list from database
-  for(var i = 0; i < 5; i++)
-					 {
-					 var opt = i;
-					 var li = document.createElement("li");
-					 var link = document.createElement("a");
-					 var text = document.createTextNode(opt);
-					 link.appendChild(text);
-					 link.href = "#";
-					 li.appendChild(link);
-					 dropUpMenu.appendChild(li);
-					 }
-</script>
+
+  <script type="text/javascript">
+	var test = <?php
+	   //pull friends from table
+	   include 'opendb.php';
+	   $db_socket = initSocket();
+	   if(!is_null($db_socket))
+	   {
+	   $query = "SELECT * FROM ".$configValue['DB_FRIENDS_LIST']." WHERE id_A ='".$_SESSION['curr_id']."'";
+	   //$query = "SELECT * FROM friends_list WHERE id_A = '2'";
+	   $statement = $db_socket->prepare($query);
+	$statement->execute();
+	if($statement->rowCount() == 0)
+	{
+
+	}
+	else
+	{
+	//echo 'console.log("found some friends")';
+ echo json_encode($statement);
+	}
+	
+}
+	   ?>
+
+	var dropUpMenu = document.getElementById("friendsMenu");
+	//pull friends list from database
+	for(var i = 0; i < 5; i++)
+					   {
+					   var opt = i;
+					   var li = document.createElement("li");
+					   var link = document.createElement("a");
+					   var text = document.createTextNode(opt);
+					   link.appendChild(text);
+					   link.href = "#";
+					   li.appendChild(link);
+					   dropUpMenu.appendChild(li);
+					   }
+					   </script>
 </body>
