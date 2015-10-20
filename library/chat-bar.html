@@ -50,7 +50,7 @@
 	//so do another query
 	for($i = 0; $i < count($arrayOfColumns); $i++)
 					 {
-					 $nameQuery = "SELECT user FROM ".$configValue['DB_USER_TABLE']." WHERE id='".$i."'";
+					 $nameQuery = "SELECT user FROM ".$configValue['DB_USER_TABLE']." WHERE id='".$arrayOfColumns[$i]."'";
 					 $nameStatement = $db_socket->prepare($nameQuery);
 	  $nameStatement->execute();
 	  $name = $nameStatement->fetchColumn(0);
