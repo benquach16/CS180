@@ -18,65 +18,80 @@
 			  <ul class="dropdown-menu" id="friendsMenu">
 			  </ul>
 			</li>
+
+			<li class="dropup">
+			  <a class="dropdown-toggle" data-toggle="dropdown" href="#"> <span class ="glyphicon glyphicon-inbox"></span></a>
+			  <ul class="dropdown-menu" id="notificationsMenu">
+			  </ul>
+			</li>
 		  </ul>
         </div>
       </div>
   </nav>
 
 
-  <script type="text/javascript">
-	var listOfFriends = <?php
-						   //pull friends from table
-						   include 'opendb.php';
-						   $db_socket = initSocket();
-						   if(!is_null($db_socket))
-						   {
-						   $query = "SELECT * FROM ".$configValue['DB_FRIENDS_LIST']." WHERE id_A ='".$_SESSION['curr_id']."'";
-						   //$query = "SELECT * FROM friends_list WHERE id_A = '2'";
-						   $statement = $db_socket->prepare($query);
-	$statement->execute();
-	if($statement->rowCount() == 0)
-	{
-	$ret = array();
-	$ret[] = "No Friends";
-	echo json_encode($ret);
-	}
-	else
-	{
-	//echo 'console.log("found some friends")';
-	//$arrayOfColumns = array();
+	<script type="text/javascript">
+	var listOfFriends =
+	<?php
+	   //pull friends from table
+	   include 'opendb.php';
+	   $db_socket = initSocket();
+	   if(!is_null($db_socket))
+	   {
+			$query = "SELECT * FROM ".$configValue['DB_FRIENDS_LIST']." WHERE id_A ='".$_SESSION['curr_id']."'";
+			//$query = "SELECT * FROM friends_list WHERE id_A = '2'";
+			$statement = $db_socket->prepare($query);
+			$statement->execute();
+			if($statement->rowCount() == 0)
+			{
+				$ret = array();
+				$ret[] = "No Friends";
+				echo json_encode($ret);
+			}
+			else
+			{
+				//echo 'console.log("found some friends")';
+				//$arrayOfColumns = array();
 
-	$arrayOfNames = array();
-	$arrayOfColumns = $statement->fetchAll(PDO::FETCH_COLUMN, 1);
-	//for each array elemnt in array of Columns add the friend username
-	//so do another query
-	for($i = 0; $i < count($arrayOfColumns); $i++)
-					 {
-					 $nameQuery = "SELECT user FROM ".$configValue['DB_USER_TABLE']." WHERE id='".$arrayOfColumns[$i]."'";
-					 $nameStatement = $db_socket->prepare($nameQuery);
-	  $nameStatement->execute();
-	  $name = $nameStatement->fetchColumn(0);
-	  $arrayOfNames[] = $name;
-					 }
-	echo json_encode($arrayOfNames);
-	}
-	
-	}
-	?>
+				$arrayOfNames = array();
+				$arrayOfColumns = $statement->fetchAll(PDO::FETCH_COLUMN, 1);
+				//for each array elemnt in array of Columns add the friend username
+				//so do another query
+				for($i = 0; $i < count($arrayOfColumns); $i++)
+				{
+					$nameQuery = "SELECT user FROM ".$configValue['DB_USER_TABLE']." WHERE id='".$arrayOfColumns[$i]."'";
+					$nameStatement = $db_socket->prepare($nameQuery);
+					$nameStatement->execute();
+					$name = $nameStatement->fetchColumn(0);
+					$arrayOfNames[] = $name;
+	  			}
+	  			echo json_encode($arrayOfNames);
+	  		}
+	  
+	  }
+	  ?>
 
 	var dropUpMenu = document.getElementById("friendsMenu");
 	//pull friends list from database
 	for(var i = 0; i < listOfFriends.length; i++)
-					   {
-					   var opt = listOfFriends[i];
-					   var li = document.createElement("li");
-					   var link = document.createElement("a");
-					   var text = document.createTextNode(opt);
-					   link.appendChild(text);
-					   link.href = "#";
-					   li.appendChild(link);
-					   dropUpMenu.appendChild(li);
-					   }
+	{
+		var opt = listOfFriends[i];
+		var li = document.createElement("li");
+		var link = document.createElement("a");
+		var text = document.createTextNode(opt);
+		link.appendChild(text);
+		link.href = "#";
+		li.appendChild(link);
+		dropUpMenu.appendChild(li);
+	}
 
-					   </script>
+
+	<php?
+		include 'opendb.php';
+		$db_socket = initSocket();
+		$query = "SELECT * FROM ".$configValue['DB_NOTIFICATIONS_LIST']." WHERE id_A ='".$_SESSION['curr_id']."'";
+		$statement = $db_socket->prepare($query);
+			
+		?>
+	</script>
 </body>
