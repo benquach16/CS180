@@ -86,6 +86,7 @@
 	}
 
 
+	var listOfNotifications =
 	<?php
 		$query = "SELECT * FROM ".$configValue['DB_NOTIFICATIONS_LIST']." WHERE id ='".$_SESSION['curr_id']."'";
 		$statement = $db_socket->prepare($query);
@@ -93,16 +94,32 @@
 		if($statement->rowCount() == 0)
 		{
 			$ret = array();
-			$ret[] = "No Notifications";				
+			$ret[] = "No Notifications";
+			echo json_encode($ret);
 		}
 		else
 		{
 			$arrayOfSenders = $statement->fetchAll(PDO::FETCH_COLUMN,3);
-			
+			for($i = 0; $i < count($arrayOfSenders); $i++)
+			{
+				
+			}
+			echo json_encode($arrayOfSenders);
 		}
 		?>
 
 	var notificationsMenu = document.getElementById("notificationsMenu");
-
+	//pull friends list from database
+	for(var i = 0; i < listOfNotifications.length; i++)
+	{
+		var opt = listOfNotifications[i];
+		var li = document.createElement("li");
+		var link = document.createElement("a");
+		var text = document.createTextNode(opt);
+		link.appendChild(text);
+		link.href = "#";
+		li.appendChild(link);
+		notificationsMenu.appendChild(li);		
+	}
 	</script>
 </body>
