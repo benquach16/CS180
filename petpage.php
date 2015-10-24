@@ -1,20 +1,11 @@
 <!doctype html>
 
 <html style="height: 100%;">
-
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
-    <?php include('./library/nav-bar.html'); ?>          
+  
+    <?php include('./library/nav-bar.html'); ?>
     <div id="Welcome">           
-            <H1>Welcome back, <?php include('/library/getUser.php'); getUser(); ?>!</H1>
+       <!--     <H1>Welcome back, <?php include('/library/getUser.php'); getUser(); ?>!</H1> -->
     </div>
-
-              
-    <?php //pull information from database 
-    include './library/opendb.php';
-    ?>
 
  <!-- CSS styles for div sections -->
      <style>
@@ -63,6 +54,9 @@
             height:100%;        
             padding:0px;
         }
+        #Posts{
+            height:224px
+        }
         .form-inline{
             float:left;
             padding-top:2%;
@@ -77,7 +71,7 @@
     </head>
 
     <body style="height: 100%;">
-        <div id="Wall"> <!-- Facebooky part of page WIP-->
+        <div id="Wall" > <!-- Facebooky part of page WIP-->
             <div id="Youtube" style="float:right; position:relavtive;">    
                     <body> <!-- Emmbedded youtube video...for style later -->
                         <iframe width=100% height=100% src="http://www.youtube.com/embed/eW6sEkTGbUc" 
@@ -88,19 +82,21 @@
             </div>
             
             <!-- Wall posts -->
-            <form class="form-inline" role="Post">
-                <div class="form-group_2">
+            <form class="form-inline" role="Post" action="./library/store_post.php" >
+                <div id="Posts" class="form-group_2">
                     <div class="col-sm-7">
                         <input type="text" class="form-control" placeholder="What are you feeling?">
                     </div>
                     <button type="button" class="btn btn-default col-md-2">Post!</button>
                 </div>                
             </form>
-            
+
         </div>
 
+        <div id="sidebar">
+            <iframe src="./library/nv-nav-bar.html" width=15% height=700px></iframe>
+        </div>
     
-        <?php include('./library/vert-nav-bar.html'); ?>
     </body>
     
 </html>

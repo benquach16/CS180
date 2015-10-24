@@ -29,3 +29,13 @@ USE THIS FOR USER DATABASE
     user varchar(32) not null,
     pass varchar(32) not null
     )
+
+Use this for post database
+
+	create database posts_db;
+
+	create table user_posts (
+		id int(6) auto_increment not null primary key,
+		user varchar(32) not null,
+		post varchar(1024) not null
+  )
