@@ -20,7 +20,7 @@
 			</li>
 
 			<li class="dropup">
-			  <a class="dropdown-toggle" data-toggle="dropdown" href="#"> <span class ="glyphicon glyphicon-inbox"></span></a>
+			  <a class="dropdown-toggle" data-toggle="dropdown" href="#"> <span class ="glyphicon glyphicon-bell"></span></a>
 			  <ul class="dropdown-menu" id="notificationsMenu">
 			  </ul>
 			</li>
@@ -94,32 +94,65 @@
 		if($statement->rowCount() == 0)
 		{
 			$ret = array();
-			$ret[] = "No Notifications";
+			$ret[] = 0;
 			echo json_encode($ret);
 		}
 		else
 		{
-			$arrayOfSenders = $statement->fetchAll(PDO::FETCH_COLUMN,3);
-			for($i = 0; $i < count($arrayOfSenders); $i++)
+			$ret = array();
+
+			$arrayCols = $statement->fetchAll();
+
+			for($i = 0; $i < count($arrayCols); $i++)
 			{
-				
+				//0 == friend request
+				//1 == message
+				//2 == misc
+				$noti_type = $arrayCols[$i];
+				$ret[] = array();
+				$ret[$i][0] = $noti_type[1];
+				$ret[$i][1] = $noti_type[3];
 			}
-			echo json_encode($arrayOfSenders);
+			echo json_encode($ret);
+	
 		}
 		?>
 
 	var notificationsMenu = document.getElementById("notificationsMenu");
-	//pull friends list from database
-	for(var i = 0; i < listOfNotifications.length; i++)
+	if(listOfNotifications[0] == 0)
 	{
-		var opt = listOfNotifications[i];
+		//well
+		var opt = "No Notifications";
 		var li = document.createElement("li");
 		var link = document.createElement("a");
 		var text = document.createTextNode(opt);
 		link.appendChild(text);
 		link.href = "#";
 		li.appendChild(link);
-		notificationsMenu.appendChild(li);		
+		notificationsMenu.appendChild(li);
+	}
+	else
+	{
+		for(var i = 0; i < listOfNotifications.length; i++)
+		{
+			var opt = listOfNotifications[i][1];
+			var span = document.createElement('span')
+			if(listOfNotifications[i][0] == 0)
+			{
+				span.setAttribute('class', 'glyphicon glyphicon-user');
+			}
+			else if(listOfNotifications[i][0] == 1)
+			{
+				span.setAttribute('class', 'glyphicon glyphicon-inbox');
+			}
+			span.innerHTML="  " + opt;
+			var li = document.createElement("li");
+			var link = document.createElement("a");
+			link.href = "#";
+			link.appendChild(span);
+			li.appendChild(link);
+			notificationsMenu.appendChild(li);			
+		}		
 	}
 	</script>
 </body>
