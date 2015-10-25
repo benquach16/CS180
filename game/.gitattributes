@@ -1,0 +1,2 @@
+assets/gatorLeft.png filter=lfs diff=lfs merge=lfs -text
+assets/gatorRight.png filter=lfs diff=lfs merge=lfs -text
