@@ -29,8 +29,10 @@
       </div>
   </nav>
 
-
+<script src="library/sweetalert-dev.js"></script> <link rel="stylesheet" type="text/css" href="library/sweetalert.css">
+	
 	<script type="text/javascript">
+
 	var listOfFriends =
 	<?php
 	   //pull friends from table
@@ -151,6 +153,29 @@
 			link.href = "#";
 			link.appendChild(span);
 			li.appendChild(link);
+			if(listOfNotifications[i][0] == 0)
+			{
+				//add person as a friend
+				link.onclick = function()
+				{
+					swal(
+						{title: "Confirm Friend Request",
+						text: "Do you want to add " + opt + " as a friend?",
+						showCancelButton: true,
+						confirmButtonText: "Confirm",
+						closeOnConfirm: false
+					},
+					function()
+					{
+						swal("Added!", opt + " has been added to your friends list!", "success");
+					});
+				}
+			}
+			else if(listOfNotifications[i][1] == 1)
+			{
+				//read message
+				//for now we can do a sweetalert
+			}
 			notificationsMenu.appendChild(li);			
 		}		
 	}
