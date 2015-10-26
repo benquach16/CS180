@@ -154,9 +154,9 @@
                 //so we use this work around so that it causes a 'tick' which will enable all the settings
                 //this solution was found on stack overflow
                 //http://stackoverflow.com/questions/3485365/how-can-i-force-webkit-to-redraw-repaint-to-propagate-style-changes
-                $('map').style.display='none';
-                $('map').offsetHeight;
-                $('map').style.display='';
+                $('myCanvas').style.display='none';
+                $('myCanvas').offsetHeight;
+                $('myCanvas').style.display='';
             });
 
             $( window ).resize(function() {

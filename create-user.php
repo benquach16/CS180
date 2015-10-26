@@ -34,14 +34,15 @@
         $statement->bindParam(':user', $user);
         $statement->bindParam(':pass', $pass);
         $statement->execute();
+        $last_id = $db_socket->lastInsertId();
 
         //add inventory for that player with thier id
-        $query =  "INSERT INTO ".$configValue['DB_INV_TABLE']." () VALUES ();";
+        $query =  "INSERT INTO ".$configValue['DB_INV_TABLE']." (id) VALUES (" .$last_id. ");";
         $statement = $db_socket->prepare($query);
         $statement->execute();
 
         //add team for that player with thier id
-        $query =  "INSERT INTO ".$configValue['DB_TEAM_TABLE']." () VALUES ();";
+        $query =  "INSERT INTO ".$configValue['DB_TEAM_TABLE']." (id) VALUES (" .$last_id. ");";
         $statement = $db_socket->prepare($query);
         $statement->execute();
 

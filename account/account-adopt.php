@@ -129,7 +129,7 @@
             <a id='gorilla-btn' type="button" class="btn btn-primary pet-btn" value="Gorilla">Gorilla</a>
             <a id='raccoon-btn' type="button" class="btn btn-primary pet-btn" value="Racoon">Racoon</a>
             <a id='shark-btn' type="button" class="btn btn-primary pet-btn" value="Shark">Shark</a>
-            <a id='falcon-btn' type="button" class="btn btn-primary pet-btn" value="Falcon">Falcon</a>
+            <a id='bunny-btn' type="button" class="btn btn-primary pet-btn" value="Bunny">Bunny</a>
             <a id='lizard-btn' type="button" class="btn btn-primary pet-btn" value="Lizard">Lizard</a>
         </div>
     </header>
@@ -168,7 +168,7 @@
             </figure>
             <figure id="item7" class="carouselItem trans3d">
                 <div class="carouselItemInner trans3d">
-                    <img src="http://geekin-out.com/wp-content/uploads/2012/02/Eagle_Warrior_by_GabrielRodriguez.jpg" alt="falcon" width="300" height="300">
+                    <img src="../resources/images/bunny_trans.gif" alt="bunny" width="300" height="300">
                 </div>
             </figure>
             <figure id="item8" class="carouselItem trans3d">
@@ -311,7 +311,7 @@
             $('#shark-btn').on('mouseover', function(){
                 btnCmd(6, this);
             });
-            $('#falcon-btn').on('mouseover', function(){
+            $('#bunny-btn').on('mouseover', function(){
                 btnCmd(7, this);
             });
             $('#lizard-btn').on('mouseover', function(){
