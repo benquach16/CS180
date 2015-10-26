@@ -30,7 +30,7 @@
   </nav>
 
 <script src="library/sweetalert-dev.js"></script> <link rel="stylesheet" type="text/css" href="library/sweetalert.css">
-	
+<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>	
 	<script type="text/javascript">
 
 	var listOfFriends =
@@ -90,7 +90,7 @@
 
 	var listOfNotifications =
 	<?php
-		$query = "SELECT * FROM ".$configValue['DB_NOTIFICATIONS_LIST']." WHERE id ='".$_SESSION['curr_id']."'";
+		$query = "SELECT * FROM ".$configValue['DB_NOTIFICATIONS_LIST']." WHERE receiver_id ='".$_SESSION['curr_id']."'";
 		$statement = $db_socket->prepare($query);
 	  	$statement->execute();
 		if($statement->rowCount() == 0)
@@ -112,8 +112,12 @@
 				//2 == misc
 				$noti_type = $arrayCols[$i];
 				$ret[] = array();
-				$ret[$i][0] = $noti_type[1];
-				$ret[$i][1] = $noti_type[3];
+				$ret[$i][0] = $noti_type[0];
+				$ret[$i][1] = $noti_type[1];
+				$ret[$i][2] = $noti_type[2];
+				$ret[$i][3] = $noti_type[3];
+				$ret[$i][4] = $noti_type[4];
+				
 			}
 			echo json_encode($ret);
 	
@@ -137,13 +141,13 @@
 	{
 		for(var i = 0; i < listOfNotifications.length; i++)
 		{
-			var opt = listOfNotifications[i][1];
+			var opt = listOfNotifications[i][4];
 			var span = document.createElement('span')
-			if(listOfNotifications[i][0] == 0)
+			if(listOfNotifications[i][3] == 0)
 			{
 				span.setAttribute('class', 'glyphicon glyphicon-user');
 			}
-			else if(listOfNotifications[i][0] == 1)
+			else if(listOfNotifications[i][3] == 1)
 			{
 				span.setAttribute('class', 'glyphicon glyphicon-inbox');
 			}
@@ -153,9 +157,12 @@
 			link.href = "#";
 			link.appendChild(span);
 			li.appendChild(link);
-			if(listOfNotifications[i][0] == 0)
+			if(listOfNotifications[i][3] == 0)
 			{
 				//add person as a friend
+
+				//we have to have this line here because javascript scoping makes no sense
+				var senderID = listOfNotifications[i][2];
 				link.onclick = function()
 				{
 					swal(
@@ -167,11 +174,20 @@
 					},
 					function()
 					{
+						//window.location.href = window.location + "?confimID=" + senderID;
+						//$.post('library/addToFriendsList.php', {variable: senderID});
+						$.ajax({
+							url:'library/addToFriendsList.php',
+							data:{senderID:senderID},
+						    complete: function (response) {
+								console.log(response.responseText);
+					    	}
+						});
 						swal("Added!", opt + " has been added to your friends list!", "success");
 					});
 				}
 			}
-			else if(listOfNotifications[i][1] == 1)
+			else if(listOfNotifications[i][3] == 1)
 			{
 				//read message
 				//for now we can do a sweetalert
