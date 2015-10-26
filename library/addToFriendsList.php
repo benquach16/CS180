@@ -3,6 +3,7 @@
 	session_start();
 	$currID = $_SESSION['curr_id'];
 	$senderID = $_GET['senderID'];
+	$messageID = $_GET['messageID'];
 	//echo $senderID;
 
 	//add these two to the current friends list
@@ -29,7 +30,9 @@
 		$statement_query_b->execute();
 
 		//remove notification from notificationslist
-		
+		$delete_query = "delete from ".$configValue['DB_NOTIFICATIONS_LIST']." where id='".$messageID."'";
+		$delete_statement = $db_socket->prepare($delete_query);
+		$delete_statement->execute();
 	}
 	else
 	{

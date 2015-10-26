@@ -163,6 +163,7 @@
 
 				//we have to have this line here because javascript scoping makes no sense
 				var senderID = listOfNotifications[i][2];
+				var messageID = listOfNotifications[i][0]
 				link.onclick = function()
 				{
 					swal(
@@ -178,7 +179,7 @@
 						//$.post('library/addToFriendsList.php', {variable: senderID});
 						$.ajax({
 							url:'library/addToFriendsList.php',
-							data:{senderID:senderID},
+							data:{senderID:senderID, messageID: messageID},
 						    complete: function (response) {
 								console.log(response.responseText);
 					    	}
