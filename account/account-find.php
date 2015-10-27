@@ -42,9 +42,58 @@
 				url:'../library/searchUsers.php',
 				complete: function (response)
 				{
-					console.log(response);
+					console.log(response.responseText);
+					//var arr = response.responseText; //implicit conversion to STRING
+					//convert STRING into array
+					var arr = JSON.parse(response.responseText);
 					//delete table elements then populate them with new elements
-					
+					var list = document.getElementById("listOfUsers");
+					//clear list
+					while(list.firstChild)
+						list.removeChild(list.firstChild);
+					for(var i = 0; i < arr.length; i ++)
+					{
+						var username = arr[i][1];
+						var li = document.createElement("li");
+						li.className = "list-group-item";
+						var text = document.createTextNode(username);
+						li.appendChild(text);
+
+						var button = document.createElement("button");
+						button.className = "btn btn-default";
+						var buttonText = document.createTextNode("Add Friend");
+						button.appendChild(buttonText);
+
+						var userID = arr[i][0];
+
+						button.onclick = function(userID)
+						{
+				            swal(
+		    	            {
+								title: "Add friend",
+			        	        text: "Do you want to ask " + username + " to be your friend?",
+	    	                    showCancelButton: true,
+	        	                confirmButtonText: "Confirm",
+	            	            closeOnConfirm: false
+	     	        	    },
+				            function()
+		                    {
+				                $.ajax(
+								{
+			     	            	url:'../library/sendFriendNotification.php',
+			    	                data:{userID:userID},
+			        	            complete: function (response) {
+			                        console.log(response.responseText);
+		    	 	    	        }
+	            	            });
+	                	        swal("Request Sent!", username + " has been sent a friend request!", "success");
+	                    	});
+	
+						}
+						li.appendChild(button);
+						list.appendChild(li);
+						
+					}
 				}
 			});
 		}
