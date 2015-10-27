@@ -10,7 +10,7 @@
 		<div class="row">
 		<div class="col-lg-6">
 			<div class="input-group">
-				<input type="text" class="form-control" placeholder="Search for...">
+				<input type="text" class="form-control" placeholder="Search for..." id="searchBox">
 				<span class="input-group-btn">
 					<button class="btn btn-default" type="button" id="searchButton">Go!</button>
 				</span>
@@ -33,13 +33,19 @@
 		</div>
 	
 	<script type="text/javascript">
+		var searchBox = document.getElementById("searchBox");
+		
 		var searchButton = document.getElementById("searchButton");
 		searchButton.onclick = function()
 		{
+			var searchData = searchBox.value;
+
+			
 			//create a table
 			//do an ajax query then populate the table
 			$.ajax({
 				url:'../library/searchUsers.php',
+				data:{searchData:searchData},
 				complete: function (response)
 				{
 					console.log(response.responseText);
