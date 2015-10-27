@@ -59,10 +59,10 @@
 
         var pets_JSON;
         var globalID, canvas, renderer;
-        var container0, container1, container2, container3;
+        var container_ary = [];
         var pet_inv_ary = [];
 
-        var focus_container, focus_int;
+        var  focus_int;
 
         var screen_w = 200;
         var screen_h = 200;
@@ -90,7 +90,7 @@
                     error: function(xhr){
                         //alert('Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText + ' ' + xhr.responseText);
                         result = jQuery.parseJSON(xhr.responseText);
-                        console.log(result.pet_list[0]);
+                        //console.log(result.pet_list[0]);
                     },
                 });
                 return result;
@@ -100,14 +100,13 @@
         function onInit(){
 
             // create an new instance of a pixi stage
-            container0 = new PIXI.Container(0x66FF99);
-            container1 = new PIXI.Container(0x66FF99);
-            container2 = new PIXI.Container(0x66FF99);
-            container3 = new PIXI.Container(0x66FF99);
+            for(var i = 0; i < 4; i++){
+                container_ary.push( new PIXI.Container(0x66FF99) );
+            }
+
 
             //here use php to get the equip of a pet and populate pet_inv
 
-            focus_container = container0;
             focus_int = 0;
 
             canvas = document.getElementById("testCanv");
@@ -116,20 +115,20 @@
 
             // add the renderer view element to the DOM
             //document.body.appendChild(renderer.view);
-            setBG(focus_container);
+            setBG(container_ary[focus_int]);
             setAllPets();
 
             globalID = requestAnimationFrame( function(timestamp){
-                animate(timestamp, focus_container);
+                animate(timestamp, container_ary[focus_int]);
             } );
         }
 
         function setAllPets(){
             pets_JSON = $.getValues("get-pet.php");
-            setPet(container0, '../' + pets_JSON.pet_list[0].base);
-            setPet(container1, '../' + pets_JSON.pet_list[1].base);
-            setPet(container2, '../' + pets_JSON.pet_list[2].base);
-            setPet(container3, '../' + pets_JSON.pet_list[3].base);
+            setPet(container_ary[0], '../' + pets_JSON.pet_list[0].base);
+            setPet(container_ary[1], '../' + pets_JSON.pet_list[1].base);
+            setPet(container_ary[2], '../' + pets_JSON.pet_list[2].base);
+            setPet(container_ary[3], '../' + pets_JSON.pet_list[3].base);
 
             pet_inv_ary.push (new client_pet_inv(pets_JSON.pet_list[0].hat, pets_JSON.pet_list[0].top, pets_JSON.pet_list[0].bottom));
             pet_inv_ary.push (new client_pet_inv(pets_JSON.pet_list[1].hat, pets_JSON.pet_list[1].top, pets_JSON.pet_list[1].bottom));
@@ -138,11 +137,11 @@
         }
 
         function cleanContainer(){
-            for (var i = focus_container.children.length -1; i >=0  ; i--) {
-                focus_container.removeChildAt(i);
+            for (var i = container_ary[focus_int].children.length -1; i >=0  ; i--) {
+                container_ary[focus_int].removeChildAt(i);
             };
             console.log(pet_inv_ary[focus_int].pet_hat);
-            setBG(focus_container);
+            setBG(container_ary[focus_int]);
         }
 
         function setBG(container){
@@ -193,7 +192,7 @@
             hat.position.x = pet.position.x;
             hat.position.y = pet.position.y;
 
-            focus_container.addChild(hat);
+            container_ary[focus_int].addChild(hat);
             return "set hat";
         }
 
@@ -248,11 +247,11 @@
             //refresh empty pet img
             var results = $.getValues("get-pet.php");
 
-            var pet = setPet(focus_container,  "../"+results.pet_list[focus_int].base);
+            var pet = setPet(container_ary[focus_int],  "../"+results.pet_list[focus_int].base);
 
             //here should be a db call to set pet to clean
             globalID = requestAnimationFrame( function(timestamp){
-                animate(timestamp, focus_container);
+                animate(timestamp, container_ary[focus_int]);
             } );
         });
 
@@ -298,6 +297,7 @@
             });
 
             var inv_json = {
+                "command": "update_both",
                 "user_id": <?php echo $_SESSION['curr_id']; ?>,
                 "inv" : inv_ary,
                 "pet_id": 1,
@@ -317,7 +317,7 @@
 
 
         function setUpEquips(pet){
-
+            console.log(pet_inv_ary[focus_int]);
             //make sure equipment is displayed, pulls from canvas children
             $("#testCanv").children().each(function(){
                 setEquip(pet, this.src);
@@ -331,10 +331,9 @@
             $('.make-empty').attr('class', '');
         }
 
-        //pet selection button functions
+        //pet selection button functions, simply change the pet in focus
         $('#pet0-btn').on('click',function(){
             cancelAnimationFrame(globalID);
-            focus_container = container0;
             focus_int = 0;
             globalID = requestAnimationFrame( function(timestamp){
                 animate(timestamp, focus_container);
@@ -343,7 +342,6 @@
 
         $('#pet1-btn').on('click',function(){
             cancelAnimationFrame(globalID);
-            focus_container = container1;
             focus_int = 1;
             globalID = requestAnimationFrame( function(timestamp){
                 animate(timestamp, focus_container);
@@ -352,7 +350,6 @@
 
         $('#pet2-btn').on('click',function(){
             cancelAnimationFrame(globalID);
-            focus_container = container2;
             focus_int = 2;
             globalID = requestAnimationFrame( function(timestamp){
                 animate(timestamp, focus_container);
@@ -361,7 +358,6 @@
 
         $('#pet3-btn').on('click',function(){
             cancelAnimationFrame(globalID);
-            focus_container = container3;
             focus_int = 3;
             globalID = requestAnimationFrame( function(timestamp){
                 animate(timestamp, focus_container);
@@ -380,7 +376,7 @@
             ev.preventDefault();
             var data = ev.dataTransfer.getData("text");
             ev.target.appendChild(document.getElementById(data));
-
+            console.log(document.getElementById(data));
             var new_item_type = t.lastChild.classList[0];
             var all_item = t.getElementsByClassName(new_item_type);
             if(all_item.length > 1){
@@ -403,15 +399,17 @@
                 t.removeChild(item_remove);
             }
 
+            pet_inv_ary[focus_int].hat;
+
             var results = $.getValues("get-pet.php");
 
-            var pet = setPet(focus_container,  "../"+results.pet_list[focus_int].base);
+            var pet = setPet(container_ary[focus_int],  "../"+results.pet_list[focus_int].base);
 
             setUpEquips(pet);
             fillBlankInv();
 
             globalID = requestAnimationFrame( function(timestamp){
-                animate(timestamp, focus_container);
+                animate(timestamp, container_ary[focus_int]);
             } );
         }
 

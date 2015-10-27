@@ -70,7 +70,7 @@ function petInfoSetup(){
                 $pet_res = $pet_stmt->fetchAll();
                 $img_uri = $pet_type[ $pet_res[0]['type'] ]['base_img'];
 
-                echo "<div class='pet-select'><img src='http://" .$_SERVER['HTTP_HOST'].$img_uri. "' width='100' height='100' />";
+                echo "<div class='pet-select'><img src='http://" .$_SERVER['HTTP_HOST'].'/'.$img_uri. "' width='100' height='100' />";
                 echo "<p>".$pet_res[0]['name']."</p></div>";
             }
         }
