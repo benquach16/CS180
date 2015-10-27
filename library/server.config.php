@@ -30,6 +30,7 @@ $configValue['DB_NAME'] = 'test';
 //name of table for user/pass. used for verification or creating user
 //value can not be set until we set up the db name in mysql
 $configValue['DB_USER_TABLE'] = 'auth_list';
+$configValue['DB_POST_TABLE'] = 'user_posts';
 $configValue['DB_FRIENDS_LIST'] = 'friends_list';
 $configValue['DB_NOTIFICATIONS_LIST'] = 'notifications_list';
 		

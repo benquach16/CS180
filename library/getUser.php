@@ -1,7 +1,7 @@
 <?php
 
-require_once(__DIR__."./server.config.php");
 function getUser(){
+    require(__DIR__."./server.config.php");
     include_once (__DIR__."./opendb.php");
 
     $db_socket = initSocket();
@@ -18,7 +18,7 @@ function getUser(){
     }
 
     include (__DIR__.'./closedb.php');
-    return;
+    return $res[0]['user'];
 }
 
 //do not use this

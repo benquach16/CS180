@@ -15,7 +15,7 @@ then set the user varable to a non-unique key value.
 
     alter table auth_list add key ( skill_id );
 
-use google to fin how to create and alter tables in mysql,
+use google to find how to create and alter tables in mysql,
 then use the values given above
 
 should I set up something to automate this process? 
@@ -30,12 +30,12 @@ USE THIS FOR USER DATABASE
     pass varchar(32) not null
     )
 
-Use this for post database
+Use this for the post database
 
 	create database posts_db;
 
 	create table user_posts (
 		id int(6) auto_increment not null primary key,
 		user varchar(32) not null,
-		post varchar(1024) not null
+		post varchar(2048) not null
   )

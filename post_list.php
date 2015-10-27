@@ -1,5 +1,3 @@
-<?php session_start();
-?>
 <!doctype html>
 
 <html style="height: 100%;">
@@ -75,26 +73,26 @@
     <body style="height: 100%;">
         <div id="Wall" > <!-- Facebooky part of page WIP-->
             <div id="Youtube" style="float:right; position:relavtive;">    
-                    <div> <!-- Emmbedded youtube video...for style later -->
+                    <body> <!-- Emmbedded youtube video...for style later -->
                         <iframe width=100% height=100% src="http://www.youtube.com/embed/eW6sEkTGbUc" 
                          style="position:relative;"
                          >
                         </iframe>    
-                    </div>
+                    </body>   
             </div>
-
+            
             <!-- Wall posts -->
-            <form action='./library/store_post.php' class="form-inline" method="POST"  >
+            <form action='./library/store_post.php' class="form-inline" role="Post"  >
                 <div id="Posts" class="form-group_2">
-                    <div class="col-sm-8">
-                      <input name='new_post' type="text" class='form-control input-md'  placeholder="How are you feeling?"> </input>
+                    <div class="col-sm-7">
+                        <input name='new_post' type="text" class='form-control input-md'  placeholder="How are you feeling?">
                     </div>
-                    <button type="submit" class="btn btn-default col-md-2">Post!</button>
+                    <button type="button" class="btn btn-default col-md-2">Post!</button>
                 </div>                
             </form>
 
           <!-- <div id="Post_List" >          
-            <?
+            <?php
             
               include_once (__DIR__."./library/opendb.php");
               $db_socket = initSocket();
@@ -105,8 +103,15 @@
               
               $loop = $statement->rowCount();
               
+              while($loop > 0)
+              {
+                $res = $statement->fetchAll();
+                echo $res[0]['post'];
+                //echo '<div style="background-color:black; color:white; padding:20px;">'.$row['post'].' '<br></br>'.$row['user'].'</div>';
+                $loop = $loop-1;
+              }
               include (__DIR__.'./library/closedb.php');
-            ?>  -->       
+            ?>  -->          
         </div>
 
         <div id="sidebar">
