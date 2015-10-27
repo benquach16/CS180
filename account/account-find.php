@@ -73,27 +73,34 @@
 							//the jank is real
 							var tmp = this.id;
 							var usrn = this.usern;
-							console.log(this.id);
-							swal(
+							var currID = <?php echo $_SESSION['curr_id'] ?>;
+							if(currID != tmp)
 							{
-								title: "Add friend",
-								text: "Do you want to ask " + this.usern + " to be your friend?",
-	    	                    showCancelButton: true,
-	        	                confirmButtonText: "Confirm",
-	            	            closeOnConfirm: false
-	     	        	    },
-				            function()
-		                    {
-				                $.ajax(
+								swal(
 								{
-			     	            	url:'../library/sendFriendNotification.php',
-			    	                data:{tmp:tmp, usrn:usrn},
-			        	            complete: function (response) {
-			                        console.log(response.responseText);
-		    	 	    	        }
-	            	            });
-	                	        swal("Request Sent!", usrn + " has been sent a friend request!", "success");
-	                    	});
+									title: "Add friend",
+									text: "Do you want to ask " + this.usern + " to be your friend?",
+	    	    	                showCancelButton: true,
+		        	                confirmButtonText: "Confirm",
+		            	            closeOnConfirm: false
+		     	        	    },
+					            function()
+			                    {
+					                $.ajax(
+									{
+				     	            	url:'../library/sendFriendNotification.php',
+				    	                data:{tmp:tmp, usrn:usrn},
+				        	            complete: function (response) {
+				                        console.log(response.responseText);
+			    	 	    	        }
+		            	            });
+		                	        swal("Request Sent!", usrn + " has been sent a friend request!", "success");
+		                    	});
+							}
+							else
+							{
+								swal("Cannot add yourself as a friend");
+							}
 	
 						}
 						li.appendChild(button);

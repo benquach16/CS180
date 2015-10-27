@@ -1,6 +1,9 @@
 <?php
+	
 	include 'opendb.php';
+	session_start();
 	$db_socket = initSocket();
+	$currentID = $_SESSION['curr_id'];
 	$query = "select * from ".$configValue['DB_USER_TABLE'];
 	$statement = $db_socket->prepare($query);
 	$statement->execute();
@@ -9,7 +12,6 @@
 	for($i = 0; $i < count($resultant); $i++)
 	{
 		$ret[] = array();
-	
 		$ret[$i][0] = $resultant[$i][0];
 		$ret[$i][1] = $resultant[$i][1];
 	}
