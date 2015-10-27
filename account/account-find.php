@@ -65,13 +65,19 @@
 						button.appendChild(buttonText);
 
 						var userID = arr[i][0];
-
-						button.onclick = function(userID)
+						button.id = userID;
+						button.usern = username;
+						button.onclick = function()
 						{
-				            swal(
-		    	            {
+							//this.id = userID;
+							//the jank is real
+							var tmp = this.id;
+							var usrn = this.usern;
+							console.log(this.id);
+							swal(
+							{
 								title: "Add friend",
-			        	        text: "Do you want to ask " + username + " to be your friend?",
+								text: "Do you want to ask " + this.usern + " to be your friend?",
 	    	                    showCancelButton: true,
 	        	                confirmButtonText: "Confirm",
 	            	            closeOnConfirm: false
@@ -81,12 +87,12 @@
 				                $.ajax(
 								{
 			     	            	url:'../library/sendFriendNotification.php',
-			    	                data:{userID:userID},
+			    	                data:{tmp:tmp, usrn:usrn},
 			        	            complete: function (response) {
 			                        console.log(response.responseText);
 		    	 	    	        }
 	            	            });
-	                	        swal("Request Sent!", username + " has been sent a friend request!", "success");
+	                	        swal("Request Sent!", usrn + " has been sent a friend request!", "success");
 	                    	});
 	
 						}
