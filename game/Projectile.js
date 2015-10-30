@@ -1,11 +1,11 @@
 //NOTE: x and y are upper left coordinatess
 
-var projectiles;
+var projectileGroup;
+var projectiles = [];
 
 function Projectile(x, y, spriteName) // Constructor
 {
-	this.gameObject = projectiles.create(0,0,spriteName);
-	
+	this.gameObject = projectileGroup.create(0,0,spriteName);
 	this.spriteName = spriteName;
 	this.gameObject.x = grid.at(x,y).x;
 	this.gameObject.y = grid.at(x,y).y;
@@ -15,11 +15,33 @@ function Projectile(x, y, spriteName) // Constructor
 	//this.gameObject.body.immovable = true;
     this.width = 1;
 	this.height = 1;
-	this.gridPos = new Coords(0,0);
+	this.gridPos = new Coords(x,y);
 	
 	this.damageTilesX = [0];
 	this.damageTilesY = [0];
+	this.gameObject.anchor.x = 0.5;
+	this.gameObject.anchor.y = -0.5;
+	projectiles.push(this);
 };
+
+function destroyProjectile(index)
+{
+	//TODO: remove the projectile from projectiles and possibly projectileGroup
+	projectiles[index].gameObject.destroy();
+	projectiles.splice(index, 1);
+}
+
+Projectile.prototype.isOffscreen = function(index)
+{
+	//Checks if the projectile is offscreen.
+	//If it is, we can destroy the projectile.
+	if(!this.gameObject.inCamera)
+	{
+		destroyProjectile(index);
+		return true;
+	}
+	return false;
+}
 
 Projectile.prototype.setBulletFrom = function(bulletFrom)
 {
@@ -40,39 +62,41 @@ Projectile.prototype.setSize = function(width, height)
 	
 };
 //Updates the tiles in which the projectile is doing damage to.
-Projectile.prototype.setGridPos = function ()
+Projectile.prototype.updateGridPos = function ()
 {
-	for(var y = 0; y < 3; i++)
+	var prevY = grid.at(this.gridPos.x, this.gridPos.y).y - grid.tileHeight / 2;
+	var curY = grid.at(this.gridPos.x, this.gridPos.y).y + grid.tileHeight / 2;
+	
+	if(!(prevY < this.gameObject.y && this.gameObject.y < curY))
 	{
-		var prevY = grid[0][0].y + grid.yHeight*(y);
-		var curY = grid[0][0].y + grid.yHeight*(y+1);
-		
-		if(prevY < this.y && this.y < curY)
+		this.gridPos.y += 1;
+	}
+	
+	var prevX = grid.at(this.gridPos.x, this.gridPos.y).x - grid.tileWidth / 2;
+	var curX = grid.at(this.gridPos.x, this.gridPos.y).x + grid.tileWidth / 2;
+	
+	if(!(prevX < this.gameObject.x && this.gameObject.x < curX))
+	{
+		if(this.bulletFrom == "Red")
 		{
-			this.gridPos.y = y;
-			break;
+			this.gridPos.x += 1;
+		}
+		else if(this.bulletFrom == "Blue")
+		{
+			this.gridPos.x -= 1;
 		}
 	}
-	for(var x = 0; x < 6; x++)
-	{
-		var prevX = grid[0][0].x + grid.xWidth*(x);
-		var curX = grid[0][0].x + grid.xWidth*(x+1);
-		
-		if(prevX < this.x && this.x < curX)
-		{
-			this.gridPos.x = x;
-			break;
-		}
-	}
-}
-Projectile.prototype.updateGridPositions = function()
+	this.gridPos.x = clamp(this.gridPos.x, 0, grid.numTilesX-1);
+	this.gridPos.y = clamp(this.gridPos.y, 0, grid.numTilesY-1);
+	
+};
+Projectile.prototype.updateDamagePositions = function()
 {
-	this.setGridPos();
 	var retCoords = [];
 	
-	for(var i = 0; i < damageTilesX.length; i++)
+	for(var i = 0; i < this.damageTilesX.length; i++)
 	{
-		retCoords.push(Coords(damageTilesX[i]-this.gridPosX, damageTilesY[i]-this.gridPosY));
+		retCoords.push(new Coords(this.gridPos.x-this.damageTilesX[i], this.gridPos.y-this.damageTilesY[i]));
 	}
 	return retCoords;
 };
