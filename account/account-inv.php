@@ -47,7 +47,7 @@
 
     <div id="inventory" >
         <!-- do db call here for avilible items, also set a value to know what kind of item it is -->
-        <?php include('get-inv.php'); ?>
+
     </div>
 
     <script src="https://www.rootcdn.com/libs/pixi.js/3.0.7/pixi.min.js" ></script>
@@ -62,10 +62,12 @@
         var container_ary = [];
         var pet_inv_ary = [];
 
-        var  focus_int;
+        var focus_int;
 
         var screen_w = 200;
         var screen_h = 200;
+
+        var user_inv = client_user_inv(<?php echo $_SESSION['curr_id']; ?>);
 
         function client_pet_inv(hat, top, bot){
             this.pet_hat = hat;
@@ -73,13 +75,21 @@
             this.pet_bot = bot;
         }
 
+        function client_user_inv(id){
+            this.user_id = id;
+            this.row1 = [];
+            this.row2 = [];
+            this.row3 = [];
+            this.row4 = [];
+        }
+
         jQuery.extend({
-            getValues: function(url) {
+            getValues: function(url, method, data) {
                 var result = null;
                 $.ajax({
                     url: url,
-                    type: 'POST',
-                    data: "user_id=1",
+                    type: method,
+                    data: data,
                     dataType: 'application/x-www-form-urlencoded',
                     //contentType: 'application/json',
                     async: false,
@@ -90,7 +100,7 @@
                     error: function(xhr){
                         //alert('Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText + ' ' + xhr.responseText);
                         result = jQuery.parseJSON(xhr.responseText);
-                        //console.log(result.pet_list[0]);
+                        //console.log(xhr.responseText);
                     },
                 });
                 return result;
@@ -104,6 +114,9 @@
                 container_ary.push( new PIXI.Container(0x66FF99) );
             }
 
+            //get the user inv
+            var test = $.getValues("get-inv.php", "GET", "user_id=1");
+            console.log( test );
 
             //here use php to get the equip of a pet and populate pet_inv
 
@@ -124,7 +137,7 @@
         }
 
         function setAllPets(){
-            pets_JSON = $.getValues("get-pet.php");
+            pets_JSON = $.getValues("get-pet.php", "POST", "user_id=1");
             setPet(container_ary[0], '../' + pets_JSON.pet_list[0].base);
             setPet(container_ary[1], '../' + pets_JSON.pet_list[1].base);
             setPet(container_ary[2], '../' + pets_JSON.pet_list[2].base);
@@ -245,7 +258,7 @@
             $("#testCanv").empty();
 
             //refresh empty pet img
-            var results = $.getValues("get-pet.php");
+            var results = $.getValues("get-pet.php", "POST", "user_id=1");
 
             var pet = setPet(container_ary[focus_int],  "../"+results.pet_list[focus_int].base);
 
@@ -336,7 +349,7 @@
             cancelAnimationFrame(globalID);
             focus_int = 0;
             globalID = requestAnimationFrame( function(timestamp){
-                animate(timestamp, focus_container);
+                animate(timestamp, container_ary[focus_int]);
             } );
         });
 
@@ -344,7 +357,7 @@
             cancelAnimationFrame(globalID);
             focus_int = 1;
             globalID = requestAnimationFrame( function(timestamp){
-                animate(timestamp, focus_container);
+                animate(timestamp, container_ary[focus_int]);
             } );
         });
 
@@ -352,7 +365,7 @@
             cancelAnimationFrame(globalID);
             focus_int = 2;
             globalID = requestAnimationFrame( function(timestamp){
-                animate(timestamp, focus_container);
+                animate(timestamp, container_ary[focus_int]);
             } );
         });
 
@@ -360,7 +373,7 @@
             cancelAnimationFrame(globalID);
             focus_int = 3;
             globalID = requestAnimationFrame( function(timestamp){
-                animate(timestamp, focus_container);
+                animate(timestamp, container_ary[focus_int]);
             } );
         });
 
@@ -401,7 +414,7 @@
 
             pet_inv_ary[focus_int].hat;
 
-            var results = $.getValues("get-pet.php");
+            var results = $.getValues("get-pet.php", "POST", "user_id=1");
 
             var pet = setPet(container_ary[focus_int],  "../"+results.pet_list[focus_int].base);
 
