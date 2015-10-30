@@ -2,7 +2,7 @@
 <body>
   <style>
 	#chatbar{
-	height: 40px;
+	height: 45px;
 	position: fixed;
 	bottom:0%;
 	width:100%;
@@ -12,6 +12,10 @@
     <div class="container-fluid">
       <div class="navbar-footer">
         <div class="collapse navbar-collapse">
+
+		  <a class="navbar-brand"><?php echo $_SESSION['curr_user']?></a>
+		  <p class="navbar-text">Currency : 0</p>
+
 		  <ul class="nav navbar-nav navbar-right">
 			<li class ="dropup">
 			  <a class="dropdown-toggle" data-toggle="dropdown" href="#"> <span class ="glyphicon glyphicon-user"></span>  Friends</a>
@@ -25,6 +29,7 @@
 			  </ul>
 			</li>
 		  </ul>
+		  
         </div>
       </div>
   </nav>
