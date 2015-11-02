@@ -70,7 +70,9 @@
 					$nameStatement = $db_socket->prepare($nameQuery);
 					$nameStatement->execute();
 					$name = $nameStatement->fetchColumn(0);
-					$arrayOfNames[] = $name;
+					$arrayOfNames[] = array();
+					$arrayOfNames[$i][0] = $arrayOfColumns[$i];
+					$arrayOfNames[$i][1] = $name;
 	  			}
 	  			echo json_encode($arrayOfNames);
 	  		}
@@ -82,12 +84,47 @@
 	//pull friends list from database
 	for(var i = 0; i < listOfFriends.length; i++)
 	{
-		var opt = listOfFriends[i];
+		var opt = listOfFriends[i][1];
 		var li = document.createElement("li");
 		var link = document.createElement("a");
 		var text = document.createTextNode(opt);
 		link.appendChild(text);
 		link.href = "#";
+		link.receiverID = listOfFriends[i][0];
+		link.onclick = function()
+		{
+			var tmp = this.receiverID;
+			//add message sending here through sweetalert
+			//use ajax
+			swal(
+			{
+					title: "Send a message",
+					text: "Send your friend a message:",
+					type: "input",
+					showCancelButton: true,
+					closeOnConfirm: false,
+					animation: "slide-from-top",
+					inputPlaceholder: "Write something"
+			},
+			function(inputValue)
+			{
+				if (inputValue === false) return false;
+				if (inputValue === "")
+				{
+					swal.showInputError("You need to write something!");
+					return false;
+				}
+				$.ajax({
+					url:'library/sendFriendMessage.php',
+					data:{tmp:tmp, inputValue:inputValue},
+				    complete: function (response)
+					{
+						console.log(response.responseText);
+				   	}
+				});
+				swal("Nice!", "You sent: " + inputValue, "success");
+			});
+		}
 		li.appendChild(link);
 		dropUpMenu.appendChild(li);
 	}
@@ -122,7 +159,7 @@
 				$ret[$i][2] = $noti_type[2];
 				$ret[$i][3] = $noti_type[3];
 				$ret[$i][4] = $noti_type[4];
-				
+				$ret[$i][5] = $noti_type[5];
 			}
 			echo json_encode($ret);
 	
@@ -197,6 +234,15 @@
 			{
 				//read message
 				//for now we can do a sweetalert
+				link.messageId = i;
+				link.msg = listOfNotifications[i][5];
+				link.sender = listOfNotifications[i][4];
+				link.onclick = function()
+				{
+					swal({title:"From: " + this.sender,
+						text:this.msg});
+					var tmp = this.messageId;
+				}
 			}
 			notificationsMenu.appendChild(li);			
 		}		
