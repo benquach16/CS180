@@ -14,8 +14,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js"></script>
     <link rel="stylesheet" href="../resources/css/modal-stylesheet.css">
     <style>
+        .navbar{
+            z-index: 3;
+        }
         #pet-type-selection{
-            z-index: 11;
+            z-index: 2;
             position: absolute;
         }
         .pet-btn{
@@ -55,7 +58,7 @@
             top:50%;
             width:1000px;
             height:1000px;
-            z-index: 10;
+            z-index: 1;
         }
 
         #carouselContainer
@@ -86,8 +89,10 @@
             width:320px;
             height:320px;
             position:absolute;
+            /*
             background-color:rgba(255, 255, 255, .75);
             border:10px solid rgba(255, 255, 255, .5);
+            */
             color:aqua;
             font-size:72px;
             left:50%;
@@ -97,6 +102,10 @@
             text-align:center;
             padding-top:0px;
 
+        }
+
+        .carouselItem:not(.active) > .carouselItemInner > img{
+            opacity: 0.4;
         }
 
         .carouselItemInner img{
@@ -115,12 +124,12 @@
     <header>
         <div id="pet-type-selection" class="btn-group btn-group-justified">
             <a id='dog-btn' type="button" class="btn btn-primary pet-btn" value="Dog">Dog</a>
-            <a id='tiger-btn' type="button" class="btn btn-primary pet-btn" value="Tiger">Tiger</a>
+            <a id='lion-btn' type="button" class="btn btn-primary pet-btn" value="Lion">Lion</a>
             <a id='bear-btn' type="button" class="btn btn-primary pet-btn" value="Bear">Bear</a>
             <a id='gorilla-btn' type="button" class="btn btn-primary pet-btn" value="Gorilla">Gorilla</a>
             <a id='raccoon-btn' type="button" class="btn btn-primary pet-btn" value="Racoon">Racoon</a>
             <a id='shark-btn' type="button" class="btn btn-primary pet-btn" value="Shark">Shark</a>
-            <a id='falcon-btn' type="button" class="btn btn-primary pet-btn" value="Falcon">Falcon</a>
+            <a id='bunny-btn' type="button" class="btn btn-primary pet-btn" value="Bunny">Bunny</a>
             <a id='lizard-btn' type="button" class="btn btn-primary pet-btn" value="Lizard">Lizard</a>
         </div>
     </header>
@@ -134,7 +143,7 @@
             </figure>
             <figure id="item2" class="carouselItem trans3d">
                 <div class="carouselItemInner trans3d">
-                    <img src="http://orig05.deviantart.net/7248/f/2012/350/2/3/scifi_tiger_warrior_by_thenoremac42-d5o8arl.jpg" alt="tiger" width="300" height="300">
+                    <img src="../resources/images/leo.png" alt="lion" width="300" height="300">
                 </div>
             </figure>
             <figure id="item3" class="carouselItem trans3d">
@@ -159,12 +168,12 @@
             </figure>
             <figure id="item7" class="carouselItem trans3d">
                 <div class="carouselItemInner trans3d">
-                    <img src="http://geekin-out.com/wp-content/uploads/2012/02/Eagle_Warrior_by_GabrielRodriguez.jpg" alt="falcon" width="300" height="300">
+                    <img src="../resources/images/bunny_trans.gif" alt="bunny" width="300" height="300">
                 </div>
             </figure>
             <figure id="item8" class="carouselItem trans3d">
                 <div class="carouselItemInner trans3d">
-                    <img src="http://img2.wikia.nocookie.net/__cb20150221011548/cardfight/images/7/7e/Lizard_Soldier,_Fargo_(Full_Art).jpg" alt="lizard" width="300" height="300">
+                    <img src="/resources/images/gator.png" alt="lizard" width="300" height="300">
                 </div>
             </figure>
         </section>
@@ -287,7 +296,7 @@
             $('#dog-btn').on('mouseover', function(){
                 btnCmd(1, this);
             });
-            $('#tiger-btn').on('mouseover', function(){
+            $('#lion-btn').on('mouseover', function(){
                 btnCmd(2, this);
             });
             $('#bear-btn').on('mouseover', function(){
@@ -302,7 +311,7 @@
             $('#shark-btn').on('mouseover', function(){
                 btnCmd(6, this);
             });
-            $('#falcon-btn').on('mouseover', function(){
+            $('#bunny-btn').on('mouseover', function(){
                 btnCmd(7, this);
             });
             $('#lizard-btn').on('mouseover', function(){

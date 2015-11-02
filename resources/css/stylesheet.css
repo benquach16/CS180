@@ -17,15 +17,12 @@
 
 #login_form_container{
     border-radius: 8px;
+    border: solid;
     padding: 25px;
-    background: lightblue;
+    background: grey;
+    opacity: 0.7;
 }
 
-#hud-menu-container{
-    border-radius: 8px;
-    padding: 25px;
-    background: lightblue;
-}
 
 ul{
     list-style-type: none;

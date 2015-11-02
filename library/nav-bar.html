@@ -5,7 +5,6 @@
 <style>
     .navbar{
         position: relative;
-        z-index: 12;
     }
     a {
         text-decoration: inherit;
@@ -59,7 +58,6 @@
                         <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/account/account-info.php' ?> >Account Info</a></li>
-                        <li><a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/account/account-find.php' ?> >Find Users</a></li>
                         <li><a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/account/account-create.php' ?>>Create User</a></li>
                         <li><a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/account/account-adopt.php' ?>>Adopt Pet</a></li>
                         <li><a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/account/account-inv.php' ?>>Inventory</a></li>
@@ -70,7 +68,7 @@
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">Community
                         <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/community/guild-create.php' ?>>Guild HQ</a></li>
+                        <li><a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/community/guild-create.php'; ?>>Guild HQ</a></li>
                         <li><a href="#">Forums</a></li>
                     </ul>
                 </li>
@@ -78,7 +76,7 @@
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">Explore
                         <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/explore-map.php' ?>>map</a></li>
+                        <li><a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/explore-map.php'; ?>>map</a></li>
                         <li><a href="#">example</a></li>
                         <li><a href="#">example</a></li>
                     </ul>
@@ -88,7 +86,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li>
                     <button type="button" class="btn navbar-btn">
-                        <a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/logout.php' ?>>
+                        <a href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/logout.php'; ?>>
                             <span class="glyphicon glyphicon-log-out"></span> Logout
                         </a>
                     </button>

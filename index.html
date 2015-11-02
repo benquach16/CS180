@@ -2,6 +2,16 @@
 <html>
   <head>
     <title>BEST APP EVER</title>
+      <style>
+          audio {float: right;}
+          canvas {display: block; float: left;}
+          body {background: black;background-image: linear-gradient(top, rgb(131,139,131) 8%, rgb(0,0,0) 84%);
+              background-image: -o-linear-gradient(top, rgb(131,139,131) 8%, rgb(0,0,0) 84%);
+              background-image: -moz-linear-gradient(top, rgb(131,139,131) 8%, rgb(0,0,0) 84%);
+              background-image: -webkit-linear-gradient(top, rgb(131,139,131) 8%, rgb(0,0,0) 84%);
+              background-image: -ms-linear-gradient(top, rgb(131,139,131) 8%, rgb(0,0,0) 84%);
+              background-image: -webkit-gradient(linear,left top,left bottom,	color-stop(0.08, rgb(131,139,131)),color-stop(0.84, rgb(0,0,0)));}
+      </style>
   </head>
   
   <body>
@@ -11,7 +21,102 @@
     <!-- custom stylesheets-->
     <link rel='stylesheet' type='text/css' href='./resources/css/stylesheet.css'>
     <link rel='stylesheet' type='text/css' href='./resources/css/modal-stylesheet.css'>
-    
+
+    <div style="display:none;" >
+        <img id="gator_img" src="resources/images/gator.png" >
+    </div>
+
+    <script>
+        //creating a canvas using JS
+        var canvas = document.createElement("canvas");
+
+        //making the canvas fullscreen
+        var w = canvas.width = window.innerWidth;
+        var h = canvas.height = window.innerHeight;
+
+        var fov = 450; //pixels are 450px away from us
+
+        var ctx = canvas.getContext("2d");
+        //appending the canvas to the body
+        document.body.appendChild(canvas);
+
+        //an array of pixels with 3 dimensional coordinates
+        //a square sheet of dots separated by 15px
+        var pixels = [];
+        for(var x = -450; x < 450; x+=15)
+            for(var z = -450; z < 450; z+=15)
+                pixels.push({x: x, y: 140, z: z});
+                //time to draw the pixels
+        //console.log(pixels);
+
+        var nw = document.getElementById('gator_img').naturalWidth;
+        var nh = document.getElementById('gator_img').naturalHeight;
+
+        var gw = nw/20;
+        var gh = nh/20;
+
+        console.log(gw+ ' ' + gh);
+        function render() {
+            ctx.clearRect(0,0,w,h);
+            // grabbing a screenshot of the canvas using getImageData
+            var imagedata = ctx.getImageData(0,0,w,h);
+            // looping through all pixel points
+            var i = pixels.length;
+            while(i--){
+                var pixel = pixels[i];
+                // calculating 2d position for 3d coordinates
+                // fov = field of view = denotes how far the pixels are from us.
+                // the scale will control how the spacing between the pixels will decrease with increasing distance from us.
+                var scale = fov/(fov+pixel.z);
+                var x2d = pixel.x * scale + w/2;
+                var y2d = pixel.y * scale + h/2;
+                // marking the points green - only if they are inside the screen
+                if(x2d >= 0 && x2d <= w && y2d >= 0 && y2d <= h){
+                    /* imagedata.width gives the width of the captured region(canvas) which is multiplied with the Y coordinate
+                     and then added to the X coordinate.
+                     The whole thing is multiplied by 4 because of the 4 numbers saved to denote r,g,b,a.
+                     The final result gives the first color data(red) for the pixel.*/
+                    var c = (Math.round(y2d) * imagedata.width + Math.round(x2d))*4;
+                    imagedata.data[c] = 0; //red
+                    imagedata.data[c+1] = 250; //green
+                    imagedata.data[c+2] = 0; //blue
+                    imagedata.data[c+3] = 255; //alpha
+                }
+                pixel.z -= 1;
+                if(pixel.z < -fov) pixel.z += 2*fov;
+            }
+
+            //putting imagedata back on the canvas
+            ctx.putImageData(imagedata, 0, 0);
+            // y_initial is 15 + img height
+            // x_initial is center + img width/2
+            if(gw >= nw || gh >= nh){
+                gw = nw/20;
+                gh = nh/20;
+                ctx.drawImage(document.getElementById('gator_img'), ($(window).width())/2, ($(window).height())/2, gw, gh);
+            } else {
+                gw += nw/1000;
+                gh += nh/1000;
+                ctx.drawImage(document.getElementById('gator_img'), ($(window).width())/2, ($(window).height())/2, gw, gh);
+            }
+
+        }
+
+        function animate(){
+            render();
+            requestAnimationFrame(animate);
+        }
+            //render()
+            //animation time
+            //setInterval(render, 1000/30);
+            requestAnimationFrame(animate);
+    </script>
+
+    <audio loop="loop" autoplay="autoplay">
+        <source src="resources/sound/mmbn_internet.mp3" type="audio/mpeg">
+        no support
+    </audio>
+
     <div id='login_container' class='outer'>
         <div id='centered_container' class='middle'>
             <form id='login_form' action='login.php' method='POST' autocomplete="off" class='inner'>
@@ -111,6 +216,6 @@
             }
         });
     </script>
-    
+
   </body>
 </html>

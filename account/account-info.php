@@ -6,6 +6,23 @@
         <title>Account Info</title>
     </head>
     <body>
+        <style>
+            .pet-party-display{
+                border: solid;
+                border-width: 1px;
+                border-color: black;
+                display: table;
+            }
+            .pet-party-display > div{
+                display: table-row;
+            }
+            .pet-party-display > div > div{
+                display: table-cell;
+            }
+            .pet-party-display > div > div > p{
+                text-align: center;
+            }
+        </style>
 
         <?php include('../library/nav-bar.html'); ?>
 
@@ -18,8 +35,13 @@
         </div>
 
         <div class="pet-party-display">
-            <?php include('get-pet.php'); ?>
+            <div>
+                <?php include('get-pet.php'); petInfoSetup();?>
+            </div>
         </div>
 
+        <script>
+
+        </script>
     </body>
 </html>
