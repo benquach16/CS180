@@ -1,5 +1,5 @@
 <?php
-if(isset($_POST)){
+if($_SERVER['REQUEST_METHOD'] == 'GET'){
     include ('../library/server.config.php');
     include_once ('../library/opendb.php');
 
@@ -9,9 +9,9 @@ if(isset($_POST)){
     $strings = file_get_contents("../library/item-types.json");
     $item_type = json_decode($strings, true);
 
-    if(isset($_POST['user_id'])){
+    if(isset($_GET['user_id'])){
         $db_socket = initSocket();
-        $query = "SELECT * FROM ".$configValue['DB_TEAM_TABLE']." WHERE id = '". $_POST['user_id'] ."'";
+        $query = "SELECT * FROM ".$configValue['DB_TEAM_TABLE']." WHERE id = '". $_GET['user_id'] ."'";
 
         $statement = $db_socket->prepare($query);
         $statement->execute();
@@ -29,10 +29,16 @@ if(isset($_POST)){
                     //we have base pet info at this scope; base stats, equip coordinates
                     $pet_res = $pet_stmt->fetchAll();
                     //echo $pet_type[ $pet_res[0]['type'] ]['base_img'];
+                    $temp['id'] = $pet_res[0]['id'];
                     $temp['base'] = $pet_type[ $pet_res[0]['type'] ]['base_img'];
-                    $temp['hat'] = $item_type["items"][ $pet_res[0]['hat'] ]['base_img'];
-                    $temp['top'] = $item_type["items"][ $pet_res[0]['top'] ]['base_img'];
-                    $temp['bottom'] = $item_type["items"][ $pet_res[0]['bottom'] ]['base_img'];
+
+                    $temp['hat_img'] = $item_type["items"][ $pet_res[0]['hat'] ]['base_img'];
+                    $temp['top_img'] = $item_type["items"][ $pet_res[0]['top'] ]['base_img'];
+                    $temp['bottom_img'] = $item_type["items"][ $pet_res[0]['bottom'] ]['base_img'];
+
+                    $temp['hat_id'] = $pet_res[0]['hat'];
+                    $temp['top_id'] = $pet_res[0]['top'];
+                    $temp['bottom_id'] = $pet_res[0]['bottom'];
 
                     array_push($json["pet_list"], $temp);
                 }
@@ -40,6 +46,28 @@ if(isset($_POST)){
         }
         echo json_encode($json);
     }
+}
+
+if($_SERVER['REQUEST_METHOD'] == 'POST'){
+    //grab json from the post req and convert it to php object
+    $json = file_get_contents('php://input');
+    $obj = json_decode($json, true);
+
+    //includes for db/variables
+    include ('../library/server.config.php');
+    include_once ('../library/opendb.php');
+
+    $db_socket = initSocket();
+
+    $query = "UPDATE ".$configValue['DB_PET_TABLE']." SET hat=".$obj['pet_hat']
+        .", top=".$obj['pet_top']
+        .", bottom=".$obj['pet_bottom']
+        ." WHERE id=".$obj['pet_id'];;
+    $statement = $db_socket->prepare($query);
+    $statement->execute();
+
+    include ('../library/closedb.php');
+    echo json_encode($obj);
 }
 
 function petInfoSetup(){

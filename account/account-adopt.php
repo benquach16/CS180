@@ -124,7 +124,7 @@
     <header>
         <div id="pet-type-selection" class="btn-group btn-group-justified">
             <a id='dog-btn' type="button" class="btn btn-primary pet-btn" value="Dog">Dog</a>
-            <a id='tiger-btn' type="button" class="btn btn-primary pet-btn" value="Tiger">Tiger</a>
+            <a id='lion-btn' type="button" class="btn btn-primary pet-btn" value="Lion">Lion</a>
             <a id='bear-btn' type="button" class="btn btn-primary pet-btn" value="Bear">Bear</a>
             <a id='gorilla-btn' type="button" class="btn btn-primary pet-btn" value="Gorilla">Gorilla</a>
             <a id='raccoon-btn' type="button" class="btn btn-primary pet-btn" value="Racoon">Racoon</a>
@@ -143,7 +143,7 @@
             </figure>
             <figure id="item2" class="carouselItem trans3d">
                 <div class="carouselItemInner trans3d">
-                    <img src="http://orig05.deviantart.net/7248/f/2012/350/2/3/scifi_tiger_warrior_by_thenoremac42-d5o8arl.jpg" alt="tiger" width="300" height="300">
+                    <img src="../resources/images/leo.png" alt="lion" width="300" height="300">
                 </div>
             </figure>
             <figure id="item3" class="carouselItem trans3d">
@@ -173,7 +173,7 @@
             </figure>
             <figure id="item8" class="carouselItem trans3d">
                 <div class="carouselItemInner trans3d">
-                    <img src="http://img2.wikia.nocookie.net/__cb20150221011548/cardfight/images/7/7e/Lizard_Soldier,_Fargo_(Full_Art).jpg" alt="lizard" width="300" height="300">
+                    <img src="/resources/images/gator.png" alt="lizard" width="300" height="300">
                 </div>
             </figure>
         </section>
@@ -296,7 +296,7 @@
             $('#dog-btn').on('mouseover', function(){
                 btnCmd(1, this);
             });
-            $('#tiger-btn').on('mouseover', function(){
+            $('#lion-btn').on('mouseover', function(){
                 btnCmd(2, this);
             });
             $('#bear-btn').on('mouseover', function(){

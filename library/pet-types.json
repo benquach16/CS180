@@ -1,5 +1,11 @@
 {
   "bunny" : {
     "base_img" : "resources/images/bunny_trans.gif"
+  },
+  "gator" : {
+    "base_img" : "resources/images/gator-base.png"
+  },
+  "lion" : {
+    "base_img" : "resources/images/leo_base.png"
   }
 }

@@ -47,7 +47,10 @@
 
     <div id="inventory" >
         <!-- do db call here for avilible items, also set a value to know what kind of item it is -->
-
+        <div id="row1" class="inv-row"></div>
+        <div id="row2" class="inv-row"></div>
+        <div id="row3" class="inv-row"></div>
+        <div id="row4" class="inv-row"></div>
     </div>
 
     <script src="https://www.rootcdn.com/libs/pixi.js/3.0.7/pixi.min.js" ></script>
@@ -67,30 +70,37 @@
         var screen_w = 200;
         var screen_h = 200;
 
-        var user_inv = client_user_inv(<?php echo $_SESSION['curr_id']; ?>);
+        function client_pet_inv(id, hat, top, bottom, base, hat_id, top_id, bottom_id){
+            this.pet_id = id;
+            this.pet_base = base;
 
-        function client_pet_inv(hat, top, bot){
-            this.pet_hat = hat;
-            this.pet_top = top;
-            this.pet_bot = bot;
+            this.pet_hat = hat_id;
+            this.hat_img = hat;
+
+            this.pet_top = top_id;
+            this.top_img = top;
+
+            this.pet_bottom = bottom_id;
+            this.bottom_img = bottom;
         }
 
-        function client_user_inv(id){
-            this.user_id = id;
-            this.row1 = [];
-            this.row2 = [];
-            this.row3 = [];
-            this.row4 = [];
+        function client_user_inv(json){
+            this.item_ary = [];
+            for(var i = 0; i < json.user_inv.length; i++){
+                this.item_ary.push(json.user_inv[i]);
+            }
         }
+
+        var user_inv;
 
         jQuery.extend({
-            getValues: function(url, method, data) {
+            getValues: function(url, method, data, type) {
                 var result = null;
                 $.ajax({
                     url: url,
                     type: method,
                     data: data,
-                    dataType: 'application/x-www-form-urlencoded',
+                    dataType: type,
                     //contentType: 'application/json',
                     async: false,
                     success: function(data) {
@@ -99,13 +109,47 @@
                     },
                     error: function(xhr){
                         //alert('Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText + ' ' + xhr.responseText);
-                        result = jQuery.parseJSON(xhr.responseText);
                         //console.log(xhr.responseText);
+                        result = jQuery.parseJSON(xhr.responseText);
                     },
                 });
                 return result;
             }
         });
+
+        function populateUserInv(){
+            var test = $.getValues("get-inv.php", "GET", "user_id=1", 'application/x-www-form-urlencoded');
+
+            user_inv = new client_user_inv(test);
+        }
+
+        function displayUserInv(){
+            //get div for display
+            var inv_div = $('#inventory');
+
+            for(var i = 1; i <= 4; i++ ){
+                for(var j = 0; j < 7; j++){
+
+                    if(user_inv.item_ary[((i - 1)*7) + j] == undefined){
+                        //console.log('not exist');
+                        var apd_val = "<div id="+i+'_'+j+" class='empty'><img width='50' height='50' class='empty-slot'></div>";
+
+                        $('#row'+i).append(apd_val);
+                    } else {
+                        var apd_val = "<div id="+i+'_'+j+" ondragover='allowDrop(event)' ondrop='drop_empty(event, this)' ><img id=item"+i+'_'+j+
+                            " draggable='true' ondragstart='drag(event)' ondragend='dragend(event)' src="+
+                            user_inv.item_ary[((i - 1)*7) + j].img+ " value="+user_inv.item_ary[((i - 1)*7) + j].item_id+" type="+
+                            user_inv.item_ary[((i - 1)*7) + j].type+" name='"+
+                            user_inv.item_ary[((i - 1)*7) + j].name +"' height='50' width='50'></div>";
+                        if(user_inv.item_ary[((i - 1)*7) + j].type == "Empty"){
+                            apd_val = "<div id="+i+'_'+j+" class='empty' ondragover='allowDrop(event)' ondrop='drop_empty(event, this)'><img width='50' height='50' class='empty-slot'></div>";
+                        }
+
+                        $('#row'+i).append(apd_val);
+                    }
+                }
+            }
+        }
 
         function onInit(){
 
@@ -115,8 +159,8 @@
             }
 
             //get the user inv
-            var test = $.getValues("get-inv.php", "GET", "user_id=1");
-            console.log( test );
+            populateUserInv();
+            displayUserInv();
 
             //here use php to get the equip of a pet and populate pet_inv
 
@@ -128,7 +172,10 @@
 
             // add the renderer view element to the DOM
             //document.body.appendChild(renderer.view);
-            setBG(container_ary[focus_int]);
+            initAllPets();
+
+
+
             setAllPets();
 
             globalID = requestAnimationFrame( function(timestamp){
@@ -136,25 +183,41 @@
             } );
         }
 
-        function setAllPets(){
-            pets_JSON = $.getValues("get-pet.php", "POST", "user_id=1");
-            setPet(container_ary[0], '../' + pets_JSON.pet_list[0].base);
-            setPet(container_ary[1], '../' + pets_JSON.pet_list[1].base);
-            setPet(container_ary[2], '../' + pets_JSON.pet_list[2].base);
-            setPet(container_ary[3], '../' + pets_JSON.pet_list[3].base);
+        function initAllPets(){
+            pets_JSON = $.getValues("get-pet.php", "GET", "user_id=1", 'application/x-www-form-urlencoded').pet_list;
 
-            pet_inv_ary.push (new client_pet_inv(pets_JSON.pet_list[0].hat, pets_JSON.pet_list[0].top, pets_JSON.pet_list[0].bottom));
-            pet_inv_ary.push (new client_pet_inv(pets_JSON.pet_list[1].hat, pets_JSON.pet_list[1].top, pets_JSON.pet_list[1].bottom));
-            pet_inv_ary.push (new client_pet_inv(pets_JSON.pet_list[2].hat, pets_JSON.pet_list[2].top, pets_JSON.pet_list[2].bottom));
-            pet_inv_ary.push (new client_pet_inv(pets_JSON.pet_list[3].hat, pets_JSON.pet_list[3].top, pets_JSON.pet_list[3].bottom));
+            pet_inv_ary.push (new client_pet_inv(pets_JSON[0].id, pets_JSON[0].hat_img, pets_JSON[0].top_img, pets_JSON[0].bottom_img, pets_JSON[0].base,
+                pets_JSON[0].hat_id, pets_JSON[0].top_id, pets_JSON[0].bottom_id));
+            pet_inv_ary.push (new client_pet_inv(pets_JSON[1].id, pets_JSON[1].hat_img, pets_JSON[1].top_img, pets_JSON[1].bottom_img, pets_JSON[1].base,
+                pets_JSON[1].hat_id, pets_JSON[1].top_id, pets_JSON[1].bottom_id));
+            pet_inv_ary.push (new client_pet_inv(pets_JSON[2].id, pets_JSON[2].hat_img, pets_JSON[2].top_img, pets_JSON[2].bottom_img, pets_JSON[2].base,
+                pets_JSON[2].hat_id, pets_JSON[2].top_id, pets_JSON[2].bottom_id));
+            pet_inv_ary.push (new client_pet_inv(pets_JSON[3].id, pets_JSON[3].hat_img, pets_JSON[3].top_img, pets_JSON[3].bottom_img, pets_JSON[3].base,
+                pets_JSON[3].hat_id, pets_JSON[3].top_id, pets_JSON[3].bottom_id));
         }
 
-        function cleanContainer(){
-            for (var i = container_ary[focus_int].children.length -1; i >=0  ; i--) {
-                container_ary[focus_int].removeChildAt(i);
+        function setAllPets(){
+            for(var i = 0; i < pet_inv_ary.length; i++){
+                setBG(container_ary[i]);
+            }
+
+            var pet0 = setPet(container_ary[0], '../' + pet_inv_ary[0].pet_base);
+            var pet1 = setPet(container_ary[1], '../' + pet_inv_ary[1].pet_base);
+            var pet2 = setPet(container_ary[2], '../' + pet_inv_ary[2].pet_base);
+            var pet3 = setPet(container_ary[3], '../' + pet_inv_ary[3].pet_base);
+
+            setUpEquips(pet0, 0);
+            setUpEquips(pet1, 1);
+            setUpEquips(pet2, 2);
+            setUpEquips(pet3, 3);
+
+        }
+
+        function cleanContainer(c){
+            for (var i = c.children.length -1; i >=0  ; i--) {
+                c.removeChildAt(i);
             };
-            console.log(pet_inv_ary[focus_int].pet_hat);
-            setBG(container_ary[focus_int]);
+            setBG(c);
         }
 
         function setBG(container){
@@ -191,10 +254,12 @@
             return pet;
         }
 
-        function setEquip(pet, img){
+        function setEquip(pet, img, index){
+
+            index = typeof index !== 'undefined' ? index : focus_int;
 
             // create a texture from an image path
-            var texture2 = PIXI.Texture.fromImage(img); //"hat_trans.gif"
+            var texture2 = PIXI.Texture.fromImage("../"+img);
             // create a new Sprite using the texture
             var hat = new PIXI.Sprite(texture2);
 
@@ -205,7 +270,7 @@
             hat.position.x = pet.position.x;
             hat.position.y = pet.position.y;
 
-            container_ary[focus_int].addChild(hat);
+            container_ary[index].addChild(hat);
             return "set hat";
         }
 
@@ -233,115 +298,152 @@
             return empty_slot;
         }
 
+        function getRemoveAry(inv){
+            var return_ary = [];
+            console.log(inv);
+            if (inv.pet_hat != 0){
+                var rItem = {
+                    "type" : "Hat",
+                    "item_id" : inv.pet_hat,
+                    "img" : inv.hat_img,
+                    "name" : "placeholder"
+                }
+                return_ary.push(rItem);
+            }
+            if (inv.pet_top != 0){
+                var rItem = {
+                    "type" : "Top",
+                    "item_id" : inv.pet_top,
+                    "img" : inv.top_img,
+                    "name" : "placeholder"
+                }
+                return_ary.push(rItem);
+            }
+            if (inv.pet_bottom != 0){
+                var rItem = {
+                    "type" : "Bottom",
+                    "item_id" : inv.pet_bottom,
+                    "img" : inv.bottom_img,
+                    "name" : "placeholder"
+                }
+                return_ary.push(rItem);
+            }
+
+            return return_ary;
+        }
+
+        function getAllEmpty(){
+            var empty_ary = [];
+
+            $('#inventory').children().each(function(i){
+                $(this).children().each(function(j){
+                    if($(this).children('img').hasClass('empty-slot')){
+                        var slot_id = {
+                            "row" : i+1,
+                            "slot" : j
+                        };
+                        empty_ary.push(slot_id);
+                    }
+                });
+            });
+
+            return empty_ary;
+        }
+
+        function removeFromPet(type, index){
+            index = typeof index !== 'undefined' ? index : focus_int;
+            switch(type){
+                case "Hat":
+                    pet_inv_ary[index].hat_img = undefined;
+                    pet_inv_ary[index].pet_hat = '0';
+                    break;
+                case "Top":
+                    pet_inv_ary[index].top_img = undefined;
+                    pet_inv_ary[index].pet_top = '0';
+                    break;
+                case "Bottom":
+                    pet_inv_ary[index].bottom_img = undefined;
+                    pet_inv_ary[index].pet_bottom = '0';
+                    break;
+                default:
+                    alert("item type does not exist???");
+                    break;
+            }
+        }
+
         $("#clean").on("click", function() {
             cancelAnimationFrame(globalID);
-            cleanContainer();
-            $("#testCanv").children().each(function(){
-                //this is wrong now, should find highest empty table cell and populate it with the img
-                var empty_slot = findEmptySlot();
-                //if empty cell is null, skip this because inv is full
-                //instead cancel the clean operation because we dont want player to lose items
-                if(empty_slot == null){
-                    //exit clean,
-                    return false;
+
+            //create ary of items to be removed
+            var remove_ary = getRemoveAry(pet_inv_ary[focus_int]);
+
+            var empty_slot_ary = getAllEmpty();
+
+            //check if there are enough empty slots in inv
+            if(empty_slot_ary.length <= remove_ary.length){
+                alert("Not enough inventory slots!");
+                globalID = requestAnimationFrame( function(timestamp){
+                    animate(timestamp, container_ary[focus_int]);
+                } );
+                return;
+            } else {
+                //here is where we place obj in the inv
+                //console.log(user_inv.item_ary);
+                //console.log(remove_ary[0]);
+                for(var i = 0; i < remove_ary.length; i++){
+                    var slot = empty_slot_ary.shift();
+                    var new_img = "<img id=item"+slot.row+'_'+slot.slot+
+                        " draggable='true' ondragstart='drag(event)' ondragend='dragend(event)' src="+
+                        remove_ary[i].img+ " value="+remove_ary[i].item_id+" type="+
+                        remove_ary[i].type+" name='"+
+                        remove_ary[i].name +"' height='50' width='50'>";
+                    var target = $('#' + slot.row + '_' + slot.slot);
+                    target.empty();
+                    target.append(new_img);
+                    removeFromPet(remove_ary[i].type);
+                    user_inv.item_ary[((slot.row - 1)*7) + slot.slot] = remove_ary[i];
                 }
-                //$('#inventory').append(" <img id='"+this.id+"' src='"+this.src+"' draggable='true' ondragstart='drag(event)' class='"+this.classList+"' width='50' height='50' > ");
-                //clean the empty slot, it still holds blank 50x50
-                empty_slot.empty();
+                var pet = setPet(container_ary[focus_int],  "../"+pet_inv_ary[focus_int].pet_base);
 
-                //append the img again
-                empty_slot.append("<img id='"+ this.id + "' src='" + this.src +
-                    "' draggable='true' ondragstart='drag(event)' class='" + this.classList +
-                    "' width='50' height='50'>");
-                //here is where we remove the specific item, dont use empty at end can cause item loss
-            });
-            $("#testCanv").empty();
+                setUpEquips(pet);
+            }
 
-            //refresh empty pet img
-            var results = $.getValues("get-pet.php", "POST", "user_id=1");
-
-            var pet = setPet(container_ary[focus_int],  "../"+results.pet_list[focus_int].base);
-
-            //here should be a db call to set pet to clean
             globalID = requestAnimationFrame( function(timestamp){
                 animate(timestamp, container_ary[focus_int]);
             } );
         });
 
         $("#save").on("click", function() {
-            //get pet id for the pet in focus, for now we set a hard coded value 1
-            var obj_str = "pet_id=" + '1';
-            var pet_inv = {
-                "hat":0,
-                "top":0,
-                "bottom":0
-            };
-            $('#testCanv').children().each(function(){
-                //this should be updated to check from the js array instrad of html dom.
-                // html dom can be edited and since there isnt a global item list
-                // we cant 100% confirma a user has a certain item if they edit in a value
 
-                //for now we use html dom object for information
-                switch( $(this).attr('class').split(' ')[0] ){
-                    case "Hat":
-                        pet_inv.hat =  $(this).attr('id').split('_')[0];
-                        break;
-                    case "Top":
-                        pet_inv.top =  $(this).attr('id').split('_')[0];
-                        break;
-                    case "Bottom":
-                        pet_inv.bottom =  $(this).attr('id').split('_')[0];
-                        break;
-                }
-
-
-            });
-
-            var inv_ary = [];
-            $('#inventory').children('.inv-row').each( function(){
-                $(this).children().children('img').each(function(){
-                    if($(this).attr('class') == "empty-slot"){
-                        inv_ary.push('0');
-                    }else{
-                        inv_ary.push( $(this).attr('id').split('_')[0] );
-                    }
-
-                });
-            });
-
-            var inv_json = {
-                "command": "update_both",
-                "user_id": <?php echo $_SESSION['curr_id']; ?>,
-                "inv" : inv_ary,
-                "pet_id": 1,
-                "pet_inv": pet_inv
-            };
-
-            xhttp.open("POST", "save-pet-inv.php", true);
-            xhttp.onreadystatechange = function() {
-                if (xhttp.readyState == 4 && xhttp.status == 200) {
-                    console.log(xhttp.responseText);
-                }
-            }
-            xhttp.setRequestHeader("Content-type", "application/json");
-            xhttp.send(JSON.stringify(inv_json));
+            user_inv.user_id = <?php echo $_SESSION['curr_id']; ?> ;
+            $.getValues("get-inv.php", "POST", JSON.stringify(user_inv), 'application/json');
+            $.getValues("get-pet.php", "POST", JSON.stringify(pet_inv_ary[focus_int]), 'application/json');
         });
 
 
 
-        function setUpEquips(pet){
-            console.log(pet_inv_ary[focus_int]);
+        function setUpEquips(pet, index){
+
+            index = typeof index !== 'undefined' ? index : focus_int;
+
+            if(pet_inv_ary[index].pet_hat != "0" ){
+                setEquip(pet, pet_inv_ary[index].hat_img, index);
+            }
+            if(pet_inv_ary[index].pet_top != "0"){
+                setEquip(pet, pet_inv_ary[index].top_img, index);
+            }
+            if(pet_inv_ary[index].pet_bottom != "0"){
+                setEquip(pet, pet_inv_ary[index].bottom_img, index);
+            }
+
             //make sure equipment is displayed, pulls from canvas children
-            $("#testCanv").children().each(function(){
-                setEquip(pet, this.src);
-            });
         }
 
         function fillBlankInv(){
             //we need to put a blank inv img in the div that just removed an item
             //this lets the user graphically know the slot is empty
             $('.make-empty').append("<img width='50' height='50' class='empty-slot'>");
-            $('.make-empty').attr('class', '');
+            $('.make-empty').attr('class', 'empty');
         }
 
         //pet selection button functions, simply change the pet in focus
@@ -377,6 +479,28 @@
             } );
         });
 
+        function updateClientInv(){
+            $('#inventory').children().each(function(i){
+                $(this).children().each(function(j){
+                    var item_slot = $(this).children('img');
+                    var slot = user_inv.item_ary[((i)*7) + j];
+                    //console.log(slot);
+
+                    if((item_slot.attr('value') == undefined) && slot != undefined){
+                        slot.item_id = 0 ;
+                        slot.img = "" ;
+                        slot.type = "Empty" ;
+                        slot.name = "" ;
+                    } else if(slot != undefined) {
+                        slot.item_id = item_slot.attr('value') ;
+                        slot.img = item_slot.attr('src') ;
+                        slot.type = item_slot.attr('type') ;
+                        slot.name = item_slot.attr('name') ;
+                    }
+                });
+            });
+        }
+
         // DRAG FUNCTIONS
 
         function drag(ev) {
@@ -384,42 +508,100 @@
             ev.target.parentNode.setAttribute('class', 'make-empty');
         }
 
+        function dragend(ev){
+            if(event.dataTransfer.dropEffect == 'none'){
+                $('.make-empty').removeAttr('class');
+            }
+        }
+
+        function drop_empty(ev, t){
+            ev.preventDefault();
+            $(t).removeAttr('class');
+            $(t).empty();
+            var data = ev.dataTransfer.getData("text");
+            var dragged = document.getElementById(data);
+            t.appendChild(dragged);
+            //console.log(ev.target);
+            updateClientInv();
+            fillBlankInv();
+        }
+
         function drop(ev, t) {
             cancelAnimationFrame(globalID);
             ev.preventDefault();
             var data = ev.dataTransfer.getData("text");
-            ev.target.appendChild(document.getElementById(data));
-            console.log(document.getElementById(data));
-            var new_item_type = t.lastChild.classList[0];
-            var all_item = t.getElementsByClassName(new_item_type);
-            if(all_item.length > 1){
-                //console.log(all_item[0].outerHTML);
-                var item_remove = all_item[0];
-                var empty_slot = findEmptySlot();
-                //if empty cell is null, skip this because inv is full
-                //instead cancel the clean operation because we dont want player to lose items
-                if(empty_slot == null){
-                    //exit clean,
-                    return false;
+            var dragged = document.getElementById(data);
+            ev.target.appendChild(dragged);
+
+            //change value of item
+            var new_img = document.createElement("IMG");
+            new_img.setAttribute('draggable' , true);
+            new_img.setAttribute('ondragstart', "drag(event)");
+            new_img.setAttribute('ondragend', "dragend(event)");
+            new_img.setAttribute('height', 50);
+            new_img.setAttribute('width', 50);
+
+            if(document.getElementById(data).getAttribute('type') == "Hat"){
+                if(pet_inv_ary[focus_int].pet_hat != 0){
+                    var empty_div = document.getElementsByClassName('empty')[0];
+
+                    new_img.setAttribute('id', "item"+empty_div.id);
+                    new_img.setAttribute('src', pet_inv_ary[focus_int].hat_img);
+                    new_img.setAttribute('value', pet_inv_ary[focus_int].pet_hat);
+                    new_img.setAttribute('type', "Hat");
+
+                    $(empty_div).empty();
+                    empty_div.appendChild(new_img);
+                    empty_div.removeAttribute('class');
                 }
-                //$('#inventory').append(" <img id='"+this.id+"' src='"+this.src+"' draggable='true' ondragstart='drag(event)' class='"+this.classList+"' width='50' height='50' > ");
-                //clean the empty slot, it still holds blank 50x50
-                empty_slot.empty();
+                pet_inv_ary[ focus_int].pet_hat = document.getElementById(data).getAttribute('value');
+                pet_inv_ary[focus_int].hat_img = document.getElementById(data).getAttribute('src');
+            }
+            if(document.getElementById(data).getAttribute('type') == "Top"){
+                if(pet_inv_ary[focus_int].pet_top != 0){
+                    var empty_div = document.getElementsByClassName('empty')[0];
 
-                //append the img again
-                empty_slot.append(item_remove.outerHTML);
+                    new_img.setAttribute('id', "item"+empty_div.id);
+                    new_img.setAttribute('src', pet_inv_ary[focus_int].top_img);
+                    new_img.setAttribute('value', pet_inv_ary[focus_int].pet_top);
+                    new_img.setAttribute('type', "Top");
 
-                t.removeChild(item_remove);
+                    $(empty_div).empty();
+                    empty_div.appendChild(new_img);
+                    empty_div.removeAttribute('class');
+                }
+                pet_inv_ary[ focus_int].pet_top = document.getElementById(data).getAttribute('value');
+                pet_inv_ary[focus_int].top_img = document.getElementById(data).getAttribute('src');
+            }
+            if(document.getElementById(data).getAttribute('type') == "Bottom"){
+                if(pet_inv_ary[focus_int].pet_bottom != 0){
+                    var empty_div = document.getElementsByClassName('empty')[0];
+
+                    new_img.setAttribute('id', "item"+empty_div.id);
+                    new_img.setAttribute('src', pet_inv_ary[focus_int].bottom_img);
+                    new_img.setAttribute('value', pet_inv_ary[focus_int].pet_bottom);
+                    new_img.setAttribute('type', "Bottom");
+
+                    $(empty_div).empty();
+                    empty_div.appendChild(new_img);
+                    empty_div.removeAttribute('class');
+                    console.log(empty_div);
+                }
+                pet_inv_ary[ focus_int].pet_bottom = document.getElementById(data).getAttribute('value');
+                pet_inv_ary[focus_int].bottom_img = document.getElementById(data).getAttribute('src');
             }
 
-            pet_inv_ary[focus_int].hat;
+            //now update the current inventory
+            updateClientInv();
+            cleanContainer(container_ary[focus_int]);
 
-            var results = $.getValues("get-pet.php", "POST", "user_id=1");
-
-            var pet = setPet(container_ary[focus_int],  "../"+results.pet_list[focus_int].base);
+            //console.log(pet_inv_ary[focus_int]);
+            var pet = setPet(container_ary[focus_int],  "../"+pet_inv_ary[focus_int].pet_base);
 
             setUpEquips(pet);
             fillBlankInv();
+
+            $(t).empty();
 
             globalID = requestAnimationFrame( function(timestamp){
                 animate(timestamp, container_ary[focus_int]);
@@ -430,7 +612,7 @@
             ev.preventDefault();
         }
 
-
     </script>
+
 </body>
 </html>

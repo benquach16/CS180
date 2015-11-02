@@ -3,6 +3,7 @@
   <head>
     <title>BEST APP EVER</title>
       <style>
+          audio {float: right;}
           canvas {display: block; float: left;}
           body {background: black;background-image: linear-gradient(top, rgb(131,139,131) 8%, rgb(0,0,0) 84%);
               background-image: -o-linear-gradient(top, rgb(131,139,131) 8%, rgb(0,0,0) 84%);
@@ -20,6 +21,10 @@
     <!-- custom stylesheets-->
     <link rel='stylesheet' type='text/css' href='./resources/css/stylesheet.css'>
     <link rel='stylesheet' type='text/css' href='./resources/css/modal-stylesheet.css'>
+
+    <div style="display:none;" >
+        <img id="gator_img" src="resources/images/gator.png" >
+    </div>
 
     <script>
         //creating a canvas using JS
@@ -42,6 +47,15 @@
             for(var z = -450; z < 450; z+=15)
                 pixels.push({x: x, y: 140, z: z});
                 //time to draw the pixels
+        //console.log(pixels);
+
+        var nw = document.getElementById('gator_img').naturalWidth;
+        var nh = document.getElementById('gator_img').naturalHeight;
+
+        var gw = nw/20;
+        var gh = nh/20;
+
+        console.log(gw+ ' ' + gh);
         function render() {
             ctx.clearRect(0,0,w,h);
             // grabbing a screenshot of the canvas using getImageData
@@ -72,8 +86,20 @@
                 if(pixel.z < -fov) pixel.z += 2*fov;
             }
 
-        //putting imagedata back on the canvas
-        ctx.putImageData(imagedata, 0, 0);
+            //putting imagedata back on the canvas
+            ctx.putImageData(imagedata, 0, 0);
+            // y_initial is 15 + img height
+            // x_initial is center + img width/2
+            if(gw >= nw || gh >= nh){
+                gw = nw/20;
+                gh = nh/20;
+                ctx.drawImage(document.getElementById('gator_img'), ($(window).width())/2, ($(window).height())/2, gw, gh);
+            } else {
+                gw += nw/1000;
+                gh += nh/1000;
+                ctx.drawImage(document.getElementById('gator_img'), ($(window).width())/2, ($(window).height())/2, gw, gh);
+            }
+
         }
 
         function animate(){
@@ -85,6 +111,11 @@
             //setInterval(render, 1000/30);
             requestAnimationFrame(animate);
     </script>
+
+    <audio loop="loop" autoplay="autoplay">
+        <source src="resources/sound/mmbn_internet.mp3" type="audio/mpeg">
+        no support
+    </audio>
 
     <div id='login_container' class='outer'>
         <div id='centered_container' class='middle'>
@@ -185,6 +216,6 @@
             }
         });
     </script>
-    
+
   </body>
 </html>

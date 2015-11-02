@@ -15,6 +15,18 @@
       "base_img" : "/resources/images/shirt_trans.gif",
       "type" : "Top",
       "stats" : {}
+    },
+    {
+      "name" : "Blue Wheel",
+      "base_img" : "/resources/images/blue-wheel.png",
+      "type" : "Top",
+      "stats" : {}
+    },
+    {
+      "name" : "Blue Head",
+      "base_img" : "/resources/images/blue-head.png",
+      "type" : "Hat",
+      "stats" : {}
     }
   ]
 
