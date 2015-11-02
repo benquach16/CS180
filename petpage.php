@@ -6,7 +6,7 @@
   
     <?php include('./library/nav-bar.html'); ?>
     <div id="Welcome">
-            <!--     <H1>Welcome back, <?php include('/library/getUser.php'); getUser(); ?>!</H1> -->
+            <!--     <H1>Welcome back, <?php include('./library/getUser.php'); getUser(); ?>!</H1> -->
     </div>
 
  <!-- CSS styles for div sections -->
@@ -96,7 +96,7 @@
           <!-- <div id="Post_List" >          
             <?
             
-              include_once (__DIR__."./library/opendb.php");
+              include_once ("./library/opendb.php");
               $db_socket = initSocket();
               $query = "SELECT * FROM  ".$configValue['DB_POST_TABLE']."";
               
@@ -105,7 +105,7 @@
               
               $loop = $statement->rowCount();
               
-              include (__DIR__.'./library/closedb.php');
+              include ('./library/closedb.php');
             ?>  -->       
         </div>
 

@@ -1,8 +1,8 @@
 <?php
 
 function getUser(){
-    require(__DIR__."./server.config.php");
-    include_once (__DIR__."./opendb.php");
+    require("server.config.php");
+    include ("opendb.php");
 
     $db_socket = initSocket();
     $query = "SELECT user FROM ".$configValue['DB_USER_TABLE'].
@@ -17,7 +17,7 @@ function getUser(){
         echo session_id().' '.$_SESSION['curr_id'];
     }
 
-    include (__DIR__.'./closedb.php');
+    include ('closedb.php');
     return $res[0]['user'];
 }
 
