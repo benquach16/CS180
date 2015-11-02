@@ -27,5 +27,26 @@ USE THIS FOR USER DATABASE
     CREATE TABLE auth_list(
     id int(6) auto_increment not null primary key,
     user varchar(32) not null,
-    pass varchar(32) not null
-    )
+    pass varchar(32) not null,
+	currency int(8) not null
+    );
+
+USE THIS FOR NOTIFICATIONS DATABASE
+
+
+    CREATE TABLE notifications_list(
+	id int(6) auto_increment not null primary key,
+	receiver_id int(6) not null,
+	sender_id int(6) not null,
+	notification_type int(6) not null,
+	sender varchar(32) not null,
+	message varchar(512) not null
+	);
+
+USE THIS FOR FRIENDS DATABASE
+
+	CREATE TABLE friends_list(
+	id_A int(6) not null,
+	id_B int(6) not null);
+
+
