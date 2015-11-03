@@ -1,14 +1,17 @@
 var TileType = {
 	Null: "Null",
-    Red : "Red",
-    Blue : "Blue",
+    Red : "redTile",
+    Blue : "blueTile",
     Blank : "Blank"
 }
 
-function Tile(x_val, y_val, type)
+function Tile(x, y, type)
 {
-	this.x = x_val;
-	this.y = y_val;
+	this.x = x;
+	this.y = y;
+	this.gameObject = game.add.sprite(x,y, type);
+	this.gameObject.anchor.x = 0.5;
+	this.gameObject.anchor.y = -0.65;
 	//Types:
 	//red
 	//blue
@@ -33,7 +36,7 @@ function Grid(offsetX, offsetY, width, height, numTilesX, numTilesY)
 	this.offsetY = offsetY;
 	//this.tileWidth = width / numTilesX;
 	//this.tileHeight = height / numTilesY;
-	this.tileWidth = 130;
+	this.tileWidth = 140;
 	this.tileHeight = 70;
 	this.offsetXRight = offsetX + (width / 2);
 	this.numTilesX = numTilesX;
@@ -48,10 +51,10 @@ function Grid(offsetX, offsetY, width, height, numTilesX, numTilesY)
 
 Grid.prototype.createGrid = function()
 {
-	for(var i = 0; i < this.numTilesX; i++)
+	for(var i = this.numTilesX-1; i >= 0; i--)
 	{
 		this.gridArray[i] = new Array(this.numTilesY);
-		for(var j = 0; j < this.numTilesY; j++)
+		for(var j = this.numTilesY-1; j >= 0; j--)
 		{
 			if(i < 3)
 			{
@@ -84,6 +87,7 @@ Grid.prototype.tileUpdate = function()
 	{
 		for(var j = 0; j < this.numTilesY; j++)
 		{
+			this.gridArray[i][j].gameObject.loadTexture(this.gridArray[i][j].type);
 			if(this.gridArray[i][j].resetTimer > 0)
 			{
 				this.gridArray[i][j].resetTimer--;

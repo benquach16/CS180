@@ -1,4 +1,4 @@
-var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+var game = new Phaser.Game(840, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update }, false, false);
 
 var grid;
 var playerLeft;
@@ -24,6 +24,9 @@ function preload() {
 	game.load.image('gatorDamagedRight', 'assets/gatorDamagedRight.png');
 	game.load.image('blastLeft', 'assets/blastLeft.png');
 	game.load.image('blastRight', 'assets/blastRight.png');
+	game.load.image('blueTile', 'assets/blueTile.png');
+	game.load.image('redTile', 'assets/redTile.png');
+	game.load.image('yellowTile', 'assets/yellowTile.png');
 	game.load.spritesheet('background', 'assets/background.png', 256, 256);
 
 }
@@ -31,7 +34,6 @@ function preload() {
 function create() {
 
 	grid = new Grid(70, 450, 800, 600, 6, 3);
-	grid.createGrid();
 	
 	input = new inputHandler();
 
@@ -41,16 +43,15 @@ function create() {
     //  A simple background for our game
 	var background = game.add.sprite(0, 0, 'background');
 	
-	background.scale.setTo(3.125,2.34);
+	background.scale.setTo(3.35,2.34);
 	
 	background.animations.add('loop');
 	background.animations.play('loop', 2, true);
 	
-    var stage = game.add.sprite(0, 368, 'stage');
+	grid.createGrid();
+	
+    //var stage = game.add.sprite(0, 368, 'stage');
 	//stage.alpha = 0.2;
-
-    //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
-    stage.scale.setTo(3.35, 3);
 	
     // The player and its settings
     playerLeft = new Player(0,0, 'gatorLeft');
@@ -58,16 +59,13 @@ function create() {
 	projectileGroup = game.add.group();
 	projectileGroup.enableBody = true;
 	projectileGroup.allowGravity = false;
-	
-	healthLeft = new Bar(50, 50, 300, 20, 0xff0000);
-	healthRight = new Bar(450, 50, 300, 20, 0x0000ff);
 }
 
 function update() {
 	
 	playerLeft.update();
 	playerRight.update();
-	
+	grid.tileUpdate();
 	for(var i = 0; i < projectiles.length; i++)
 	{
 		if(projectiles[i].isOffscreen(i)){continue;}
@@ -76,8 +74,9 @@ function update() {
 		var damagePositions = projectiles[i].updateDamagePositions();
 		for(var j = 0; j < damagePositions.length; j++)
 		{
-			//console.log(projectiles[i].bulletFrom);
-			if(damagePositions[j].x == playerLeft.gridPos.x && damagePositions[j].y == playerLeft.gridPos.y && projectiles[i].bulletFrom != "Red")
+			
+			grid.at(damagePositions[j].x,damagePositions[j].y).gameObject.loadTexture('yellowTile');
+			if(damagePositions[j].x == playerLeft.gridPos.x && damagePositions[j].y == playerLeft.gridPos.y && projectiles[i].bulletFrom != TileType.Red)
 			{
 				if(playerLeft.takeDamage(10))
 				{
@@ -86,7 +85,7 @@ function update() {
 					
 				console.log("Left: " + playerLeft.health);
 			}
-			else if(damagePositions[j].x == playerRight.gridPos.x && damagePositions[j].y == playerRight.gridPos.y && projectiles[i].bulletFrom != "Blue")
+			else if(damagePositions[j].x == playerRight.gridPos.x && damagePositions[j].y == playerRight.gridPos.y && projectiles[i].bulletFrom != TileType.Blue)
 			{
 				if(playerRight.takeDamage(10))
 				{

@@ -11,7 +11,7 @@ function Projectile(x, y, spriteName) // Constructor
 	this.gameObject.y = grid.at(x,y).y;
 	this.bulletFrom = 0;
 	this.damage = 0;
-    this.gameObject.body.allowRotation = false;
+    this.gameObject.body.allowRotation = false;  
 	//this.gameObject.body.immovable = true;
     this.width = 1;
 	this.height = 1;
@@ -77,11 +77,11 @@ Projectile.prototype.updateGridPos = function ()
 	
 	if(!(prevX < this.gameObject.x && this.gameObject.x < curX))
 	{
-		if(this.bulletFrom == "Red")
+		if(this.bulletFrom == TileType.Red)
 		{
 			this.gridPos.x += 1;
 		}
-		else if(this.bulletFrom == "Blue")
+		else if(this.bulletFrom == TileType.Blue)
 		{
 			this.gridPos.x -= 1;
 		}
