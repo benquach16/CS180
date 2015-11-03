@@ -91,18 +91,31 @@
                     var container = new PIXI.Container(0x66FF99);
                     containers.push (container);
 
-                    var texture = PIXI.Texture.fromImage("../"+pet_ary.pet_list[i].base);
-                    // create a new Sprite using the texture
-                    var img = new PIXI.Sprite(texture);
-
-                    // center the sprites anchor point
-                    img.anchor.x = 0.5;
-                    img.anchor.y = 0.5;
-                    // move the sprite t the center of the screen
-                    img.position.x = canvas.width / 2;
-                    img.position.y = canvas.height / 2;
-                    container.addChild(img);
+                    addImg(pet_ary.pet_list[i].base, container, canvas);
+                    if(pet_ary.pet_list[i].pet_hat != '0'){
+                        addImg(pet_ary.pet_list[i].hat_img, container, canvas);
+                    }
+                    if(pet_ary.pet_list[i].pet_top != '0'){
+                        addImg(pet_ary.pet_list[i].top_img, container, canvas);
+                    }
+                    if(pet_ary.pet_list[i].pet_bottom != '0'){
+                        addImg(pet_ary.pet_list[i].bottom_img, container, canvas);
+                    }
                 }
+            }
+
+            function addImg(pic, con, canvas){
+                var texture = PIXI.Texture.fromImage("../"+ pic);
+                // create a new Sprite using the texture
+                var img = new PIXI.Sprite(texture);
+
+                // center the sprites anchor point
+                img.anchor.x = 0.5;
+                img.anchor.y = 0.5;
+                // move the sprite t the center of the screen
+                img.position.x = canvas.width / 2;
+                img.position.y = canvas.height / 2;
+                con.addChild(img);
             }
 
             function setupRenderers(){
