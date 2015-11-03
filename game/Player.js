@@ -1,6 +1,7 @@
 function Player(posX, posY, spriteName)
 {
 	this.weapon = [];
+	this.fullHealth = 100;
 	this.health = 100;
 	this.armor = 0; 
 	this.damage = 0;
@@ -11,7 +12,6 @@ function Player(posX, posY, spriteName)
 	this.deltaEnergy = 0;
 	this.curEnergy = 0;
 	this.immuneTime = 0;
-	this.damagedTime = 0;
 	
 	this.standardScale = 2.5;
 	this.newScale = this.standardScale*1.25;
@@ -47,30 +47,39 @@ function Player(posX, posY, spriteName)
 	game.input.keyboard.addKey(Phaser.Keyboard.D).onDown.add(moveRight, this);
 	game.input.keyboard.addKey(Phaser.Keyboard.W).onDown.add(moveUp, this);
 	game.input.keyboard.addKey(Phaser.Keyboard.S).onDown.add(moveDown, this);
-	game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).onDown.add(shootBullet, this);
+	game.input.keyboard.addKey(Phaser.Keyboard.SHIFT).onDown.add(shootBullet, this);
 	}
 	
 	else
 	{
 	this.type = TileType.Blue;
-	game.input.keyboard.addKey(Phaser.Keyboard.LEFT).onDown.add(moveLeft, this);
-	game.input.keyboard.addKey(Phaser.Keyboard.RIGHT).onDown.add(moveRight, this);
-	game.input.keyboard.addKey(Phaser.Keyboard.UP).onDown.add(moveUp, this);
-	game.input.keyboard.addKey(Phaser.Keyboard.DOWN).onDown.add(moveDown, this);
+	game.input.keyboard.addKey(Phaser.Keyboard.J).onDown.add(moveLeft, this);
+	game.input.keyboard.addKey(Phaser.Keyboard.L).onDown.add(moveRight, this);
+	game.input.keyboard.addKey(Phaser.Keyboard.I).onDown.add(moveUp, this);
+	game.input.keyboard.addKey(Phaser.Keyboard.K).onDown.add(moveDown, this);
+	game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).onDown.add(shootBullet, this);
 	}
 };
 
 Player.prototype.takeDamage = function(dmg)
 {
-	if(this.damagedTime <= 0)
-	{
-		this.damagedTime = 500;
-		this.gameObject.loadTexture('gatorDamagedRight');
-	}
 	if(this.immuneTime <= 0)
 	{
+		if(this.health <= 0)
+		{
+			return false;
+		}
+		if(this.type == "Red")
+		{
+			this.gameObject.loadTexture('gatorDamagedLeft');
+		}
+		else if(this.type == "Blue")
+		{
+			this.gameObject.loadTexture('gatorDamagedRight');
+		}
 		this.health -= dmg;
-		this.immuneTime = 1000;
+		this.immuneTime = 500;
+		
 		return true;
 	}
 	return false;
@@ -82,12 +91,13 @@ function shootBullet()
 	if(this.type == "Red")
 	{
 		bullet = new Projectile(this.gridPos.x, this.gridPos.y, "blastRight");
+		bullet.setSpeedAndDamage(1000,6);
 	}
 	else if(this.type == "Blue")
 	{
 		bullet = new Projectile(this.gridPos.x, this.gridPos.y, "blastLeft");
+		bullet.setSpeedAndDamage(-1000,6);
 	}
-	bullet.setSpeedAndDamage(1000,6);
 	bullet.setBulletFrom(this.type);
 }
 function moveLeft()
@@ -146,13 +156,26 @@ Player.prototype.update = function()
 	if(this.immuneTime > 0)
 	{
 		this.immuneTime -= game.time.elapsed;
-	}
-	if(this.damagedTime > 0)
-	{
-		this.damagedTime -= game.time.elapsed;
-		if(this.damagedTime <= 0)
+		if((this.immuneTime / 10) % 2 > 1 && this.gameObject.alpha == 1.0)
 		{
-			this.gameObject.loadTexture('gatorRight');
+			this.gameObject.alpha = 0.5;
+		}
+		else
+		{
+			this.gameObject.alpha = 1.0;
+		}
+		
+		if(this.immuneTime <= 0)
+		{
+			if(this.type == "Red")
+			{
+				this.gameObject.loadTexture('gatorLeft');
+			}
+			else if(this.type == "Blue")
+			{
+				this.gameObject.loadTexture('gatorRight');
+			}
+			this.gameObject.alpha = 1.0;
 		}
 	}
 }

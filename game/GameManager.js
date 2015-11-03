@@ -59,17 +59,8 @@ function create() {
 	projectileGroup.enableBody = true;
 	projectileGroup.allowGravity = false;
 	
-	/*this.mask = game.add.graphics(0, 0);
-	this.mask.beginFill(0xffffff);
-	
-	for(var x = 0; x < grid.numTilesX; x++)
-	{
-		for(var y = 0; y < grid.numTilesY; y++)
-		{
-			this.mask.drawRect(grid.at(x, y).x-5, grid.at(x, y).y-5, 10, 10);
-		}
-	}
-	grid.mask = this.mask;*/
+	healthLeft = new Bar(50, 50, 300, 20, 0xff0000);
+	healthRight = new Bar(450, 50, 300, 20, 0x0000ff);
 }
 
 function update() {
@@ -89,14 +80,18 @@ function update() {
 			if(damagePositions[j].x == playerLeft.gridPos.x && damagePositions[j].y == playerLeft.gridPos.y && projectiles[i].bulletFrom != "Red")
 			{
 				if(playerLeft.takeDamage(10))
-					//projectiles[i].gameObject.destroy();
+				{
+					healthLeft.decrease(playerLeft.health, playerLeft.fullHealth);
+				}
 					
 				console.log("Left: " + playerLeft.health);
 			}
 			else if(damagePositions[j].x == playerRight.gridPos.x && damagePositions[j].y == playerRight.gridPos.y && projectiles[i].bulletFrom != "Blue")
 			{
 				if(playerRight.takeDamage(10))
-					//projectiles[i].gameObject.destroy();
+				{
+					healthRight.decrease(playerRight.health, playerRight.fullHealth);
+				}
 				console.log("Right: " + playerRight.health);
 			}
 		}
