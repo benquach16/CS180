@@ -7,6 +7,7 @@
 	</head>
 	<body>
 		<?php include ('../library/nav-bar.html');?>
+		<div class="container center-text">
 		<div class="row">
 		<div class="col-lg-6">
 			<div class="input-group">
@@ -17,6 +18,7 @@
 			</div><!-- /input-group -->
 		</div><!-- /.col-lg-6 -->
 		</div><!-- /.row -->
+		</div>
 
 		<!--table goes here-->
 		<div class="panel panel-default">
