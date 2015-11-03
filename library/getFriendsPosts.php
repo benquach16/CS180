@@ -28,9 +28,16 @@
 		$posts = $friend_statement->fetchAll(PDO::FETCH_COLUMNS,2);
 		//add everything in posts to array
 		//NEED TO QUERY FRIEND NAME TOO
-		
+		for($j = 0; $j < count($posts); $j++)
+		{
+			$allPosts[] = array();
+			$allPosts[$i][0] = $friendID;
+			$allPosts[$i][1] = $posts[$j];
+			
+		}		
 	
 	}
+	echo $allPosts;
 	
 	include './closedb.php';
 ?>
