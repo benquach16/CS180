@@ -5,3 +5,4 @@
 .\resources\images\gator-base.png filter=lfs diff=lfs merge=lfs -text
 .\resources\images\leo-base.png filter=lfs diff=lfs merge=lfs -text
 .\resources\sound\mmbn_internet.mp3 filter=lfs diff=lfs merge=lfs -text
+.\resources\images\leo_base.png filter=lfs diff=lfs merge=lfs -text
