@@ -16,8 +16,6 @@ function inputHandler()
 };
 
 function preload() {
-
-    game.load.image('stage', 'assets/battleStage.png');
 	game.load.image('gatorLeft', 'assets/gatorIdleLeft.png');
 	game.load.image('gatorRight', 'assets/gatorIdleRight.png');
 	game.load.image('gatorDamagedLeft', 'assets/gatorDamagedLeft.png');
