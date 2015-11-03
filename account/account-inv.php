@@ -58,8 +58,6 @@
 
     <script type="text/javascript">
 
-        var xhttp = new XMLHttpRequest();
-
         var pets_JSON;
         var globalID, canvas, renderer;
         var container_ary = [];
@@ -118,7 +116,7 @@
         });
 
         function populateUserInv(){
-            var test = $.getValues("get-inv.php", "GET", "user_id=1", 'application/x-www-form-urlencoded');
+            var test = $.getValues("get-inv.php", "GET", "user_id=<?php echo $_SESSION['curr_id']; ?>", 'application/x-www-form-urlencoded');
 
             user_inv = new client_user_inv(test);
         }
@@ -184,7 +182,7 @@
         }
 
         function initAllPets(){
-            pets_JSON = $.getValues("get-pet.php", "GET", "user_id=1", 'application/x-www-form-urlencoded').pet_list;
+            pets_JSON = $.getValues("get-pet.php", "GET", "user_id=<?php echo $_SESSION['curr_id']; ?>", 'application/x-www-form-urlencoded').pet_list;
 
             pet_inv_ary.push (new client_pet_inv(pets_JSON[0].id, pets_JSON[0].hat_img, pets_JSON[0].top_img, pets_JSON[0].bottom_img, pets_JSON[0].base,
                 pets_JSON[0].hat_id, pets_JSON[0].top_id, pets_JSON[0].bottom_id));

@@ -31,6 +31,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
                     //echo $pet_type[ $pet_res[0]['type'] ]['base_img'];
                     $temp['id'] = $pet_res[0]['id'];
                     $temp['base'] = $pet_type[ $pet_res[0]['type'] ]['base_img'];
+                    $temp['name'] = $pet_res[0]['name'];
 
                     $temp['hat_img'] = $item_type["items"][ $pet_res[0]['hat'] ]['base_img'];
                     $temp['top_img'] = $item_type["items"][ $pet_res[0]['top'] ]['base_img'];
