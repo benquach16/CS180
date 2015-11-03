@@ -79,7 +79,6 @@
                     $(name).append(pet_ary.pet_list[i].name);
                     $(pet).append(name);
 
-                    console.log(pet);
                     section.append(pet);
                 }
             }
