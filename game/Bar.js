@@ -12,21 +12,13 @@ function Bar(x, y, length, height, color)
 	this.bar.drawRect(x, y, length, height);
 }
 
-/*Bar.prototype.update = function()
-{
-	this.bar.width = length;
-}*/
-
-Bar.prototype.decrease = function(health, fullHealth)
+Bar.prototype.update = function(health, fullHealth)
 {
 	this.length = this.fullLength * (health / fullHealth);
 	this.bar.clear();
-	this.bar.beginFill(this.color);
-	this.bar.drawRect(this.x, this.y, this.length, this.height);
-}
-
-Bar.prototype.increase = function(amount, health)
-{
-	this.length += amount;
-	//this.update();
+	if(this.length >= 0)
+	{
+		this.bar.beginFill(this.color);
+		this.bar.drawRect(this.x, this.y, this.length, this.height);
+	}
 }

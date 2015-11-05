@@ -1,9 +1,7 @@
-function Player(posX, posY, spriteName)
 {
 	this.weapon = [];
 	this.health = 100;
 	this.armor = 0; 
-	this.damage = 0;
 	this.specialGauge = 0;
 	this.deltaSpecial = 0;
 	this.curSpecial = 0;
@@ -66,7 +64,6 @@ Player.prototype.takeDamage = function(dmg)
 	return false;
 }
 
-function shootBullet()
 {
 	var bullet;
 	{
@@ -79,25 +76,23 @@ function shootBullet()
 	}
 	bullet.setBulletFrom(this.type);
 }
-function moveLeft()
+
+Player.prototype.moveLeft = function()
 {
 	{
 		this.nextPos.x--;
 	}
 }
-function moveRight()
 {
 	{
 		this.nextPos.x++;
 	}
 }
-function moveUp()
 {
 	{
 		this.nextPos.y++;
 	}
 }
-function moveDown()
 {
 	{
 		this.nextPos.y--;
@@ -125,11 +120,11 @@ Player.prototype.update = function()
 	{
 		this.immuneTime -= game.time.elapsed;
 		{
-			if(this.type == "Red")
+			if(this.type == TileType.Red)
 			{
 				this.gameObject.loadTexture('gatorLeft');
 			}
-			else if(this.type == "Blue")
+			else if(this.type == TileType.Blue)
 			{
 				this.gameObject.loadTexture('gatorRight');
 			}

@@ -3,14 +3,14 @@
 var projectileGroup;
 var projectiles = [];
 
-function Projectile(x, y, spriteName) // Constructor
+function Projectile(x, y, speed, damage, spriteName) // Constructor
 {
 	this.gameObject = projectileGroup.create(0,0,spriteName);
 	this.spriteName = spriteName;
 	this.gameObject.x = grid.at(x,y).x;
 	this.gameObject.y = grid.at(x,y).y;
 	this.bulletFrom = 0;
-	this.damage = 0;
+	this.damage = damage;
     this.gameObject.body.allowRotation = false;  
 	//this.gameObject.body.immovable = true;
     this.width = 1;
@@ -22,6 +22,9 @@ function Projectile(x, y, spriteName) // Constructor
 	this.gameObject.anchor.x = 0.5;
 	this.gameObject.anchor.y = -0.5;
 	projectiles.push(this);
+	
+	game.physics.arcade.enable([this.gameObject]);
+	this.gameObject.body.velocity = new Phaser.Point(speed, 0);
 };
 
 function destroyProjectile(index)
@@ -50,8 +53,6 @@ Projectile.prototype.setBulletFrom = function(bulletFrom)
 
 Projectile.prototype.setSpeedAndDamage = function(speed, damage)
 {
-	game.physics.arcade.enable([this.gameObject]);
-	this.gameObject.body.velocity = new Phaser.Point(speed, 0);
 	this.damage = damage;
 };
 

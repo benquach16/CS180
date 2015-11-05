@@ -52,8 +52,14 @@ function create() {
 	//stage.alpha = 0.2;
 	
     // The player and its settings
-    playerLeft = new Player(0,0, 'gatorLeft');
-	playerRight = new Player(4, 0, 'gatorRight');
+	var weaponsLeft = [];
+	weaponsLeft[0] = new Weapon(10, 1000, 250, TileType.Red);
+	weaponsLeft[1] = new Weapon(20, 500, 1000, TileType.Red);
+	var weaponsRight = [];
+	weaponsRight[0] = new Weapon(10, 1000, 250, TileType.Blue);
+	weaponsRight[1] = new Weapon(20, 500, 1000, TileType.Blue);
+    playerLeft = new Player(0,0, 'gatorLeft', weaponsLeft);
+	playerRight = new Player(4, 0, 'gatorRight', weaponsRight);
 	projectileGroup = game.add.group();
 	projectileGroup.enableBody = true;
 	projectileGroup.allowGravity = false;
@@ -76,18 +82,14 @@ function update() {
 			grid.at(damagePositions[j].x,damagePositions[j].y).gameObject.loadTexture('yellowTile');
 			if(damagePositions[j].x == playerLeft.gridPos.x && damagePositions[j].y == playerLeft.gridPos.y && projectiles[i].bulletFrom != TileType.Red)
 			{
-				if(playerLeft.takeDamage(10))
 				{
-					healthLeft.decrease(playerLeft.health, playerLeft.fullHealth);
 				}
 					
 				console.log("Left: " + playerLeft.health);
 			}
 			else if(damagePositions[j].x == playerRight.gridPos.x && damagePositions[j].y == playerRight.gridPos.y && projectiles[i].bulletFrom != TileType.Blue)
 			{
-				if(playerRight.takeDamage(10))
 				{
-					healthRight.decrease(playerRight.health, playerRight.fullHealth);
 				}
 				console.log("Right: " + playerRight.health);
 			}
