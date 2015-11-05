@@ -18,7 +18,7 @@
 			</div><!-- /input-group -->
 		</div><!-- /.col-lg-6 -->
 		</div><!-- /.row -->
-		</div>
+
 
 		<!--table goes here-->
 		<div class="panel panel-default">
@@ -33,7 +33,7 @@
 				</ul>
 			</div>
 		</div>
-	
+		</div>	
 	<script type="text/javascript">
 		var searchBox = document.getElementById("searchBox");
 		

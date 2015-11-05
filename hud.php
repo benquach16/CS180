@@ -12,7 +12,24 @@
             
         </script>
 		<div class = "container center-text">
-        <p>you logged in, yeah! <?php echo $_SESSION['curr_user']; ?></p>
+
+
+			<div class = "panel panel-default">
+				<div class="panel-heading">
+					<h3 class = "panel-title">Homepage</h3>
+				</div>
+
+				<div class ="panel-body">
+					<ul class="list-group" id="listOfPosts">
+						<li class="list-group-item">
+
+	<button type="button" class="btn btn-default btn-lg">
+	  <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Star
+	</button>
+						</li>
+					</ul>
+				</div>
+			</div>		
 		</div>
 
 		
