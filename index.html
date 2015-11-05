@@ -45,17 +45,16 @@
         var pixels = [];
         for(var x = -450; x < 450; x+=15)
             for(var z = -450; z < 450; z+=15)
-                pixels.push({x: x, y: 140, z: z});
-                //time to draw the pixels
-        //console.log(pixels);
+                pixels.push({x: x, y: 170, z: z});
 
+        /*
         var nw = document.getElementById('gator_img').naturalWidth;
         var nh = document.getElementById('gator_img').naturalHeight;
 
         var gw = nw/20;
         var gh = nh/20;
+        */
 
-        console.log(gw+ ' ' + gh);
         function render() {
             ctx.clearRect(0,0,w,h);
             // grabbing a screenshot of the canvas using getImageData
@@ -88,8 +87,7 @@
 
             //putting imagedata back on the canvas
             ctx.putImageData(imagedata, 0, 0);
-            // y_initial is 15 + img height
-            // x_initial is center + img width/2
+            /*
             if(gw >= nw || gh >= nh){
                 gw = nw/20;
                 gh = nh/20;
@@ -99,6 +97,7 @@
                 gh += nh/1000;
                 ctx.drawImage(document.getElementById('gator_img'), ($(window).width())/2, ($(window).height())/2, gw, gh);
             }
+            */
 
         }
 
@@ -106,10 +105,9 @@
             render();
             requestAnimationFrame(animate);
         }
-            //render()
-            //animation time
-            //setInterval(render, 1000/30);
-            requestAnimationFrame(animate);
+
+        //setInterval(render, 1000/30);
+        requestAnimationFrame(animate);
     </script>
 
     <!--

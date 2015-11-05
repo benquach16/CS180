@@ -2,31 +2,53 @@
   "items" : [
     {
       "name" : "Empty Slot",
-      "base_img": "NaN"
+      "base_img": "NaN",
+      "rarity" : "none"
     },
     {
+      "id" : 1,
       "name" : "Green Hat",
       "base_img" : "/resources/images/hat_trans.gif",
       "type" : "Hat",
-      "stats" : {}
+      "stats" : [
+        {"health" : 5},
+        {"armor" : 5}
+      ],
+      "rarity" : "common",
+      "price" : 9
     },
     {
+      "id" : 2,
       "name" : "Red Shirt",
       "base_img" : "/resources/images/shirt_trans.gif",
       "type" : "Top",
-      "stats" : {}
+      "stats" : [
+        {"armor" : 5}
+      ],
+      "rarity" : "common",
+      "price" : 9
     },
     {
+      "id" : 3,
       "name" : "Blue Wheel",
       "base_img" : "/resources/images/blue-wheel.png",
       "type" : "Top",
-      "stats" : {}
+      "stats" : [
+        {"health" : 5}
+      ],
+      "rarity" : "common",
+      "price" : 9
     },
     {
+      "id" : 4,
       "name" : "Blue Head",
       "base_img" : "/resources/images/blue-head.png",
       "type" : "Hat",
-      "stats" : {}
+      "stats" : [
+        {"armor" : 5}
+      ],
+      "rarity" : "common",
+      "price" : 9
     }
   ]
 
