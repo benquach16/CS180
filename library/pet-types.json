@@ -1,11 +1,18 @@
 {
   "bunny" : {
-    "base_img" : "resources/images/bunny_trans.gif"
+    "base_img" : "resources/images/bunny_trans.gif",
+    "stats": {
+      "Health" : 100,
+      "Speed" : 5,
+      "Armor" : 10
+    }
   },
   "gator" : {
-    "base_img" : "resources/images/gator-base.png"
+    "base_img" : "resources/images/gator-base.png",
+    "stats": {}
   },
   "lion" : {
-    "base_img" : "resources/images/leo_base.png"
+    "base_img" : "resources/images/leo_base.png",
+    "stats": {}
   }
 }
