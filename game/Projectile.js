@@ -11,11 +11,10 @@ function Projectile(x, y, speed, damage, spriteName) // Constructor
 	this.gameObject.y = grid.at(x,y).y;
 	this.bulletFrom = 0;
 	this.damage = damage;
-    this.gameObject.body.allowRotation = false;  
 	//this.gameObject.body.immovable = true;
     this.width = 1;
 	this.height = 1;
-	this.gridPos = new Coords(x,y);
+	this.gridPos = new Coords(x,y);  
 	
 	this.damageTilesX = [0];
 	this.damageTilesY = [0];
@@ -34,7 +33,7 @@ function destroyProjectile(index)
 	projectiles.splice(index, 1);
 }
 
-Projectile.prototype.isOffscreen = function(index)
+Projectile.prototype.isFinished = function(index)
 {
 	//Checks if the projectile is offscreen.
 	//If it is, we can destroy the projectile.

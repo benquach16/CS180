@@ -26,7 +26,6 @@ function preload() {
 	game.load.image('redTile', 'assets/redTile.png');
 	game.load.image('yellowTile', 'assets/yellowTile.png');
 	game.load.spritesheet('background', 'assets/background.png', 256, 256);
-
 }
 
 function create() {
@@ -72,26 +71,21 @@ function update() {
 	grid.tileUpdate();
 	for(var i = 0; i < projectiles.length; i++)
 	{
-		if(projectiles[i].isOffscreen(i)){continue;}
 		else{projectiles[i].updateGridPos();}
 		
 		var damagePositions = projectiles[i].updateDamagePositions();
 		for(var j = 0; j < damagePositions.length; j++)
 		{
-			
 			grid.at(damagePositions[j].x,damagePositions[j].y).gameObject.loadTexture('yellowTile');
 			if(damagePositions[j].x == playerLeft.gridPos.x && damagePositions[j].y == playerLeft.gridPos.y && projectiles[i].bulletFrom != TileType.Red)
 			{
 				{
 				}
-					
-				console.log("Left: " + playerLeft.health);
 			}
 			else if(damagePositions[j].x == playerRight.gridPos.x && damagePositions[j].y == playerRight.gridPos.y && projectiles[i].bulletFrom != TileType.Blue)
 			{
 				{
 				}
-				console.log("Right: " + playerRight.health);
 			}
 		}
 	}

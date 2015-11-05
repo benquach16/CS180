@@ -8,13 +8,10 @@
 	this.energyGauge = 0;
 	this.deltaEnergy = 0;
 	this.curEnergy = 0;
-	this.immuneTime = 0;
 	
 	this.standardScale = 2.5;
 	
-	//Time is in milliseconds, so moveTime and moveDuration must be in milliseconds as well
 	this.moveDuration = 250;
-	this.moveTime = 0;
 	this.nextPos = new Coords(posX, posY);
 	this.gridPos = new Coords(posX, posY);
 	
@@ -54,10 +51,8 @@
 
 Player.prototype.takeDamage = function(dmg)
 {
-	if(this.immuneTime <= 0)
 	{
 		this.health -= dmg;
-		this.immuneTime = 500;
 		
 		return true;
 	}
@@ -67,11 +62,9 @@ Player.prototype.takeDamage = function(dmg)
 {
 	var bullet;
 	{
-		bullet = new Projectile(this.gridPos.x, this.gridPos.y, "blastRight");
 		bullet.setSpeedAndDamage(1000,6);
 	}
 	{
-		bullet = new Projectile(this.gridPos.x, this.gridPos.y, "blastLeft");
 		bullet.setSpeedAndDamage(-1000,6);
 	}
 	bullet.setBulletFrom(this.type);
@@ -116,7 +109,6 @@ Player.prototype.update = function()
 			this.mask.y = -9000;
 		}
 	}
-	if(this.immuneTime > 0)
 	{
 		this.immuneTime -= game.time.elapsed;
 		{
