@@ -71,6 +71,8 @@
                             " WHERE id=". $_POST['user_id'];
                         $stmt2 = $db_socket->prepare($query2);
                         $stmt2->execute();
+
+                        $json['bought'] = $target_item['name'];
                     }
                 }
             }

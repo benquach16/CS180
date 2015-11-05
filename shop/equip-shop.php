@@ -137,6 +137,7 @@
                         item_img.value = (i*6)+j;
                         item_img.name = curr_item.id;
                         item_img.label = curr_item.name;
+                        item_img.price = curr_item.price;
                         $(item_img).attr('data-tooltip', "#item_stat");
                         $(item_div).append(item_img);
 
@@ -170,22 +171,31 @@
 
                         $(item_img).click(function(e){
                             var data = "user_id=<?php echo $_SESSION['curr_id'];?>&item_id=" + this.name;
-                            var res = $.getValues("get-shop.php", "POST", data, "application/x-www-form-urlencoded");
-                            if(res.error.length != 0){
-                                var str = "";
-                                for(var i = 0; i < res.error.length; i++){
-                                    str += res.error[i] + "\n";
+                            swal({
+                                title: "Purchase",
+                                text: "Are you sure you want to buy "+this.label+" for "+this.price+"?",
+                                showCancelButton: true,
+                                confirmButtonText: "Confirm",
+                                closeOnConfirm: false
+                            }, function(){
+                                var res = $.getValues("get-shop.php", "POST", data, "application/x-www-form-urlencoded");
+                                if(res.error.length != 0){
+                                    var str = "";
+                                    for(var i = 0; i < res.error.length; i++){
+                                        str += res.error[i] + "\n";
+                                    }
+                                    swal({
+                                        title: "Oops, something is wrong!",
+                                        text: str
+                                    });
+                                } else {
+                                    swal({
+                                        title: "Got it!",
+                                        text: "You bought " + res.bought
+                                    });
                                 }
-                                swal({
-                                    title: "Oops, something is wrong!",
-                                    text: str
-                                });
-                            } else {
-                                swal({
-                                    title: "Got it!",
-                                    text: "You bought " + this.label
-                                });
-                            }
+                            });
+
                         });
                     } else{
                         var empty_div = document.createElement('DIV');
