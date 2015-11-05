@@ -14,7 +14,16 @@
         <div class="collapse navbar-collapse">
 
 		  <a class="navbar-brand"><?php echo $_SESSION['curr_user']?></a>
-		  <p class="navbar-text">Currency : 0</p>
+		  <p class="navbar-text" id="currencyCounter">Currency : <?php
+												include 'opendb.php';
+												$db_socket = initSocket();
+												$query = "select currency from ".$configValue['DB_USER_TABLE']." where id='".$_SESSION['curr_user']."'";
+												$statement = $db_socket->prepare($query);
+												$statement->execute();
+												$currency = $statement->fetchColumn(0);
+												echo json_encode($currency + 0);
+												include 'closedb.php';
+											   ?></p>
 
 		  <ul class="nav navbar-nav navbar-right">
 			<li class ="dropup">
