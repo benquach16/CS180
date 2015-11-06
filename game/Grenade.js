@@ -2,7 +2,9 @@
 var projectileGroup;
 var projectiles = [];
 
-function Grenade(x, y, spriteName) // Constructor
+//For now, speed is useless for grendages, since they need to follow the arc.
+//I doubt this mechanic will need to be changed, but it can be in the future.
+function Grenade(x, y, speed, damage, spriteName) // Constructor
 {	
 	this.gameObject = projectileGroup.create(0,0,spriteName);
 	this.spriteName = spriteName;
@@ -11,7 +13,8 @@ function Grenade(x, y, spriteName) // Constructor
 	this.gameObject.y = grid.at(x,y).y;
 	
 	this.bulletFrom = 0;
-	this.damage = 0;
+	this.damage = damage;
+	game.physics.arcade.enable([this.gameObject]);
 	
     this.gameObject.body.allowRotation = false;
 	
@@ -54,16 +57,9 @@ Grenade.prototype.isFinished = function(index)
 Grenade.prototype.setBulletFrom = function(bulletFrom)
 {
 	this.bulletFrom = bulletFrom;
-};
-
-Grenade.prototype.setSpeedAndDamage = function(speed, damage)
-{
-	game.physics.arcade.enable([this.gameObject]);
 	this.gameObject.body.velocity = new Phaser.Point(
 					this.bulletFrom == TileType.Red ? 400: -400, 
 					-950);
-	
-	this.damage = damage;
 };
 
 Grenade.prototype.setSize = function(width, height)

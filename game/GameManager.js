@@ -58,6 +58,8 @@ function create() {
 	projectileGroup = game.add.group();
 	projectileGroup.enableBody = true;
 	projectileGroup.allowGravity = false;
+	healthLeft = new Bar(50, 50, 300, 20, 0xff0000);
+	healthRight = new Bar(450, 50, 300, 20, 0x0000ff);
 }
 
 function update() {
@@ -67,6 +69,7 @@ function update() {
 	grid.tileUpdate();
 	for(var i = 0; i < projectiles.length; i++)
 	{
+		if(projectiles[i].isFinished(i)){continue;}
 		else{projectiles[i].updateGridPos();}
 		
 		var damagePositions = projectiles[i].updateDamagePositions();
@@ -76,16 +79,25 @@ function update() {
 			grid.at(damagePositions[j].x,damagePositions[j].y).gameObject.loadTexture('yellowTile');
 			if(damagePositions[j].x == playerLeft.gridPos.x && damagePositions[j].y == playerLeft.gridPos.y && projectiles[i].bulletFrom != TileType.Red)
 			{
+				if(playerLeft.takeDamage(projectiles[i].damage))
 				{
+					healthLeft.update(playerLeft.health, playerLeft.fullHealth);
 					projectileHit = true;
 				}
 			}
 			else if(damagePositions[j].x == playerRight.gridPos.x && damagePositions[j].y == playerRight.gridPos.y && projectiles[i].bulletFrom != TileType.Blue)
 			{
+				if(playerRight.takeDamage(projectiles[i].damage))
 				{
+					healthRight.update(playerRight.health, playerRight.fullHealth);
 					projectileHit = true;
 				}
 			}
+		}
+		if(projectileHit)
+		{
+			destroyProjectile(i);
+			i--;
 		}
 	}
 }

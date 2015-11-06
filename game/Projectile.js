@@ -10,7 +10,9 @@ function Projectile(x, y, speed, damage, spriteName) // Constructor
 	this.gameObject.x = grid.at(x,y).x;
 	this.gameObject.y = grid.at(x,y).y;
 	this.bulletFrom = 0;
+
 	this.damage = damage;
+    this.gameObject.body.allowRotation = false;
 	//this.gameObject.body.immovable = true;
     this.width = 1;
 	this.height = 1;
@@ -20,6 +22,7 @@ function Projectile(x, y, speed, damage, spriteName) // Constructor
 	this.damageTilesY = [0];
 	this.gameObject.anchor.x = 0.5;
 	this.gameObject.anchor.y = -0.5;
+	this.gameObject.body.allowGravity = false;
 	projectiles.push(this);
 	
 	game.physics.arcade.enable([this.gameObject]);
@@ -48,11 +51,6 @@ Projectile.prototype.isFinished = function(index)
 Projectile.prototype.setBulletFrom = function(bulletFrom)
 {
 	this.bulletFrom = bulletFrom;
-};
-
-Projectile.prototype.setSpeedAndDamage = function(speed, damage)
-{
-	this.damage = damage;
 };
 
 Projectile.prototype.setSize = function(width, height)
