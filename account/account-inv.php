@@ -172,8 +172,6 @@
             //document.body.appendChild(renderer.view);
             initAllPets();
 
-
-
             setAllPets();
 
             globalID = requestAnimationFrame( function(timestamp){
@@ -184,6 +182,11 @@
         function initAllPets(){
             pets_JSON = $.getValues("get-pet.php", "GET", "user_id=<?php echo $_SESSION['curr_id']; ?>", 'application/x-www-form-urlencoded').pet_list;
 
+            for(var i = 0; i < pets_JSON.length; i++){
+                pet_inv_ary.push (new client_pet_inv(pets_JSON[i].id, pets_JSON[i].hat_img, pets_JSON[i].top_img, pets_JSON[i].bottom_img, pets_JSON[i].base,
+                    pets_JSON[i].hat_id, pets_JSON[i].top_id, pets_JSON[i].bottom_id));
+            }
+            /*
             pet_inv_ary.push (new client_pet_inv(pets_JSON[0].id, pets_JSON[0].hat_img, pets_JSON[0].top_img, pets_JSON[0].bottom_img, pets_JSON[0].base,
                 pets_JSON[0].hat_id, pets_JSON[0].top_id, pets_JSON[0].bottom_id));
             pet_inv_ary.push (new client_pet_inv(pets_JSON[1].id, pets_JSON[1].hat_img, pets_JSON[1].top_img, pets_JSON[1].bottom_img, pets_JSON[1].base,
@@ -192,6 +195,7 @@
                 pets_JSON[2].hat_id, pets_JSON[2].top_id, pets_JSON[2].bottom_id));
             pet_inv_ary.push (new client_pet_inv(pets_JSON[3].id, pets_JSON[3].hat_img, pets_JSON[3].top_img, pets_JSON[3].bottom_img, pets_JSON[3].base,
                 pets_JSON[3].hat_id, pets_JSON[3].top_id, pets_JSON[3].bottom_id));
+            */
         }
 
         function setAllPets(){
@@ -199,15 +203,10 @@
                 setBG(container_ary[i]);
             }
 
-            var pet0 = setPet(container_ary[0], '../' + pet_inv_ary[0].pet_base);
-            var pet1 = setPet(container_ary[1], '../' + pet_inv_ary[1].pet_base);
-            var pet2 = setPet(container_ary[2], '../' + pet_inv_ary[2].pet_base);
-            var pet3 = setPet(container_ary[3], '../' + pet_inv_ary[3].pet_base);
-
-            setUpEquips(pet0, 0);
-            setUpEquips(pet1, 1);
-            setUpEquips(pet2, 2);
-            setUpEquips(pet3, 3);
+            for(var i = 0; i < pet_inv_ary.length; i++){
+                var pet = setPet(container_ary[i], '../' + pet_inv_ary[i].pet_base);
+                setUpEquips(pet, i);
+            }
 
         }
 
