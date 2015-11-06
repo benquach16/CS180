@@ -186,16 +186,6 @@
                 pet_inv_ary.push (new client_pet_inv(pets_JSON[i].id, pets_JSON[i].hat_img, pets_JSON[i].top_img, pets_JSON[i].bottom_img, pets_JSON[i].base,
                     pets_JSON[i].hat_id, pets_JSON[i].top_id, pets_JSON[i].bottom_id));
             }
-            /*
-            pet_inv_ary.push (new client_pet_inv(pets_JSON[0].id, pets_JSON[0].hat_img, pets_JSON[0].top_img, pets_JSON[0].bottom_img, pets_JSON[0].base,
-                pets_JSON[0].hat_id, pets_JSON[0].top_id, pets_JSON[0].bottom_id));
-            pet_inv_ary.push (new client_pet_inv(pets_JSON[1].id, pets_JSON[1].hat_img, pets_JSON[1].top_img, pets_JSON[1].bottom_img, pets_JSON[1].base,
-                pets_JSON[1].hat_id, pets_JSON[1].top_id, pets_JSON[1].bottom_id));
-            pet_inv_ary.push (new client_pet_inv(pets_JSON[2].id, pets_JSON[2].hat_img, pets_JSON[2].top_img, pets_JSON[2].bottom_img, pets_JSON[2].base,
-                pets_JSON[2].hat_id, pets_JSON[2].top_id, pets_JSON[2].bottom_id));
-            pet_inv_ary.push (new client_pet_inv(pets_JSON[3].id, pets_JSON[3].hat_img, pets_JSON[3].top_img, pets_JSON[3].bottom_img, pets_JSON[3].base,
-                pets_JSON[3].hat_id, pets_JSON[3].top_id, pets_JSON[3].bottom_id));
-            */
         }
 
         function setAllPets(){
