@@ -41,6 +41,8 @@
 
         <script src="https://www.rootcdn.com/libs/pixi.js/3.0.7/pixi.min.js" ></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <!-- <script src="<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/library/ajax-call.php'; ?>"></script> -->
+        <script src="<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/library/render.js'; ?>"></script>
 
         <script>
             jQuery.extend({
@@ -58,7 +60,7 @@
                         },
                         error: function(xhr){
                             result = jQuery.parseJSON(xhr.responseText);
-                        },
+                        }
                     });
                     return result;
                 }
@@ -102,20 +104,6 @@
                         addImg(pet_ary.pet_list[i].bottom_img, container, canvas);
                     }
                 }
-            }
-
-            function addImg(pic, con, canvas){
-                var texture = PIXI.Texture.fromImage("../"+ pic);
-                // create a new Sprite using the texture
-                var img = new PIXI.Sprite(texture);
-
-                // center the sprites anchor point
-                img.anchor.x = 0.5;
-                img.anchor.y = 0.5;
-                // move the sprite t the center of the screen
-                img.position.x = canvas.width / 2;
-                img.position.y = canvas.height / 2;
-                con.addChild(img);
             }
 
             function setupRenderers(){
