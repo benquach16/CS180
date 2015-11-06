@@ -2,8 +2,8 @@
 
 
 function getUser(){
-    include(__DIR__."./server.config.php");
-    include_once (__DIR__."./opendb.php");
+    include(__DIR__."/server.config.php");
+    include_once (__DIR__."/opendb.php");
 
     $db_socket = initSocket();
     $query = "SELECT user FROM ".$configValue['DB_USER_TABLE'].
@@ -18,13 +18,13 @@ function getUser(){
         echo session_id().' '.$_SESSION['curr_id'];
     }
 
-    include (__DIR__.'./closedb.php');
+    include (__DIR__.'/closedb.php');
     return;
 }
 
 //do not use this
 function getPets(){
-    include_once (__DIR__."./opendb.php");
+    include_once (__DIR__."/opendb.php");
 
     $db_socket = initSocket();
     $query = "SELECT  FROM"."";
