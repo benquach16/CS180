@@ -16,7 +16,7 @@
     }
     else{
         echo "lets create a pet";
-        $temp_type = "bunny";
+        $temp_type = $_POST['pet-type'];
 
         try{
             //make pet

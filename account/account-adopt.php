@@ -124,13 +124,13 @@
     <header>
         <div id="pet-type-selection" class="btn-group btn-group-justified">
             <a id='dog-btn' type="button" class="btn btn-primary pet-btn" value="Dog">Dog</a>
-            <a id='lion-btn' type="button" class="btn btn-primary pet-btn" value="Lion">Lion</a>
+            <a id='lion-btn' type="button" class="btn btn-primary pet-btn" value="lion">Lion</a>
             <a id='bear-btn' type="button" class="btn btn-primary pet-btn" value="Bear">Bear</a>
             <a id='gorilla-btn' type="button" class="btn btn-primary pet-btn" value="Gorilla">Gorilla</a>
             <a id='raccoon-btn' type="button" class="btn btn-primary pet-btn" value="Racoon">Racoon</a>
             <a id='shark-btn' type="button" class="btn btn-primary pet-btn" value="Shark">Shark</a>
-            <a id='bunny-btn' type="button" class="btn btn-primary pet-btn" value="Bunny">Bunny</a>
-            <a id='lizard-btn' type="button" class="btn btn-primary pet-btn" value="Lizard">Lizard</a>
+            <a id='bunny-btn' type="button" class="btn btn-primary pet-btn" value="bunny">Bunny</a>
+            <a id='lizard-btn' type="button" class="btn btn-primary pet-btn" value="gator">Lizard</a>
         </div>
     </header>
 
@@ -173,7 +173,7 @@
             </figure>
             <figure id="item8" class="carouselItem trans3d">
                 <div class="carouselItemInner trans3d">
-                    <img src="/resources/images/gator.png" alt="lizard" width="300" height="300">
+                    <img src="/resources/images/gator.png" alt="gator" width="300" height="300">
                 </div>
             </figure>
         </section>
@@ -369,7 +369,7 @@
 
         $('.pet-btn').on('click', function(){
             $('#adoptModal').modal('show');
-            $('#myModalLabel').text("Adopt a " + $(this).attr("value"));
+            $('#myModalLabel').text("Adopt a " + $(this).text());
             $('#pet-type-input').attr('value', $(this).attr("value"));
             //console.log($(this).attr("value"));
         });
