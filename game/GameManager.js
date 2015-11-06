@@ -47,10 +47,6 @@ function create() {
 	
 	grid.createGrid();
 	
-    //var stage = game.add.sprite(0, 368, 'stage');
-	//stage.alpha = 0.2;
-	
-    // The player and its settings
 	var weaponsLeft = [];
 	weaponsLeft[0] = new Weapon(10, 1000, 250, TileType.Red);
 	weaponsLeft[1] = new Weapon(20, 500, 1000, TileType.Red);
@@ -74,17 +70,20 @@ function update() {
 		else{projectiles[i].updateGridPos();}
 		
 		var damagePositions = projectiles[i].updateDamagePositions();
+		var projectileHit = false;
 		for(var j = 0; j < damagePositions.length; j++)
 		{
 			grid.at(damagePositions[j].x,damagePositions[j].y).gameObject.loadTexture('yellowTile');
 			if(damagePositions[j].x == playerLeft.gridPos.x && damagePositions[j].y == playerLeft.gridPos.y && projectiles[i].bulletFrom != TileType.Red)
 			{
 				{
+					projectileHit = true;
 				}
 			}
 			else if(damagePositions[j].x == playerRight.gridPos.x && damagePositions[j].y == playerRight.gridPos.y && projectiles[i].bulletFrom != TileType.Blue)
 			{
 				{
+					projectileHit = true;
 				}
 			}
 		}

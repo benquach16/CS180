@@ -15,6 +15,15 @@
 	this.nextPos = new Coords(posX, posY);
 	this.gridPos = new Coords(posX, posY);
 	
+	this.deathDuration = 3000;
+	this.deathTimer = 0;
+	
+	this.reloadDuration = weapons[0].fireRate;
+	this.reloadTimer = 0;
+	
+	this.firingDuration = 100;
+	this.firingTimer = 0;
+	
 	this.gameObject = game.add.sprite(grid.at(posX, posY).x, grid.at(posX, posY).y, spriteName);
 	this.gameObject.anchor.x = 0.5;
 	
@@ -49,10 +58,35 @@
 	}
 };
 
+Player.prototype.deathAnim = function()
+{
+	this.deathTimer = this.deathDuration;
+	if(this.type == TileType.Red)
+		{
+			this.gameObject.loadTexture('gatorDamagedLeft');
+		}
+		else if(this.type == TileType.Blue)
+		{
+			this.gameObject.loadTexture('gatorDamagedRight');
+		}
+}
+
 Player.prototype.takeDamage = function(dmg)
 {
 	{
 		this.health -= dmg;
+			this.deathAnim();
+			return true;
+		}
+		if(this.type == TileType.Red)
+		{
+			this.gameObject.loadTexture('gatorDamagedLeft');
+		}
+		else if(this.type == TileType.Blue)
+		{
+			this.gameObject.loadTexture('gatorDamagedRight');
+		}
+		this.immuneTimer = 500;
 		
 		return true;
 	}
@@ -94,6 +128,26 @@ Player.prototype.moveLeft = function()
 
 Player.prototype.update = function()
 {
+	this.reloadTimer -= game.time.elapsed;
+	this.firingTimer -= game.time.elapsed;
+	if(this.deathTimer > 0)
+	{
+		this.deathTimer -= game.time.elapsed;
+		if((this.deathTimer / 10) % 2 > 1 && this.gameObject.alpha == 1.0)
+		{
+			this.gameObject.alpha = 0.5;
+		}
+		else
+		{
+			this.gameObject.alpha = 1.0;
+		}
+		if(this.deathTimer <= 0)
+		{
+			this.gameObject.alpha = 0.0;
+			//this.gameObject.kill();
+			this.gameObject.destroy();
+		}
+	}
 	{
 		
 		this.mask.x = this.gameObject.x-100;

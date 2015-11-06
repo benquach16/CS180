@@ -3,7 +3,7 @@ var projectileGroup;
 var projectiles = [];
 
 function Grenade(x, y, spriteName) // Constructor
-{
+{	
 	this.gameObject = projectileGroup.create(0,0,spriteName);
 	this.spriteName = spriteName;
 	this.gridPos = new Coords(x,y);
