@@ -22,18 +22,27 @@
 				<div class ="panel-body">
 					<ul class="list-group" id="listOfPosts">
 						<li class="list-group-item">
-
-	<button type="button" class="btn btn-default btn-lg">
-	  <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Star
-	</button>
+						<!-- put a specific modal for each post here -->
+						<button type="button" class="btn btn-default btn-lg">
+						  <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Star
+						</button>
+	
 						</li>
 					</ul>
 				</div>
 			</div>		
 		</div>
-
+		
 		
     </body>
+	<script>
+		var listOfPosts = document.getElementById("listOfPost");
+		for(var i = 0; i < 5;i++)
+		{
+			document.createElement('ul');
+						
+		}
+	</script>
 	<div id="chatbar">
       <?php include('./library/chat-bar.html'); ?>
 	</div>
