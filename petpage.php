@@ -10,6 +10,8 @@
 
 	<div class="container center-text">
 		<div class="row">
+      
+      <!-- left sidebar  -->
 			<div class="col-md-2">
 				<div class="media">
 					<div class="media-left">
@@ -24,9 +26,10 @@
 					<h4 class="media-heading">Pet Name</h4>
 				</div>
 			</div>
+      
+      <!-- main body  -->
 			<div class="col-md-10">
 				<div class="row">
-
 					<div class="col-md-8">
 						<div class="input-group">
 							<input type="text" class="form-control" placeholder="What are you thinking?" id="postBox">
@@ -70,9 +73,19 @@
 	var postButton = document.getElementById("postButton");
 	var postBox = document.getElementById("postBox");
 	//lets do an ajex request here
-	
+	postButton.onclick = function(){
+  var postData = postBox.value;
+    $.ajax({
+      url:"./library/store_posts.php",
+      data:{postData:postData},
+      complete: function (response) {
+        console.log(response.responseText);
+      }
+    });
+  }
 	
 </script>
+
 <div id = "chatbar">
 	<?php include('./library/chat-bar.html'); ?>
 </div>
