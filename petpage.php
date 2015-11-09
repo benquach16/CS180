@@ -72,18 +72,23 @@
 <script>
 	var postButton = document.getElementById("postButton");
 	var postBox = document.getElementById("postBox");
+  
 	//lets do an ajex request here
 	postButton.onclick = function(){
   var postData = postBox.value;
     $.ajax({
       url:"./library/store_posts.php",
-      data:{postData:postData},
-      complete: function (response) {
-        console.log(response.responseText);
-      }
+      data:{postData:postData}
     });
   }
 	
+  $.ajax({
+    url:"./library/fetch_post.php",
+    complete: function (response) {
+      console.log(response.responseText);
+    }
+  });
+
 </script>
 
 <div id = "chatbar">
