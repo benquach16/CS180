@@ -8,9 +8,9 @@
 	</style>
 	<?php include('./library/nav-bar.html'); ?>
 
-	<div class="container">
+	<div class="container center-text">
 		<div class="row">
-			<div class="col-sm-2">
+			<div class="col-md-2">
 				<div class="media">
 					<div class="media-left">
 						<a href="#">
@@ -20,11 +20,11 @@
 
 				</div>
 
-									<div class="media-body">
-						<h4 class="media-heading">Pet Name</h4>
-					</div>
+				<div class="media-body">
+					<h4 class="media-heading">Pet Name</h4>
+				</div>
 			</div>
-			<div class="col-sm-10">
+			<div class="col-md-10">
 				<div class="row">
 
 					<div class="col-md-8">
@@ -65,9 +65,12 @@
 	
 	
 </body>
+
 <script>
 	var postButton = document.getElementById("postButton");
-
+	var postBox = document.getElementById("postBox");
+	//lets do an ajex request here
+	
 	
 </script>
 <div id = "chatbar">
