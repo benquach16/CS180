@@ -15,7 +15,7 @@ Weapon.prototype.shoot = function(x, y)
 	var bullet;
 	if(this.type == TileType.Red)
 	{
-		if(this.speed < 750)
+		if(this.damage > 10)
 		{
 			bullet = new Grenade(x, y, this.speed, this.damage, "blastRight");
 		}
@@ -27,7 +27,7 @@ Weapon.prototype.shoot = function(x, y)
 	}
 	else if(this.type == TileType.Blue)
 	{
-		if(this.speed < 750)
+		if(this.damage > 10)
 		{
 			bullet = new Grenade(x, y, this.speed, this.damage, "blastLeft");
 		}

@@ -26,6 +26,18 @@ function preload() {
 	game.load.image('redTile', 'assets/redTile.png');
 	game.load.image('yellowTile', 'assets/yellowTile.png');
 	game.load.spritesheet('background', 'assets/background.png', 256, 256);
+	
+	
+	//get json from database
+	/*game.load.onFileComplete.add(function(key) {
+    if (key === 'data') {
+      var data = game.cache.getJSON(key);
+      // data is now populated with the contents of the JSON file
+    }
+  }, this);
+
+  game.load.json('data', 'assets/data.json');*/
+  
 }
 
 function create() {
