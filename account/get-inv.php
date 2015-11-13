@@ -2,7 +2,7 @@
     //session_start();
     if($_SERVER['REQUEST_METHOD'] == 'GET'){
         //we have a get req so we should retrive and return data about the user inventory
-        include ('../library/server.config.php');
+        include ($_SERVER['DOCUMENT_ROOT'].'/library/server.config.php');
         $string = file_get_contents("../library/item-types.json");
         $item_type = json_decode($string, true);
         include_once ('../library/opendb.php');
