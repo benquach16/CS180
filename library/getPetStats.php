@@ -18,7 +18,7 @@
                 " WHERE id=( SELECT pet". $_GET['pet_id'].
                 " FROM ". $configValue['DB_TEAM_TABLE'].
                 " WHERE id=". $_GET['user_id'] .")";
-            echo $query;
+            //echo $query;
 
             $statement = $db_socket->prepare($query);
             $statement->execute();
