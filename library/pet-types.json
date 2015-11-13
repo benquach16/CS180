@@ -9,10 +9,18 @@
   },
   "gator" : {
     "base_img" : "resources/images/gator-base.png",
-    "stats": {}
+    "stats": {
+      "Health" : 100,
+      "Speed" : 5,
+      "Armor" : 10
+    }
   },
   "lion" : {
     "base_img" : "resources/images/leo_base.png",
-    "stats": {}
+    "stats": {
+      "Health" : 100,
+      "Speed" : 5,
+      "Armor" : 10
+    }
   }
 }
