@@ -11,8 +11,8 @@
       "base_img" : "/resources/images/hat_trans.gif",
       "type" : "Hat",
       "stats" : [
-        {"health" : 5},
-        {"armor" : 5}
+        {"Health" : 5},
+        {"Armor" : 5}
       ],
       "rarity" : "common",
       "price" : 9
@@ -23,7 +23,7 @@
       "base_img" : "/resources/images/shirt_trans.gif",
       "type" : "Top",
       "stats" : [
-        {"armor" : 5}
+        {"Armor" : 5}
       ],
       "rarity" : "common",
       "price" : 9
@@ -34,7 +34,8 @@
       "base_img" : "/resources/images/blue-wheel.png",
       "type" : "Top",
       "stats" : [
-        {"health" : 5}
+        {"Health" : 5},
+        {"Armor" : 5}
       ],
       "rarity" : "common",
       "price" : 9
@@ -45,7 +46,8 @@
       "base_img" : "/resources/images/blue-head.png",
       "type" : "Hat",
       "stats" : [
-        {"armor" : 5}
+        {"Health" : 5},
+        {"Armor" : 5}
       ],
       "rarity" : "common",
       "price" : 9
