@@ -19,7 +19,7 @@
   $statement->bindParam(':post', $post);
   $statement->execute();
   
-  echo "test";
+  echo $post;
 
   include (__DIR__.'./closedb.php');
   
