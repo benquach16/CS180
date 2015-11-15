@@ -15,7 +15,7 @@
 
 		<div class="jumbotron">
 			<h1>Latest News!</h1>
-			<p>Check out our latest patch note and features!</p>
+			<p>Check out our latest patch notes and features!</p>
 			<p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
 		</div>
 		<div class = "panel panel-default">
@@ -42,25 +42,31 @@
 		
     </body>
 	<script>
+	$(document).ready(function(){
 		$.ajax({
 			url:'library/getFriendsPosts.php',
 			complete: function (response)
 			{
+				console.log(response.responseText);
 				var arr = JSON.parse(response.responseText);
 				var listOfPosts = document.getElementById("listOfPosts");
-				for(var i = 0; i < 5;i++)
+				while(listOfPosts.firstChild)
+				{
+					listOfPosts.removeChild(listOfPosts.firstChild);
+				}
+				for(var i = 0; i < arr.length; i++)
 				{
 					//this looks shitty
 					var newPost = document.createElement('div');
 					newPost.className = "panel panel-primary";
 					var heading = document.createElement('div');
 					heading.className = "panel-heading";
-					var textHeader = document.createTextNode("header");
+					var textHeader = document.createTextNode("By " + arr[i][1]);
 					heading.appendChild(textHeader);
 
 					var body = document.createElement('div');
 					body.className = "panel-body";
-					var textBody = document.createTextNode("body");
+					var textBody = document.createTextNode(arr[i][2]);
 					body.appendChild(textBody);
 			
 					newPost.appendChild(heading);
@@ -69,7 +75,7 @@
 				}
 			}
 		});
-
+	});
 	</script>
 	<div id="chatbar">
       <?php include('./library/chat-bar.html'); ?>

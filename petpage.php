@@ -79,7 +79,11 @@
       // Stores user post in database
       $.ajax({
         url:"./library/store_posts.php",
-        data:{postData:postData}
+        data:{postData:postData},
+		complete: function(response)
+		{
+			console.log(response.responseText);
+		}
       });
 
       // Returns JSON object with all user posts
