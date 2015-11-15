@@ -3,7 +3,7 @@
   // access to the db
   include('./getUser.php');
   include (dirname(__FILE__).'/server.config.php');
-  include_once (__DIR__."./opendb.php");
+  include_once (__DIR__."/opendb.php");
   
   $userid=$_SESSION['curr_id'];
   $user=$_SESSION['curr_user'];
@@ -21,6 +21,6 @@
   
   echo $post;
 
-  include (__DIR__.'./closedb.php');
+  include (__DIR__.'/closedb.php');
   
 ?>
