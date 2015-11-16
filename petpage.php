@@ -72,7 +72,8 @@
 <script>
 	var postButton = document.getElementById("postButton");
 	var postBox = document.getElementById("postBox");
-  
+    disp_posts();
+    
 	//lets do an ajex request here
 	postButton.onclick = function(){
     var postData = postBox.value;
@@ -85,43 +86,44 @@
 			console.log(response.responseText);
 		}
       });
-
-      // Returns JSON object with all user posts
-       $.ajax({
-        url:"./library/fetch_post.php",
-        complete: function (response) {
-          console.log(response.responseText);          
-          
-          // Reset list after each refresh
-          while ( listOfPosts.firstChild) {
-            listOfPosts.removeChild(listOfPosts.firstChild);
-          }
-          
-          // create divs here
-          var postList = JSON.parse(response.responseText);
-          for ( var i = postList.length - 1; i >= 0; i--)  {  
-          
-             var newPost = document.createElement('div');
-             newPost.className = "panel panel-primary";
-             var heading = document.createElement('div');
-             heading.className = "panel-heading";
-             var textHeader = document.createTextNode("By " + postList[i][0]);
-             heading.appendChild(textHeader);
-             var body = document.createElement('div');
-             body.className = "panel-body";
-             var textBody = document.createTextNode(postList[i][1]);
-             body.appendChild(textBody);
-   
-             newPost.appendChild(heading);
-             newPost.appendChild(body);
-             listOfPosts.appendChild(newPost);
-                        
-          }
-        }
-       });
-  }
-	
- 
+          disp_posts();
+    }
+    
+    function disp_posts() {    
+         // Returns JSON object with all user posts
+         $.ajax({
+            url:"./library/fetch_post.php",
+            complete: function (response) {
+                console.log(response.responseText);          
+                
+                // Reset list after each refresh
+                while ( listOfPosts.firstChild) {
+                    listOfPosts.removeChild(listOfPosts.firstChild);
+                }
+                
+                // create divs here
+                var postList = JSON.parse(response.responseText);
+                for ( var i = postList.length - 1; i >= 0; i--)  {
+                    // Sets div elements
+                    var newPost = document.createElement('div');
+                    newPost.className = "panel panel-primary";
+                    var heading = document.createElement('div');
+                    heading.className = "panel-heading";
+                    var textHeader = document.createTextNode("By " + postList[i][0]);
+                    heading.appendChild(textHeader);
+                    var body = document.createElement('div');
+                    body.className = "panel-body";
+                    var textBody = document.createTextNode(postList[i][1]);
+                    body.appendChild(textBody);
+                    
+                    // Attaches elements to div, and then div array
+                    newPost.appendChild(heading);
+                    newPost.appendChild(body);
+                    listOfPosts.appendChild(newPost);
+                }
+            }
+        });
+    } 
 
 </script>
 
