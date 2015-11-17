@@ -2,7 +2,7 @@
 <?php session_start() ?>
 <!doctype html>
 <body>
-
+	<title>PetPage</title>
 	<style>
 		
 	</style>
@@ -12,12 +12,10 @@
 		<div class="row">
       
       <!-- left sidebar  -->
-			<div class="col-md-2">
+			<div class="col-md-3">
 				<div class="media">
-					<div class="media-left">
-						<a href="#">
-							<img class="media-object" src="/resources/images/bunny_trans.gif" alt="...">
-						</a>
+					<div class="media-left" id = "picContainer">
+						<!-- <img class="media-object" src="/resources/images/bunny_trans.gif" alt="..." id = "petPic"> -->
 					</div>
 
 				</div>
@@ -28,7 +26,7 @@
 			</div>
       
       <!-- main body  -->
-			<div class="col-md-10">
+			<div class="col-md-9">
 				<div class="row">
 					<div class="col-md-8">
 						<div class="input-group">
@@ -68,12 +66,62 @@
 	
 	
 </body>
-
+<script src="library/render.js"></script>
+<script src="https://www.rootcdn.com/libs/pixi.js/3.0.7/pixi.min.js" ></script>
 <script>
 	var postButton = document.getElementById("postButton");
 	var postBox = document.getElementById("postBox");
     disp_posts();
     
+	var petImage = document.getElementById("petPic");
+	var picContainer = document.getElementById("picContainer");
+
+	jQuery.extend({
+		getValues: function(url, method, data, type)
+		{
+	    	var result = null;
+			$.ajax({
+	        	url: url,
+	            type: method,
+				data: data,
+				dataType: type,
+	            //contentType: 'application/json',
+				async: false,
+				success: function(data) {
+					result = jQuery.parseJSON(data);
+				},
+	                        error: function(xhr){
+	                            result = jQuery.parseJSON(xhr.responseText);
+	                        }
+			});
+			return result;
+		}
+	});
+
+	function display_pet()
+	{
+		//this is fucking horrible
+		//throw this in a js file please
+			
+		var petList = $.getValues("account/get-pet.php", "GET", "user_id=<?php echo $_SESSION['curr_id']; ?>", "application/x-www-form-urlencoded");
+		var img = petList.pet_list[0].base;
+		console.log(img);
+		var container = new PIXI.Container(0x66FF99);
+		var canvas = document.createElement('CANVAS');
+		canvas.height = 230;
+		canvas.width = 230;
+		addImg(img,container,canvas);
+		picContainer.appendChild(canvas);
+		var renderer = new PIXI.autoDetectRenderer(canvas.width, canvas.height, {view: canvas});
+		renderer.render(container);
+		requestAnimationFrame( function(timestamp)
+		{
+			renderer.render(container);
+		});
+	}
+
+	display_pet();
+	
 	//lets do an ajex request here
 	postButton.onclick = function(){
     var postData = postBox.value;
