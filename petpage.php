@@ -114,6 +114,19 @@
 		canvas.height = 230;
 		canvas.width = 230;
 		addImg(img,container,canvas);
+		if(petList.pet_list[0].pet_hat = '0')
+		{
+			addImg(petList.pet_list[0].hat_img,container,canvas);
+		}
+		if(petList.pet_list[0].pet_top = '0')
+		{
+			addImg(petList.pet_list[0].top_img,container,canvas);
+		}
+		if(petList.pet_list[0].pet_bottom = '0')
+		{
+			addImg(petList.pet_list[0].bottom_img,container,canvas);
+		}
+	
 		picContainer.appendChild(canvas);
 		var renderer = new PIXI.autoDetectRenderer(canvas.width, canvas.height, {view: canvas});
 		renderer.render(container);
