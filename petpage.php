@@ -21,7 +21,7 @@
 				</div>
 
 				<div class="media-body">
-					<h4 class="media-heading">Pet Name</h4>
+					<h4 class="media-heading" id = "petName">Pet Name</h4>
 				</div>
 			</div>
       
@@ -73,8 +73,7 @@
 	var postBox = document.getElementById("postBox");
     disp_posts();
     
-	var petImage = document.getElementById("petPic");
-	var picContainer = document.getElementById("picContainer");
+
 
 	jQuery.extend({
 		getValues: function(url, method, data, type)
@@ -102,9 +101,13 @@
 	{
 		//this is fucking horrible
 		//throw this in a js file please
-			
+		var petImage = document.getElementById("petPic");
+		var picContainer = document.getElementById("picContainer");			
+		var petName = document.getElementById("petName");
+
 		var petList = $.getValues("account/get-pet.php", "GET", "user_id=<?php echo $_SESSION['curr_id']; ?>", "application/x-www-form-urlencoded");
 		var img = petList.pet_list[0].base;
+		petName.innerText = petList.pet_list[0].name;
 		console.log(img);
 		var container = new PIXI.Container(0x66FF99);
 		var canvas = document.createElement('CANVAS');
