@@ -108,33 +108,40 @@
 		var petList = $.getValues("account/get-pet.php", "GET", "user_id=<?php echo $_SESSION['curr_id']; ?>", "application/x-www-form-urlencoded");
 		var img = petList.pet_list[0].base;
 		petName.innerText = petList.pet_list[0].name;
-		console.log(img);
-		var container = new PIXI.Container(0x66FF99);
+
+		container = new PIXI.Container(0x66FF99);
 		var canvas = document.createElement('CANVAS');
 		canvas.height = 230;
 		canvas.width = 230;
-		addImg(img,container,canvas);
-		if(petList.pet_list[0].pet_hat = '0')
-		{
-			addImg(petList.pet_list[0].hat_img,container,canvas);
-		}
-		if(petList.pet_list[0].pet_top = '0')
-		{
-			addImg(petList.pet_list[0].top_img,container,canvas);
-		}
-		if(petList.pet_list[0].pet_bottom = '0')
-		{
-			addImg(petList.pet_list[0].bottom_img,container,canvas);
-		}
 	
+		addImg(img,container,canvas);
+	
+
 		picContainer.appendChild(canvas);
-		var renderer = new PIXI.autoDetectRenderer(canvas.width, canvas.height, {view: canvas});
+		renderer = new PIXI.autoDetectRenderer(canvas.width, canvas.height, {view: canvas});
 		renderer.render(container);
 		requestAnimationFrame( function(timestamp)
 		{
-			renderer.render(container);
+			animate(timestamp);
 		});
+
+
+		for(var i = 0; i < petList.pet_list.length; i++)
+		{
+			
+		}
 	}
+
+	function animate(timestamp)
+	{
+		renderer.render(container);
+		requestAnimationFrame( function(timestamp)
+		{
+			animate(timestamp);
+		});	
+	}
+
+	
 
 	display_pet();
 	
