@@ -12,7 +12,7 @@
 		<div class="row">
       
       <!-- left sidebar  -->
-			<div class="col-md-3">
+			<div class="col-md-3" id="sidebar">
 				<div class="media">
 					<div class="media-left" id = "picContainer">
 						<!-- <img class="media-object" src="/resources/images/bunny_trans.gif" alt="..." id = "petPic"> -->
@@ -23,6 +23,15 @@
 				<div class="media-body">
 					<h4 class="media-heading" id = "petName">Pet Name</h4>
 				</div>
+
+<!-- Single button -->
+	<div class="btn-group">
+	  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	    Pet <span class="caret"></span>
+	  </button>
+	  <ul class="dropdown-menu" id = "petMenu">
+	  </ul>
+	</div>
 			</div>
       
       <!-- main body  -->
@@ -104,6 +113,7 @@
 		var petImage = document.getElementById("petPic");
 		var picContainer = document.getElementById("picContainer");			
 		var petName = document.getElementById("petName");
+		var sidebar = document.getElementById("sidebar");
 
 		var petList = $.getValues("account/get-pet.php", "GET", "user_id=<?php echo $_SESSION['curr_id']; ?>", "application/x-www-form-urlencoded");
 		var img = petList.pet_list[0].base;
@@ -124,11 +134,17 @@
 		{
 			animate(timestamp);
 		});
-
-
+		var petMenu = document.getElementById("petMenu");
 		for(var i = 0; i < petList.pet_list.length; i++)
 		{
-			
+			//create dom elements here
+			var li = document.createElement('li');
+			var a = document.createElement('a');
+			var textNode = document.createTextNode(petList.pet_list[i].name);
+			a.appendChild(textNode);
+			li.appendChild(a);
+			petMenu.appendChild(li);
+	
 		}
 	}
 
