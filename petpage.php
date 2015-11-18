@@ -1,8 +1,8 @@
 
-<?php session_start() ?>
+<?php session_start(); ?>
 <!doctype html>
 <body>
-
+	<title>PetPage</title>
 	<style>
 		
 	</style>
@@ -12,23 +12,30 @@
 		<div class="row">
       
       <!-- left sidebar  -->
-			<div class="col-md-2">
+			<div class="col-md-3" id="sidebar">
 				<div class="media">
-					<div class="media-left">
-						<a href="#">
-							<img class="media-object" src="/resources/images/bunny_trans.gif" alt="...">
-						</a>
+					<div class="media-left" id = "picContainer">
+						<!-- <img class="media-object" src="/resources/images/bunny_trans.gif" alt="..." id = "petPic"> -->
 					</div>
 
 				</div>
 
 				<div class="media-body">
-					<h4 class="media-heading">Pet Name</h4>
+					<h4 class="media-heading" id = "petName">Pet Name</h4>
 				</div>
+
+<!-- Single button -->
+	<div class="btn-group">
+	  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	    Pet <span class="caret"></span>
+	  </button>
+	  <ul class="dropdown-menu" id = "petMenu">
+	  </ul>
+	</div>
 			</div>
       
       <!-- main body  -->
-			<div class="col-md-10">
+			<div class="col-md-9">
 				<div class="row">
 					<div class="col-md-8">
 						<div class="input-group">
@@ -68,12 +75,134 @@
 	
 	
 </body>
-
+<script src="library/render.js"></script>
+<!--<script src="https://www.rootcdn.com/libs/pixi.js/3.0.7/pixi.min.js" ></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/3.0.8/pixi.js"></script>
 <script>
 	var postButton = document.getElementById("postButton");
 	var postBox = document.getElementById("postBox");
     disp_posts();
     
+
+
+	jQuery.extend({
+		getValues: function(url, method, data, type)
+		{
+	    	var result = null;
+			$.ajax({
+	        	url: url,
+	            type: method,
+				data: data,
+				dataType: type,
+	            //contentType: 'application/json',
+				async: false,
+				success: function(data) {
+					result = jQuery.parseJSON(data);
+				},
+	                        error: function(xhr){
+	                            result = jQuery.parseJSON(xhr.responseText);
+	                        }
+			});
+			return result;
+		}
+	});
+
+	function setupContainers()
+	{
+		container = new PIXI.Container(0xFFFFFF);
+		canvas = document.createElement('CANVAS');
+		canvas.height = 230;
+		canvas.width = 230;		
+	}
+
+	function setupRenderers()
+	{
+		renderer = new PIXI.autoDetectRenderer(canvas.width, canvas.height, {view: canvas});
+		renderer.backgroundColor = 0xFFFFFF;
+		renderer.render(container);
+	}
+
+	function displayPet(selectedpet)
+	{
+		//this is fucking horrible
+		//throw this in a js file please
+		var petImage = document.getElementById("petPic");
+		var picContainer = document.getElementById("picContainer");			
+		var petName = document.getElementById("petName");
+		var sidebar = document.getElementById("sidebar");
+
+		var petList = $.getValues("account/get-pet.php", "GET", "user_id=<?php echo $_SESSION['curr_id']; ?>", "application/x-www-form-urlencoded");
+		var img = petList.pet_list[selectedpet].base;
+		petName.innerText = petList.pet_list[selectedpet].name;
+
+
+		clearCon(container);
+		addImg(img,container,canvas);
+		//setPet(container,img);
+
+		picContainer.appendChild(canvas);
+
+		requestAnimationFrame( function(timestamp)
+		{
+			animate(timestamp);
+		});
+		var petMenu = document.getElementById("petMenu");
+		while(petMenu.firstChild)
+			petMenu.removeChild(petMenu.firstChild);
+		for(var i = 0; i < petList.pet_list.length; i++)
+		{
+			//create dom elements here
+			var li = document.createElement('li');
+			var a = document.createElement('a');
+			var textNode = document.createTextNode(petList.pet_list[i].name);
+			a.appendChild(textNode);
+			a.index = i;
+			a.onclick = function()
+			{
+				var selection = this.index;
+				displayPet(this.index);
+
+				//throw in an ajax call
+				$.ajax({
+					url: "library/changeSelectedPet.php",
+					data: {selection:selection},
+					complete: function(response)
+					{
+						console.log(response.responseText);
+					}
+				});
+			}
+			li.appendChild(a);
+			petMenu.appendChild(li);
+			
+		}
+	}
+
+	function animate(timestamp)
+	{
+		renderer.render(container);
+		requestAnimationFrame( function(timestamp)
+		{
+			animate(timestamp);
+		});	
+	}
+
+	setupContainers();
+	setupRenderers();
+	var currentPet = <?php
+		include('library/opendb.php');
+		$id = $_SESSION['curr_id'];
+		$db_socket = initSocket();
+		$query = "SELECT select_pet FROM ".$configValue['DB_USER_TABLE']." where id='".$id."'";
+	
+		$statement = $db_socket->prepare($query);
+		$statement->execute();
+		$ret = $statement->fetchAll(PDO::FETCH_COLUMN,0);
+		$ret = $ret[0];
+		echo json_encode($ret);
+	?>;
+	displayPet(currentPet);
+	
 	//lets do an ajex request here
 	postButton.onclick = function(){
     var postData = postBox.value;

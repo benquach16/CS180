@@ -55,4 +55,11 @@ function addImg(img, con, canvas){
     con.addChild(img);
 }
 
+function clearCon(con)
+{
+	//clear all chillun
+	con.removeChildren(0,con.children.length);
+}
+
+
 
