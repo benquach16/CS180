@@ -189,8 +189,19 @@
 
 	setupContainers();
 	setupRenderers();
-
-	displayPet(0);
+	var currentPet = <?php
+		include('library/opendb.php');
+		$id = $_SESSION['curr_id'];
+		$db_socket = initSocket();
+		$query = "SELECT select_pet FROM ".$configValue['DB_USER_TABLE']." where id='".$id."'";
+	
+		$statement = $db_socket->prepare($query);
+		$statement->execute();
+		$ret = $statement->fetchAll(PDO::FETCH_COLUMN,0);
+		$ret = $ret[0];
+		echo json_encode($ret);
+	?>;
+	displayPet(currentPet);
 	
 	//lets do an ajex request here
 	postButton.onclick = function(){
