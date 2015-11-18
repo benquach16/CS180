@@ -1,5 +1,5 @@
 
-<?php session_start() ?>
+<?php session_start(); ?>
 <!doctype html>
 <body>
 	<title>PetPage</title>
@@ -159,9 +159,18 @@
 			a.index = i;
 			a.onclick = function()
 			{
+				var selection = this.index;
 				displayPet(this.index);
 
 				//throw in an ajax call
+				$.ajax({
+					url: "library/changeSelectedPet.php",
+					data: {selection:selection},
+					complete: function(response)
+					{
+						console.log(response.responseText);
+					}
+				});
 			}
 			li.appendChild(a);
 			petMenu.appendChild(li);
@@ -180,6 +189,7 @@
 
 	setupContainers();
 	setupRenderers();
+
 	displayPet(0);
 	
 	//lets do an ajex request here
