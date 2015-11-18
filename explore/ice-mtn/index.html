@@ -4,10 +4,187 @@
     <head>
         <title>Ice Mountain</title>
     </head>
+
     <body>
-        <link rel='stylesheet' type='text/css' href='../resources/css/stylesheet.css'>
+
+        <link rel='stylesheet' type='text/css' href='../../resources/css/stylesheet.css'>
         <?php include('../../library/nav-bar.html'); ?>
         <img src="../../resources/images/banner-icemtn.jpg">
         <a href='../return-map.php'>Back to World</a>
+   
+        <div class="container center-text">
+            <div class="row">
+                <!-- Total Moves -->
+                <div class="col-md-2">
+                    <div class="center-text">
+                        <h3 class="panel-title" id="totMoves"></h3>
+                    </div>
+                </div>
+                <!-- Game Board -->
+                <div class="col-md-10">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">8 Puzzle Board</h3>
+                            </div>
+                            <!--Number positions-->
+                            <h3 class="col-md-1" id="colOne"></h3>
+                            <h3 class="col-md-1" id="colTwo"></h3>
+                            <h3 class="col-md-1" id="colThree"></h3>
+                        </div>
+                    </div>
+
+                    <!-- Button Sidebar -->
+                    <div class="col-md-6 btn-group">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="button" id="left">Left</button>
+                            <button class="btn btn-primary" type="button" id="right">Right</button>
+                            <button class="btn btn-primary" type="button" id="up">Up</button>
+                            <button class="btn btn-primary" type="button" id="down">Down</button>
+                        </span>
+                    </div>
+                </div>                             
+        </div>
     </body>
 </html>
+
+
+<script>
+
+    numMatrix = [];
+    // So sorry Ben, couldnt figure out how to make pairs T.T
+    var zeroX = 2;
+    var zeroY = 2;
+    var totalMoves = 0;
+
+    for (var i = 0; i < 3; i++) {
+        numMatrix[i] = new Array(3);
+    }
+    // Hardcoded atm
+    numMatrix[0][0] = 1; numMatrix[0][1] = 2; numMatrix[0][2] = 3;
+    numMatrix[1][0] = 4; numMatrix[1][1] = 5; numMatrix[1][2] = 8;
+    numMatrix[2][0] = 6; numMatrix[2][1] = 7; numMatrix[2][2] = 0;
+
+    var leftButton = document.getElementById("left");
+    var rightButton = document.getElementById("right");
+    var upButton = document.getElementById("up");
+    var downButton = document.getElementById("down");
+
+    // Move left
+    leftButton.onclick = function () {
+        if (zeroX > 0) {
+            var tmp = numMatrix[zeroY][zeroX - 1];
+            numMatrix[zeroY][zeroX - 1] = 0;
+            numMatrix[zeroY][zeroX] = tmp;
+            zeroX -= 1;
+            totalMoves += 1;
+            dispBoard();
+            checkWin();
+        }
+        else {
+            // do nothing OOB
+            window.alert("Cannot go left!");
+        }
+    }
+    // Move right
+    rightButton.onclick = function () {
+        if (zeroX <= 1) {
+
+            var tmp = numMatrix[zeroY][zeroX + 1];
+            numMatrix[zeroY][zeroX + 1] = 0;
+            numMatrix[zeroY][zeroX] = tmp;
+            zeroX += 1;
+            totalMoves += 1;
+            dispBoard();
+            checkWin();
+        }
+        else {
+            // do nothing OOB
+            window.alert("Cannot go right!");
+        }
+    }
+    // Move up
+    upButton.onclick = function () {
+        if (zeroY > 0) {
+            var tmp = numMatrix[zeroY - 1][zeroX];
+            numMatrix[zeroY - 1][zeroX] = 0;
+            numMatrix[zeroY][zeroX] = tmp;
+            zeroY -= 1;
+            totalMoves += 1;
+            dispBoard();
+            checkWin();
+        }
+        else {
+            // do nothing OOB
+            window.alert("Cannot go up!");
+        }
+    }
+    // Move down
+    downButton.onclick = function () {
+        if (zeroY <= 1) {
+            var tmp = numMatrix[zeroY + 1][zeroX];
+            numMatrix[zeroY + 1][zeroX] = 0;
+            numMatrix[zeroY][zeroX] = tmp;
+            zeroY += 1;
+            totalMoves += 1;
+            dispBoard();
+            checkWin();
+        }
+        else {
+            // do nothing OOB
+            window.alert("Cannot go down!");
+        }
+    }    
+
+    dispBoard();
+
+    function dispBoard() {
+
+        while (colOne.firstChild) {
+            colOne.removeChild(colOne.firstChild);
+            colTwo.removeChild(colTwo.firstChild);
+            colThree.removeChild(colThree.firstChild);
+        }
+        while (totMoves.firstChild) {
+            totMoves.removeChild(totMoves.firstChild);
+        }
+
+        for (var i = 0; i < 3; i++) {
+            // Set elements
+            var newNumOne = document.createElement('h3');
+            var parPosOne = document.createTextNode(numMatrix[i][0]);
+            newNumOne.appendChild(parPosOne);
+            colOne.appendChild(newNumOne);
+
+            var newNumTwo = document.createElement('h3');
+            var parPosTwo = document.createTextNode(numMatrix[i][1]);
+            newNumTwo.appendChild(parPosTwo);
+            colTwo.appendChild(newNumTwo);
+
+            var newNumThree = document.createElement('h3');
+            var parPosThree = document.createTextNode(numMatrix[i][2]);
+            newNumThree.appendChild(parPosThree);
+            colThree.appendChild(newNumThree);
+        }
+
+        var tmp = document.createElement('h3');
+        var tmpPost = document.createTextNode("Total moves: " + totalMoves);
+        totMoves.appendChild(tmp);
+    }
+
+    function checkWin() {
+        if (numMatrix[0][0] == 1 & numMatrix[0][1] == 2 & numMatrix[0][2] == 3 &
+            numMatrix[1][0] == 4 & numMatrix[1][1] == 5 & numMatrix[1][2] == 6 &
+            numMatrix[2][0] == 7 & numMatrix[2][1] == 8 & numMatrix[2][2] == 0) {
+            if (confirm('You did it! Do you want to restart?')) newgame();
+            //TODO: add coins based on moves made
+          }
+    }
+
+    function newgame() {
+        //TODO randomize the board or something
+    }
+// End
+</script>
+
+
