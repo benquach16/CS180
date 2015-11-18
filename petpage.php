@@ -138,6 +138,18 @@
 
 		clearCon(container);
 		addImg(img,container,canvas);
+		if(petList.pet_list[selectedpet].pet_hat != '0')
+		{
+			addImg(petList.pet_list[selectedpet].hat_img, container, canvas);
+		}
+		if(petList.pet_list[selectedpet].pet_top != '0')
+		{
+			addImg(petList.pet_list[selectedpet].top_img, container, canvas);
+		}
+		if(petList.pet_list[selectedpet].pet_bottom != '0')
+		{
+			addImg(petList.pet_list[selectedpet].bottom_img, container, canvas);
+		}
 		//setPet(container,img);
 
 		picContainer.appendChild(canvas);
