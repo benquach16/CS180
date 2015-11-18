@@ -70,6 +70,7 @@
     var upButton = document.getElementById("up");
     var downButton = document.getElementById("down");
 
+    // Move left
     leftButton.onclick = function () {
         if (zeroX > 0) {
             var tmp = numMatrix[zeroY][zeroX - 1];
@@ -78,13 +79,14 @@
             zeroX -= 1;
             totalMoves += 1;
             dispBoard();
-            checkWin()
+            checkWin();
         }
         else {
             // do nothing OOB
             window.alert("Cannot go left!");
         }
     }
+    // Move right
     rightButton.onclick = function () {
         if (zeroX <= 1) {
 
@@ -94,13 +96,14 @@
             zeroX += 1;
             totalMoves += 1;
             dispBoard();
-            checkWin()
+            checkWin();
         }
         else {
             // do nothing OOB
             window.alert("Cannot go right!");
         }
     }
+    // Move up
     upButton.onclick = function () {
         if (zeroY > 0) {
             var tmp = numMatrix[zeroY - 1][zeroX];
@@ -109,13 +112,14 @@
             zeroY -= 1;
             totalMoves += 1;
             dispBoard();
-            checkWin()
+            checkWin();
         }
         else {
             // do nothing OOB
             window.alert("Cannot go up!");
         }
     }
+    // Move down
     downButton.onclick = function () {
         if (zeroY <= 1) {
             var tmp = numMatrix[zeroY + 1][zeroX];
@@ -124,7 +128,7 @@
             zeroY += 1;
             totalMoves += 1;
             dispBoard();
-            checkWin()
+            checkWin();
         }
         else {
             // do nothing OOB
@@ -172,12 +176,13 @@
         if (numMatrix[0][0] == 1 & numMatrix[0][1] == 2 & numMatrix[0][2] == 3 &
             numMatrix[1][0] == 4 & numMatrix[1][1] == 5 & numMatrix[1][2] == 6 &
             numMatrix[2][0] == 7 & numMatrix[2][1] == 8 & numMatrix[2][2] == 0) {
-                if (confirm('You did it! Do you want to restart?')) newgame();
+            if (confirm('You did it! Do you want to restart?')) newgame();
+            //TODO: add coins based on moves made
           }
     }
 
     function newgame() {
-
+        //TODO randomize the board or something
     }
 // End
 </script>
