@@ -76,7 +76,8 @@
 	
 </body>
 <script src="library/render.js"></script>
-<script src="https://www.rootcdn.com/libs/pixi.js/3.0.7/pixi.min.js" ></script>
+<!--<script src="https://www.rootcdn.com/libs/pixi.js/3.0.7/pixi.min.js" ></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/3.0.8/pixi.js"></script>
 <script>
 	var postButton = document.getElementById("postButton");
 	var postBox = document.getElementById("postBox");
@@ -106,7 +107,22 @@
 		}
 	});
 
-	function display_pet()
+	function setupContainers()
+	{
+		container = new PIXI.Container(0xFFFFFF);
+		canvas = document.createElement('CANVAS');
+		canvas.height = 230;
+		canvas.width = 230;		
+	}
+
+	function setupRenderers()
+	{
+		renderer = new PIXI.autoDetectRenderer(canvas.width, canvas.height, {view: canvas});
+		renderer.backgroundColor = 0xFFFFFF;
+		renderer.render(container);
+	}
+
+	function displayPet(selectedpet)
 	{
 		//this is fucking horrible
 		//throw this in a js file please
@@ -116,25 +132,23 @@
 		var sidebar = document.getElementById("sidebar");
 
 		var petList = $.getValues("account/get-pet.php", "GET", "user_id=<?php echo $_SESSION['curr_id']; ?>", "application/x-www-form-urlencoded");
-		var img = petList.pet_list[0].base;
-		petName.innerText = petList.pet_list[0].name;
+		var img = petList.pet_list[selectedpet].base;
+		petName.innerText = petList.pet_list[selectedpet].name;
 
-		container = new PIXI.Container(0x66FF99);
-		var canvas = document.createElement('CANVAS');
-		canvas.height = 230;
-		canvas.width = 230;
-	
+
+		clearCon(container);
 		addImg(img,container,canvas);
-	
+		//setPet(container,img);
 
 		picContainer.appendChild(canvas);
-		renderer = new PIXI.autoDetectRenderer(canvas.width, canvas.height, {view: canvas});
-		renderer.render(container);
+
 		requestAnimationFrame( function(timestamp)
 		{
 			animate(timestamp);
 		});
 		var petMenu = document.getElementById("petMenu");
+		while(petMenu.firstChild)
+			petMenu.removeChild(petMenu.firstChild);
 		for(var i = 0; i < petList.pet_list.length; i++)
 		{
 			//create dom elements here
@@ -142,9 +156,16 @@
 			var a = document.createElement('a');
 			var textNode = document.createTextNode(petList.pet_list[i].name);
 			a.appendChild(textNode);
+			a.index = i;
+			a.onclick = function()
+			{
+				displayPet(this.index);
+
+				//throw in an ajax call
+			}
 			li.appendChild(a);
 			petMenu.appendChild(li);
-	
+			
 		}
 	}
 
@@ -157,9 +178,9 @@
 		});	
 	}
 
-	
-
-	display_pet();
+	setupContainers();
+	setupRenderers();
+	displayPet(0);
 	
 	//lets do an ajex request here
 	postButton.onclick = function(){
