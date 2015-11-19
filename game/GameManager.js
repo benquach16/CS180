@@ -144,6 +144,7 @@ function update() {
 				if(playerLeft.takeDamage(projectiles[i].damage))
 				{
 					healthLeft.update(playerLeft.health, playerLeft.fullHealth);
+					conn.send({type: ConnData.TakeDamage, damage: projectiles[i].damage});
 					projectileHit = true;
 				}
 			}
