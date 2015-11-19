@@ -13,11 +13,11 @@ var ConnData = {
 }
 
 
-var peer = new Peer('Mark', {key: 'lwjd5qra8257b9'});
-var conn = peer.connect('Mark');
+var peer = new Peer('Mark999', {key: 'lwjd5qra8257b9'});
+var conn = peer.connect('Calvin999');
 
 peer.on('connection', function(conn) {
-	function send(data){
+	conn.on('data', function(data){
 		console.log(data);
 		//(string)type, (Projectile)projectile
 		if(data["type"] == ConnData.Weapon)
@@ -31,12 +31,11 @@ peer.on('connection', function(conn) {
 			playerRight.curWeapon = curWeapon;
 			projectiles.push(data["projectile"]);
 		}
-		//(string)type, (Coord)nextPos
+		//(ConnData)type, (int)x, (int)y
 		else if(data["type"] == ConnData.Move)
 		{
-			
-			playerRight.nextPos.x = 5 - data["nextPos"].x;
-			playerRight.nextPos.y = data["nextPos"].y;
+			playerRight.nextPos.x = 5 - data["x"].x;
+			playerRight.nextPos.y = data["y"].y;
 			playerRight.moveTimer = playerRight.moveDuration;
 			console.log(playerRight.nextPos.x + ", " + playerRight.nextPos.y);
 		}
@@ -48,7 +47,7 @@ peer.on('connection', function(conn) {
 			playerRight.takeDamage(data["damage"]);
 			healthRight.update(playerRight.health, playerRight.fullHealth);
 		}
-	};
+	});
 });
 
 
@@ -112,6 +111,7 @@ function create() {
 
 function update() {
 	
+	conn.send('hi!');
 	playerLeft.update();
 	playerRight.update();
 	
