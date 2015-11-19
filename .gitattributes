@@ -16,3 +16,6 @@
 .\resources\images\hat_trans.gif filter=lfs diff=lfs merge=lfs -text
 .\resources\images\shirt_trans.gif filter=lfs diff=lfs merge=lfs -text
 .\resources\images\bunny_trans.gif filter=lfs diff=lfs merge=lfs -text
+.\resources\images\park.jpg filter=lfs diff=lfs merge=lfs -text
+.\resources\images\Virtual-Pets.png filter=lfs diff=lfs merge=lfs -text
+.\resources\images\intro_bg.png filter=lfs diff=lfs merge=lfs -text

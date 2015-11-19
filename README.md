@@ -49,4 +49,11 @@ USE THIS FOR FRIENDS DATABASE
 	id_A int(6) not null,
 	id_B int(6) not null);
 
+USER THIS FOR POSTS DATABASE
 
+create table user_posts (
+    id int(6) auto_increment not null primary key,
+    userid int(6) not null,
+    user varchar(32) not null,
+    post varchar(2048) not null
+)

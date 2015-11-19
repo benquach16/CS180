@@ -14,16 +14,7 @@
         <div class="collapse navbar-collapse">
 
 		  <a class="navbar-brand"><?php echo $_SESSION['curr_user']?></a>
-		  <p class="navbar-text" id="currencyCounter">Currency : <?php
-												include 'opendb.php';
-												$db_socket = initSocket();
-												$query = "select currency from ".$configValue['DB_USER_TABLE']." where id='".$_SESSION['curr_user']."'";
-												$statement = $db_socket->prepare($query);
-												$statement->execute();
-												$currency = $statement->fetchColumn(0);
-												echo json_encode($currency + 0);
-												include 'closedb.php';
-											   ?></p>
+		  <p class="navbar-text" id="currencyCounter"></p>
 
 		  <ul class="nav navbar-nav navbar-right">
 			<li class ="dropup">
@@ -43,14 +34,19 @@
       </div>
   </nav>
 
-<script src=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/library/sweetalert-dev.js' ?>></script> <link rel="stylesheet" type="text/css" href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/library/sweetalert.css' ?>>
-<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>	
+<script src=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/library/sweetalert-dev.js' ?>></script>
+  <link rel="stylesheet" type="text/css" href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/library/sweetalert.css' ?>>
+
+  <script src="<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/library/ajax-call.js' ?>"></script>
 	<script type="text/javascript">
+		var url = "<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/library/get-currency.php' ?>";
+		var cur_cur = $.getValues(url, "GET", "user_id=<?php echo $_SESSION['curr_id'];?>", "application/x-www-form-urlencoded");
+		$('#currencyCounter').text("Currency : " + cur_cur.currency);
 
 	var listOfFriends =
 	<?php
 	   //pull friends from table
-	   include 'opendb.php';
+	   include_once 'opendb.php';
 	   $db_socket = initSocket();
 	   if(!is_null($db_socket))
 	   {

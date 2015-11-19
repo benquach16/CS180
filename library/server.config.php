@@ -34,11 +34,14 @@ $configValue['DB_NAME'] = 'test';
 $configValue['DB_USER_TABLE'] = 'auth_list';
 $configValue['DB_FRIENDS_LIST'] = 'friends_list';
 $configValue['DB_NOTIFICATIONS_LIST'] = 'notifications_list';
-		
+$configValue['DB_POST_TABLE'] = 'user_posts';
+
 //this is depricated KEK
 //$configValue['DB_ITEM_TABLE'] = 'item_list';
 
 $configValue['DB_PET_TABLE'] = 'pet_list';
 $configValue['DB_INV_TABLE'] = 'inv_list';
 $configValue['DB_TEAM_TABLE'] = 'team_list';
+
+$configValue['PEER_KEY'] = 'xt51bgdqouaw0zfr';
 ?>
