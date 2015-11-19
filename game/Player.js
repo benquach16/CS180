@@ -128,10 +128,14 @@ Player.prototype.shootBullet = function()
 {
 	if(this.moveTime > 0 || this.reloadTimer > 0){return;}
 	
-	this.curWeapon.shoot(this.gridPos.x, this.gridPos.y);
+	//this.curWeapon.shoot(this.gridPos.x, this.gridPos.y);
+	
+	conn.send({type:"Weapon", curWeapon:this.curWeapon});
 	
 	this.reloadTimer = this.reloadDuration;
 	this.firingTimer = this.firingDuration;
+	
+	/*this.curWeapon.shoot(this.gridPos.x, this.gridPos.y);*/
 }
 
 Player.prototype.moveLeft = function()
@@ -140,6 +144,7 @@ Player.prototype.moveLeft = function()
 	{
 		this.moveTimer = this.moveDuration;
 		this.nextPos.x--;
+		conn.send({type:"Move", nextPos:this.nextPos});
 	}
 }
 
@@ -149,6 +154,7 @@ Player.prototype.moveRight = function()
 	{
 		this.moveTimer = this.moveDuration;
 		this.nextPos.x++;
+		conn.send({type:"Move", nextPos:this.nextPos});
 	}
 }
 
@@ -158,6 +164,7 @@ Player.prototype.moveUp = function()
 	{
 		this.moveTimer = this.moveDuration;
 		this.nextPos.y++;
+		conn.send({type:"Move", nextPos:this.nextPos});
 	}
 }
 
@@ -167,6 +174,7 @@ Player.prototype.moveDown = function()
 	{
 		this.moveTimer = this.moveDuration;
 		this.nextPos.y--;
+		conn.send({type:"Move", nextPos:this.nextPos});
 	}
 }
 

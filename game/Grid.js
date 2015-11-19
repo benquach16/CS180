@@ -30,6 +30,7 @@ function Coords(xPos, yPos)
 	this.x = xPos;
 	this.y = yPos;
 };
+
 function Grid(offsetX, offsetY, width, height, numTilesX, numTilesY)
 {
 	this.offsetX = offsetX;
