@@ -128,10 +128,10 @@ Player.prototype.shootBullet = function()
 {
 	if(this.moveTime > 0 || this.reloadTimer > 0){return;}
 	
-	//this.curWeapon.shoot(this.gridPos.x, this.gridPos.y);
+	this.curWeapon.shoot(this.gridPos.x, this.gridPos.y);
 	
-	conn.send({"type":"Weapon", "curWeapon":this.curWeapon});
-	
+	conn.send({type:"Weapon", type:this.curWeapon.type, damage:this.curWeapon.damage, speed:this.curWeapon.speed, fireRate:this.curWeapon.fireRate});
+
 	this.reloadTimer = this.reloadDuration;
 	this.firingTimer = this.firingDuration;
 	

@@ -17,25 +17,26 @@ var peer = new Peer('Mark999', {key: 'lwjd5qra8257b9'});
 var conn = peer.connect('Calvin999');
 
 peer.on('connection', function(conn) {
+	
+	if(conn.open){console.log("Opened!");}
 	conn.on('data', function(data){
 		console.log(data);
 		//(string)type, (Projectile)projectile
-		if(data["type"] == ConnData.Weapon)
+		//console.log(data.type +", " + data["type"]);
+		if(data.type == ConnData.Weapon)
 		{
-			var curWeapon = playerRight.curWeapon;
-			playerRight.curWeapon = data["curWeapon"];
+			var enemyWeapon = new Weapon(data.damage, data.speed, data.fireRate, data.type);
 			playerRight.curWeapon.type = TileType.Blue;
 			playerRight.curWeapon.speed = -playerRight.curWeapon.speed;
 			playerRight.curWeapon.shoot(playerRight.gridPos.x, playerRight.gridPos.y);
 			playerRight.curWeapon.speed = -playerRight.curWeapon.speed;
 			playerRight.curWeapon = curWeapon;
-			projectiles.push(data["projectile"]);
 		}
 		//(ConnData)type, (int)x, (int)y
 		else if(data["type"] == ConnData.Move)
 		{
-			playerRight.nextPos.x = 5 - data["x"].x;
-			playerRight.nextPos.y = data["y"].y;
+			playerRight.nextPos.x = 5 - data["x"];
+			playerRight.nextPos.y = data["y"];
 			playerRight.moveTimer = playerRight.moveDuration;
 			console.log(playerRight.nextPos.x + ", " + playerRight.nextPos.y);
 		}
