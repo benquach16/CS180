@@ -12,18 +12,15 @@ var ConnData = {
     TakeDamage : "TakeDamage"
 }
 
-function recData() {
+function recData(data) {
 	console.log(data);
 	//(string)type, (Projectile)projectile
 	//console.log(data.type +", " + data["type"]);
 	if(data.type == ConnData.Weapon)
 	{
-		var enemyWeapon = new Weapon(data.damage, data.speed, data.fireRate, data.type);
-		playerRight.curWeapon.type = TileType.Blue;
-		playerRight.curWeapon.speed = -playerRight.curWeapon.speed;
-		playerRight.curWeapon.shoot(playerRight.gridPos.x, playerRight.gridPos.y);
-		playerRight.curWeapon.speed = -playerRight.curWeapon.speed;
-		playerRight.curWeapon = curWeapon;
+		console.log("Here");
+		var enemyWeapon = new Weapon(data.damage, data.speed, data.fireRate, TileType.Blue);
+		enemyWeapon.shoot(playerRight.gridPos.x, playerRight.gridPos.y);
 	}
 	//(ConnData)type, (int)x, (int)y
 	else if(data["type"] == ConnData.Move)
@@ -43,7 +40,7 @@ function recData() {
 	}
 };
 	
-var peerName = "Sender";
+var peerName = "Reciever";
 var peer = new Peer(peerName, {key: 'lwjd5qra8257b9'});
 var conn;
 if(peerName == "Sender") {
@@ -54,7 +51,9 @@ if(peerName == "Sender") {
         });
     });
 } else {
-    peer.on('connection', function(c) {
+    peer.on('connection', function(con) {
+		conn = con;
+		console.log("P2 Connected");
         conn.on('open',function() {
             conn.on('data', function(data) {
                 recData(data);
@@ -148,7 +147,7 @@ function update() {
 					projectileHit = true;
 				}
 			}
-			else if(damagePositions[j].x == playerRight.gridPos.x && damagePositions[j].y == playerRight.gridPos.y && projectiles[i].bulletFrom != TileType.Blue)
+			/*else if(damagePositions[j].x == playerRight.gridPos.x && damagePositions[j].y == playerRight.gridPos.y && projectiles[i].bulletFrom != TileType.Blue)
 			{
 				if(playerRight.takeDamage(projectiles[i].damage))
 				{
@@ -156,7 +155,7 @@ function update() {
 					healthRight.update(playerRight.health, playerRight.fullHealth);
 					projectileHit = true;
 				}
-			}
+			}*/
 		}
 		if(projectileHit)
 		{
