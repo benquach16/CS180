@@ -12,44 +12,57 @@ var ConnData = {
     TakeDamage : "TakeDamage"
 }
 
-
-var peer = new Peer('Mark999', {key: 'lwjd5qra8257b9'});
-var conn = peer.connect('Calvin999');
-
-peer.on('connection', function(conn) {
+function recData() {
+	console.log(data);
+	//(string)type, (Projectile)projectile
+	//console.log(data.type +", " + data["type"]);
+	if(data.type == ConnData.Weapon)
+	{
+		var enemyWeapon = new Weapon(data.damage, data.speed, data.fireRate, data.type);
+		playerRight.curWeapon.type = TileType.Blue;
+		playerRight.curWeapon.speed = -playerRight.curWeapon.speed;
+		playerRight.curWeapon.shoot(playerRight.gridPos.x, playerRight.gridPos.y);
+		playerRight.curWeapon.speed = -playerRight.curWeapon.speed;
+		playerRight.curWeapon = curWeapon;
+	}
+	//(ConnData)type, (int)x, (int)y
+	else if(data["type"] == ConnData.Move)
+	{
+		playerRight.nextPos.x = 5 - data["x"];
+		playerRight.nextPos.y = data["y"];
+		playerRight.moveTimer = playerRight.moveDuration;
+		console.log(playerRight.nextPos.x + ", " + playerRight.nextPos.y);
+	}
+	//(string)type, (int)damage
+	else if(data["type"] == ConnData.TakeDamage)
+	{
+		//In case race conditions happen, force player to not be immune
+		playerRight.immuneTimer = 0;
+		playerRight.takeDamage(data["damage"]);
+		healthRight.update(playerRight.health, playerRight.fullHealth);
+	}
+};
 	
-	if(conn.open){console.log("Opened!");}
-	conn.on('data', function(data){
-		console.log(data);
-		//(string)type, (Projectile)projectile
-		//console.log(data.type +", " + data["type"]);
-		if(data.type == ConnData.Weapon)
-		{
-			var enemyWeapon = new Weapon(data.damage, data.speed, data.fireRate, data.type);
-			playerRight.curWeapon.type = TileType.Blue;
-			playerRight.curWeapon.speed = -playerRight.curWeapon.speed;
-			playerRight.curWeapon.shoot(playerRight.gridPos.x, playerRight.gridPos.y);
-			playerRight.curWeapon.speed = -playerRight.curWeapon.speed;
-			playerRight.curWeapon = curWeapon;
-		}
-		//(ConnData)type, (int)x, (int)y
-		else if(data["type"] == ConnData.Move)
-		{
-			playerRight.nextPos.x = 5 - data["x"];
-			playerRight.nextPos.y = data["y"];
-			playerRight.moveTimer = playerRight.moveDuration;
-			console.log(playerRight.nextPos.x + ", " + playerRight.nextPos.y);
-		}
-		//(string)type, (int)damage
-		else if(data["type"] == ConnData.TakeDamage)
-		{
-			//In case race conditions happen, force player to not be immune
-			playerRight.immuneTimer = 0;
-			playerRight.takeDamage(data["damage"]);
-			healthRight.update(playerRight.health, playerRight.fullHealth);
-		}
-	});
-});
+var peerName = "Sender";
+var peer = new Peer(peerName, {key: 'lwjd5qra8257b9'});
+var conn;
+if(peerName == "Sender") {
+    conn = peer.connect("Reciever");
+    conn.on('open',function() {
+        conn.on('data', function(data) {
+            recData(data);
+        });
+    });
+} else {
+    peer.on('connection', function(c) {
+        conn.on('open',function() {
+            conn.on('data', function(data) {
+                recData(data);
+            });
+        });
+    });
+}
+
 
 
 
@@ -112,7 +125,7 @@ function create() {
 
 function update() {
 	
-	conn.send('hi!');
+	//conn.send('hi!');
 	playerLeft.update();
 	playerRight.update();
 	
