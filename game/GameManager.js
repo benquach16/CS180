@@ -5,15 +5,65 @@ var playerLeft;
 var playerRight;
 var input;
 
-function inputHandler()
-{
-	this.gridPosX = 0;
-	this.gridPosY = 0;
-	this.pressedL = false;
-	this.pressedR = false;
-	this.pressedD = false;
-	this.pressedU = false;
+var ConnData = {
+	Null: "Null",
+    Weapon : "Weapon",
+    Move : "Move",
+    TakeDamage : "TakeDamage"
+}
+
+function recData(data) {
+	console.log(data);
+	//(string)type, (Projectile)projectile
+	//console.log(data.type +", " + data["type"]);
+	if(data.type == ConnData.Weapon)
+	{
+		console.log("Here");
+		var enemyWeapon = new Weapon(data.damage, data.speed, data.fireRate, TileType.Blue);
+		enemyWeapon.shoot(playerRight.gridPos.x, playerRight.gridPos.y);
+	}
+	//(ConnData)type, (int)x, (int)y
+	else if(data["type"] == ConnData.Move)
+	{
+		playerRight.nextPos.x = 5 - data["x"];
+		playerRight.nextPos.y = data["y"];
+		playerRight.moveTimer = playerRight.moveDuration;
+		console.log(playerRight.nextPos.x + ", " + playerRight.nextPos.y);
+	}
+	//(string)type, (int)damage
+	else if(data["type"] == ConnData.TakeDamage)
+	{
+		//In case race conditions happen, force player to not be immune
+		playerRight.immuneTimer = 0;
+		playerRight.takeDamage(data["damage"]);
+		healthRight.update(playerRight.health, playerRight.fullHealth);
+	}
 };
+	
+var peerName = "Reciever";
+var peer = new Peer(peerName, {key: 'lwjd5qra8257b9'});
+var conn;
+if(peerName == "Sender") {
+    conn = peer.connect("Reciever");
+    conn.on('open',function() {
+        conn.on('data', function(data) {
+            recData(data);
+        });
+    });
+} else {
+    peer.on('connection', function(con) {
+		conn = con;
+		console.log("P2 Connected");
+        conn.on('open',function() {
+            conn.on('data', function(data) {
+                recData(data);
+            });
+        });
+    });
+}
+
+
+
 
 function preload() {
 	game.load.image('gatorLeft', 'assets/gatorIdleLeft.png');
@@ -26,13 +76,23 @@ function preload() {
 	game.load.image('redTile', 'assets/redTile.png');
 	game.load.image('yellowTile', 'assets/yellowTile.png');
 	game.load.spritesheet('background', 'assets/background.png', 256, 256);
+	
+	
+	//get json from database
+	/*game.load.onFileComplete.add(function(key) {
+    if (key === 'data') {
+      var data = game.cache.getJSON(key);
+      // data is now populated with the contents of the JSON file
+    }
+  }, this);
+
+  game.load.json('data', 'assets/data.json');*/
+  
 }
 
 function create() {
 
 	grid = new Grid(70, 450, 800, 600, 6, 3);
-	
-	input = new inputHandler();
 
     //  We're going to be using physics, so enable the Arcade Physics system
     game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -53,8 +113,8 @@ function create() {
 	var weaponsRight = [];
 	weaponsRight[0] = new Weapon(10, 1000, 250, TileType.Blue);
 	weaponsRight[1] = new Weapon(20, 500, 1000, TileType.Blue);
-    playerLeft = new Player(0,0, 'gatorLeft', weaponsLeft);
-	playerRight = new Player(4, 0, 'gatorRight', weaponsRight);
+    playerLeft = new Player(1,1, 'gatorLeft', weaponsLeft);
+	playerRight = new Player(4, 1, 'gatorRight', weaponsRight);
 	projectileGroup = game.add.group();
 	projectileGroup.enableBody = true;
 	projectileGroup.allowGravity = false;
@@ -64,8 +124,10 @@ function create() {
 
 function update() {
 	
+	//conn.send('hi!');
 	playerLeft.update();
 	playerRight.update();
+	
 	grid.tileUpdate();
 	for(var i = 0; i < projectiles.length; i++)
 	{
@@ -82,17 +144,19 @@ function update() {
 				if(playerLeft.takeDamage(projectiles[i].damage))
 				{
 					healthLeft.update(playerLeft.health, playerLeft.fullHealth);
+					conn.send({type: ConnData.TakeDamage, damage: projectiles[i].damage});
 					projectileHit = true;
 				}
 			}
-			else if(damagePositions[j].x == playerRight.gridPos.x && damagePositions[j].y == playerRight.gridPos.y && projectiles[i].bulletFrom != TileType.Blue)
+			/*else if(damagePositions[j].x == playerRight.gridPos.x && damagePositions[j].y == playerRight.gridPos.y && projectiles[i].bulletFrom != TileType.Blue)
 			{
 				if(playerRight.takeDamage(projectiles[i].damage))
 				{
+					conn.send({type: "TakeDamage", damage: projectiles[i].damage});
 					healthRight.update(playerRight.health, playerRight.fullHealth);
 					projectileHit = true;
 				}
-			}
+			}*/
 		}
 		if(projectileHit)
 		{
