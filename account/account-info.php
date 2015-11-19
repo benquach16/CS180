@@ -39,7 +39,7 @@
             </div>
         </div>
 
-        <script src="https://www.rootcdn.com/libs/pixi.js/3.0.7/pixi.min.js" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/3.0.8/pixi.js" ></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/library/ajax-call.js'; ?>"></script>
         <script src="<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/library/render.js'; ?>"></script>
