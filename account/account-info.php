@@ -41,30 +41,11 @@
 
         <script src="https://www.rootcdn.com/libs/pixi.js/3.0.7/pixi.min.js" ></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-        <!-- <script src="<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/library/ajax-call.php'; ?>"></script> -->
+        <script src="<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/library/ajax-call.js'; ?>"></script>
         <script src="<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/library/render.js'; ?>"></script>
 
         <script>
-            jQuery.extend({
-                getValues: function(url, method, data, type) {
-                    var result = null;
-                    $.ajax({
-                        url: url,
-                        type: method,
-                        data: data,
-                        dataType: type,
-                        //contentType: 'application/json',
-                        async: false,
-                        success: function(data) {
-                            result = jQuery.parseJSON(data);
-                        },
-                        error: function(xhr){
-                            result = jQuery.parseJSON(xhr.responseText);
-                        }
-                    });
-                    return result;
-                }
-            });
+
 
             var renderers = [];
             var containers = [];

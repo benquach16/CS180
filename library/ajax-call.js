@@ -15,7 +15,7 @@ jQuery.extend({
                 result = jQuery.parseJSON(data);
             },
             error: function(xhr){
-                console.log(xhr.responseText);
+                //console.log(xhr.responseText);
                 result = jQuery.parseJSON(xhr.responseText);
             },
         });

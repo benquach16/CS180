@@ -42,4 +42,6 @@ $configValue['DB_POST_TABLE'] = 'user_posts';
 $configValue['DB_PET_TABLE'] = 'pet_list';
 $configValue['DB_INV_TABLE'] = 'inv_list';
 $configValue['DB_TEAM_TABLE'] = 'team_list';
+
+$configValue['PEER_KEY'] = 'xt51bgdqouaw0zfr';
 ?>

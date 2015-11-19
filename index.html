@@ -4,7 +4,11 @@
     <title>BEST APP EVER</title>
       <style>
           audio {float: right;}
-          canvas {display: block; float: left;}
+          canvas {
+              display: block;
+              float: left;
+              height:
+          }
           body {background: black;background-image: linear-gradient(top, rgb(131,139,131) 8%, rgb(0,0,0) 84%);
               background-image: -o-linear-gradient(top, rgb(131,139,131) 8%, rgb(0,0,0) 84%);
               background-image: -moz-linear-gradient(top, rgb(131,139,131) 8%, rgb(0,0,0) 84%);
@@ -22,73 +26,58 @@
     <link rel='stylesheet' type='text/css' href='./resources/css/stylesheet.css'>
     <link rel='stylesheet' type='text/css' href='./resources/css/modal-stylesheet.css'>
 
-    <div style="display:none;" >
-        <img id="gator_img" src="resources/images/gator.png" >
-    </div>
+    <script src="game/js/phaser.min.js"></script>
 
     <script>
-        /*
-        //creating a canvas using JS
-        var canvas = document.createElement("canvas");
+        //Game's height and width
+        var gameHeight = $(window).height(), gameWidth = $(window).width();
 
-        //making the canvas fullscreen
-        var w = canvas.width = window.innerWidth;
-        var h = canvas.height = window.innerHeight;
+        // initialize phaser, call create() once done
+        var game = new Phaser.Game(gameWidth, gameHeight, Phaser.CANVAS, 'parent', {
+            preload: preload, create: create, update: update
+        });
 
-        var fov = 450; //pixels are 450px away from us
+        function preload(){
+            //load assets
+            game.load.image('logo', 'resources/images/Virtual-Pets.png');
+            game.load.spritesheet('background', 'resources/images/intro_bg.png', 242, 163);
+        }
 
-        var ctx = canvas.getContext("2d");
-        //appending the canvas to the body
-        document.body.appendChild(canvas);
+        function create(){
+            //init game objects
+            var background = game.add.sprite( 0, 0, 'background');
+            background.animations.add('loop');
+            background.animations.play('loop', 10, true);
+            background.width = gameWidth;
+            background.height = gameHeight;
 
-        //an array of pixels with 3 dimensional coordinates
-        //a square sheet of dots separated by 15px
-        var pixels = [];
-        for(var x = -450; x < 450; x+=15)
-            for(var z = -450; z < 450; z+=15)
-                pixels.push({x: x, y: 170, z: z});
+            var logo = game.add.sprite( gameWidth / 2, gameHeight / 4 , 'logo');
+            logo.anchor.x = .5;
+            logo.anchor.y = .5;
+        }
 
-        function render() {
-            ctx.clearRect(0,0,w,h);
-            // grabbing a screenshot of the canvas using getImageData
-            var imagedata = ctx.getImageData(0,0,w,h);
-            // looping through all pixel points
-            var i = pixels.length;
-            while(i--){
-                var pixel = pixels[i];
-                // calculating 2d position for 3d coordinates
-                // fov = field of view = denotes how far the pixels are from us.
-                // the scale will control how the spacing between the pixels will decrease with increasing distance from us.
-                var scale = fov/(fov+pixel.z);
-                var x2d = pixel.x * scale + w/2;
-                var y2d = pixel.y * scale + h/2;
-                // marking the points green - only if they are inside the screen
-                if(x2d >= 0 && x2d <= w && y2d >= 0 && y2d <= h){
-
-                    var c = (Math.round(y2d) * imagedata.width + Math.round(x2d))*4;
-                    imagedata.data[c] = 0; //red
-                    imagedata.data[c+1] = 250; //green
-                    imagedata.data[c+2] = 0; //blue
-                    imagedata.data[c+3] = 255; //alpha
-                }
-                pixel.z -= 1;
-                if(pixel.z < -fov) pixel.z += 2*fov;
-            }
-
-            //putting imagedata back on the canvas
-            ctx.putImageData(imagedata, 0, 0);
-
+        function update(){
+            //handle events
 
         }
 
-        function animate(){
-            render();
-            requestAnimationFrame(animate);
+        $(window).resize(function(){
+            resizeGame();
+        });
+
+        function resizeGame(){
+            gameHeight = $(window).height();
+            gameWidth = $(window).width();
+
+            game.width = gameWidth;
+            game.height = gameHeight;
+            game.stage.bounds.width = gameWidth;
+            game.stage.bounds.height = gameHeight;
+
+            $('#parent').children('canvas').attr('height', gameHeight);
+            $('#parent').children('canvas').attr('width', gameWidth);
         }
 
-        //setInterval(render, 1000/30);
-        requestAnimationFrame(animate);
-        */
     </script>
 
     <!--
@@ -197,6 +186,8 @@
             }
         });
     </script>
+
+  <div id="parent"></div>
 
   </body>
 </html>
