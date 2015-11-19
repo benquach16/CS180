@@ -5,15 +5,53 @@ var playerLeft;
 var playerRight;
 var input;
 
-function inputHandler()
-{
-	this.gridPosX = 0;
-	this.gridPosY = 0;
-	this.pressedL = false;
-	this.pressedR = false;
-	this.pressedD = false;
-	this.pressedU = false;
-};
+var ConnData = {
+	Null: "Null",
+    Weapon : "Weapon",
+    Move : "Move",
+    TakeDamage : "TakeDamage"
+}
+
+
+var peer = new Peer('Mark', {key: 'lwjd5qra8257b9'});
+var conn = peer.connect('Mark');
+
+peer.on('connection', function(conn) {
+	function send(data){
+		console.log(data);
+		//(string)type, (Projectile)projectile
+		if(data["type"] == ConnData.Weapon)
+		{
+			var curWeapon = playerRight.curWeapon;
+			playerRight.curWeapon = data["curWeapon"];
+			playerRight.curWeapon.type = TileType.Blue;
+			playerRight.curWeapon.speed = -playerRight.curWeapon.speed;
+			playerRight.curWeapon.shoot(playerRight.gridPos.x, playerRight.gridPos.y);
+			playerRight.curWeapon.speed = -playerRight.curWeapon.speed;
+			playerRight.curWeapon = curWeapon;
+			projectiles.push(data["projectile"]);
+		}
+		//(string)type, (Coord)nextPos
+		else if(data["type"] == ConnData.Move)
+		{
+			
+			playerRight.nextPos.x = 5 - data["nextPos"].x;
+			playerRight.nextPos.y = data["nextPos"].y;
+			playerRight.moveTimer = playerRight.moveDuration;
+			console.log(playerRight.nextPos.x + ", " + playerRight.nextPos.y);
+		}
+		//(string)type, (int)damage
+		else if(data["type"] == ConnData.TakeDamage)
+		{
+			//In case race conditions happen, force player to not be immune
+			playerRight.immuneTimer = 0;
+			playerRight.takeDamage(data["damage"]);
+			healthRight.update(playerRight.health, playerRight.fullHealth);
+		}
+	};
+});
+
+
 
 function preload() {
 	game.load.image('gatorLeft', 'assets/gatorIdleLeft.png');
@@ -43,8 +81,6 @@ function preload() {
 function create() {
 
 	grid = new Grid(70, 450, 800, 600, 6, 3);
-	
-	input = new inputHandler();
 
     //  We're going to be using physics, so enable the Arcade Physics system
     game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -65,8 +101,8 @@ function create() {
 	var weaponsRight = [];
 	weaponsRight[0] = new Weapon(10, 1000, 250, TileType.Blue);
 	weaponsRight[1] = new Weapon(20, 500, 1000, TileType.Blue);
-    playerLeft = new Player(0,0, 'gatorLeft', weaponsLeft);
-	playerRight = new Player(4, 0, 'gatorRight', weaponsRight);
+    playerLeft = new Player(1,1, 'gatorLeft', weaponsLeft);
+	playerRight = new Player(4, 1, 'gatorRight', weaponsRight);
 	projectileGroup = game.add.group();
 	projectileGroup.enableBody = true;
 	projectileGroup.allowGravity = false;
@@ -78,6 +114,7 @@ function update() {
 	
 	playerLeft.update();
 	playerRight.update();
+	
 	grid.tileUpdate();
 	for(var i = 0; i < projectiles.length; i++)
 	{
@@ -101,6 +138,7 @@ function update() {
 			{
 				if(playerRight.takeDamage(projectiles[i].damage))
 				{
+					conn.send({type: "TakeDamage", damage: projectiles[i].damage});
 					healthRight.update(playerRight.health, playerRight.fullHealth);
 					projectileHit = true;
 				}

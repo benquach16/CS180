@@ -16,7 +16,7 @@ function Projectile(x, y, speed, damage, spriteName) // Constructor
 	//this.gameObject.body.immovable = true;
     this.width = 1;
 	this.height = 1;
-	this.gridPos = new Coords(x,y);  
+	this.gridPos = new Coords(x,y);
 	
 	this.damageTilesX = [0];
 	this.damageTilesY = [0];
