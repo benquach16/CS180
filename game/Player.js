@@ -90,13 +90,13 @@ Player.prototype.deathAnim = function()
 {
 	this.deathTimer = this.deathDuration;
 	if(this.type == TileType.Red)
-		{
-			this.gameObject.loadTexture('gatorDamagedLeft');
-		}
-		else if(this.type == TileType.Blue)
-		{
-			this.gameObject.loadTexture('gatorDamagedRight');
-		}
+	{
+		this.gameObject.loadTexture('gatorDamagedLeft');
+	}
+	else if(this.type == TileType.Blue)
+	{
+		this.gameObject.loadTexture('gatorDamagedRight');
+	}
 }
 
 Player.prototype.takeDamage = function(dmg)
@@ -130,7 +130,7 @@ Player.prototype.shootBullet = function()
 	
 	//this.curWeapon.shoot(this.gridPos.x, this.gridPos.y);
 	
-	conn.send({type:"Weapon", curWeapon:this.curWeapon});
+	conn.send({"type":"Weapon", "curWeapon":this.curWeapon});
 	
 	this.reloadTimer = this.reloadDuration;
 	this.firingTimer = this.firingDuration;
@@ -144,7 +144,7 @@ Player.prototype.moveLeft = function()
 	{
 		this.moveTimer = this.moveDuration;
 		this.nextPos.x--;
-		conn.send({type:"Move", nextPos:this.nextPos});
+		conn.send({type:"Move", x:this.nextPos.x, y:this.nextPos.y});
 	}
 }
 
@@ -154,7 +154,7 @@ Player.prototype.moveRight = function()
 	{
 		this.moveTimer = this.moveDuration;
 		this.nextPos.x++;
-		conn.send({type:"Move", nextPos:this.nextPos});
+		conn.send({type:"Move", x:this.nextPos.x, y:this.nextPos.y});
 	}
 }
 
@@ -164,7 +164,7 @@ Player.prototype.moveUp = function()
 	{
 		this.moveTimer = this.moveDuration;
 		this.nextPos.y++;
-		conn.send({type:"Move", nextPos:this.nextPos});
+		conn.send({type:"Move", x:this.nextPos.x, y:this.nextPos.y});
 	}
 }
 
@@ -174,7 +174,7 @@ Player.prototype.moveDown = function()
 	{
 		this.moveTimer = this.moveDuration;
 		this.nextPos.y--;
-		conn.send({type:"Move", nextPos:this.nextPos});
+		conn.send({type:"Move", x:this.nextPos.x, y:this.nextPos.y});
 	}
 }
 
