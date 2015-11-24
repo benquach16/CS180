@@ -2,7 +2,7 @@
 	session_start();
 	include ("./opendb.php");
 	$db_socket = initSocket();
-	$user = $_SESSION['curr_id'];
+	$user = $_GET['id'];
 
 	// query post database for the curr users data
 	$query = "SELECT * FROM ".$configValue['DB_POST_TABLE']." WHERE userid='".$user."'";

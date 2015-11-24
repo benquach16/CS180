@@ -131,7 +131,7 @@
 		var petName = document.getElementById("petName");
 		var sidebar = document.getElementById("sidebar");
 
-		var petList = $.getValues("account/get-pet.php", "GET", "user_id=<?php echo $_SESSION['curr_id']; ?>", "application/x-www-form-urlencoded");
+		var petList = $.getValues("account/get-pet.php", "GET", "user_id=<?php echo $_GET['id']; ?>", "application/x-www-form-urlencoded");
 		var img = petList.pet_list[selectedpet].base;
 		petName.innerText = petList.pet_list[selectedpet].name;
 
@@ -203,7 +203,7 @@
 	setupRenderers();
 	var currentPet = <?php
 		include('library/opendb.php');
-		$id = $_SESSION['curr_id'];
+		$id = $_GET['id'];
 		$db_socket = initSocket();
 		$query = "SELECT select_pet FROM ".$configValue['DB_USER_TABLE']." where id='".$id."'";
 	
@@ -230,10 +230,13 @@
           disp_posts();
     }
     
-    function disp_posts() {    
+    function disp_posts() {
+
          // Returns JSON object with all user posts
+					var	id = <?php echo $_GET['id'];?>;
          $.ajax({
             url:"./library/fetch_post.php",
+			data:{id:id},
             complete: function (response) {
                 console.log(response.responseText);          
                 
