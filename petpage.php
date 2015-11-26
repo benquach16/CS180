@@ -22,6 +22,7 @@
 
 				<div class="media-body">
 					<h4 class="media-heading" id = "petName">Pet Name</h4>
+					<h4 class="media-heading" id = "petName">Username</h4>
 				</div>
 
 <!-- Single button -->

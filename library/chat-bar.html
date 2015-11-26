@@ -13,7 +13,7 @@
       <div class="navbar-footer">
         <div class="collapse navbar-collapse">
 
-		  <a class="navbar-brand"><?php echo $_SESSION['curr_user']?></a>
+		  <a class="navbar-brand" alt="satan"><?php echo $_SESSION['curr_user']?></a>
 		  <p class="navbar-text" id="currencyCounter"></p>
 
 		  <ul class="nav navbar-nav navbar-right">
@@ -33,10 +33,10 @@
         </div>
       </div>
   </nav>
-
+<script src=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/library/contextMenu.js' ?>></script>
 <script src=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/library/sweetalert-dev.js' ?>></script>
   <link rel="stylesheet" type="text/css" href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/library/sweetalert.css' ?>>
-
+  <link rel="stylesheet" type="text/css" href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/library/contextMenu.css' ?>>
   <script src="<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/library/ajax-call.js' ?>"></script>
 	<script type="text/javascript">
 		var url = "<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/library/get-currency.php' ?>";
@@ -96,6 +96,16 @@
 		link.appendChild(text);
 		link.href = "#";
 		link.receiverID = listOfFriends[i][0];
+		var menu = [{
+	  	    name: 'View PetPage',
+	  	    title: 'View PetPage',
+	  	    fun: function () {
+				
+	  	    }
+	  	}];
+	
+		$(link).contextMenu(menu,{triggerOn:'contextmenu'});
+		
 		link.onclick = function()
 		{
 			var tmp = this.receiverID;
