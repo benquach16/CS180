@@ -58,7 +58,7 @@
 <body onload="onInit()">
     <?php include('../library/nav-bar.html'); ?>
     <div id="left-container"></div>
-    <div id="main-container">
+    <div id="main-container" class = "container center-text">
         <div id="shop-container">
             <div id="merchant-container">
                 <img id="merchant-img" src="http://img2.wikia.nocookie.net/__cb20130204042403/bloodbrothersgame/images/9/93/Memesi,_Merchant_Figure.png">

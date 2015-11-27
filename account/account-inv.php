@@ -28,32 +28,34 @@
         }
     </style>
     <?php include('../library/nav-bar.html'); ?>
-    <button id="clean">clean</button>
-    <button id="save">save</button>
+	<div class = "container center-text">
+	    <button id="clean">clean</button>
+	    <button id="save">save</button>
 
-    <!-- we want db call to get total number of pets. this should output some button array to choose which is visable-->
-    <div id="pet-list">
-        <!-- if the pet does not exist, then we output a disabled button-->
-        <button id="pet0-btn">0</button>
-        <button id="pet1-btn">1</button>
-        <button id="pet2-btn">2</button>
-        <button id="pet3-btn">3</button>
-    </div>
+	    <!-- we want db call to get total number of pets. this should output some button array to choose which is visable-->
+	    <div id="pet-list">
+	        <!-- if the pet does not exist, then we output a disabled button-->
+	        <button id="pet0-btn">0</button>
+	        <button id="pet1-btn">1</button>
+	        <button id="pet2-btn">2</button>
+	        <button id="pet3-btn">3</button>
+	    </div>
 
-    <!-- store the pet default type somewhere, maybe a div? seems hacky -->
-    <div id="drop-target"  style="height:200px; width:200px; position: absolute;">
-        <canvas id="testCanv" ondrop="drop(event, this)" ondragover="allowDrop(event)" height="200" width="200"></canvas>
-    </div>
+	    <!-- store the pet default type somewhere, maybe a div? seems hacky -->
+	    <div id="drop-target"  style="height:200px; width:200px; position: absolute;">
+	        <canvas id="testCanv" ondrop="drop(event, this)" ondragover="allowDrop(event)" height="200" width="200"></canvas>
+	    </div>
 
-    <div id="inventory" >
-        <!-- do db call here for avilible items, also set a value to know what kind of item it is -->
-        <div id="row1" class="inv-row"></div>
-        <div id="row2" class="inv-row"></div>
-        <div id="row3" class="inv-row"></div>
-        <div id="row4" class="inv-row"></div>
-    </div>
+	    <div id="inventory" >
+	        <!-- do db call here for avilible items, also set a value to know what kind of item it is -->
+	        <div id="row1" class="inv-row"></div>
+	        <div id="row2" class="inv-row"></div>
+	        <div id="row3" class="inv-row"></div>
+	        <div id="row4" class="inv-row"></div>
+	    </div>
+	</div>
 
-    <script src="https://www.rootcdn.com/libs/pixi.js/3.0.7/pixi.min.js" ></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/3.0.8/pixi.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 
     <script type="text/javascript">
