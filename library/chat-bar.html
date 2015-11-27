@@ -33,10 +33,10 @@
         </div>
       </div>
   </nav>
-
+<script src=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/library/contextMenu.js' ?>></script>
 <script src=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/library/sweetalert-dev.js' ?>></script>
   <link rel="stylesheet" type="text/css" href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/library/sweetalert.css' ?>>
-
+  <link rel="stylesheet" type="text/css" href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/library/contextMenu.css' ?>>
   <script src="<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/library/ajax-call.js' ?>"></script>
 	<script type="text/javascript">
 		var url = "<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/library/get-currency.php' ?>";
@@ -96,6 +96,22 @@
 		link.appendChild(text);
 		link.href = "#";
 		link.receiverID = listOfFriends[i][0];
+		var	menu = [{
+			id: link.receiverID,
+	  	    name: 'View PetPage',
+	  	    title: link.receiverID,
+	  	    fun: function ()
+			{
+				var test = <?php echo "'http://".$_SERVER['HTTP_HOST']."/petpage.php?id='" ?>;
+				test+= this.title;
+				console.log(test);
+				window.location = test;
+	  	    }
+	  	}];
+
+	
+		$(link).contextMenu(menu,{triggerOn:'contextmenu'});
+		
 		link.onclick = function()
 		{
 			var tmp = this.receiverID;

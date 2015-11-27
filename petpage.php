@@ -22,6 +22,17 @@
 
 				<div class="media-body">
 					<h4 class="media-heading" id = "petName">Pet Name</h4>
+					<h4 class="media-heading" id = "userName"><?php
+					    include('./library/opendb.php');
+					    $id = $_GET['id'];
+					    $db_socket = initSocket();
+					    $query = "select user from ".$configValue['DB_USER_TABLE']." where id='".$id."'";
+					    $statement = $db_socket->prepare($query);
+					    $statement->execute();
+					    $name = $statement->fetchColumn(0);
+						echo $name;
+						?>
+					</h4>
 				</div>
 
 <!-- Single button -->
@@ -48,7 +59,14 @@
 						
 						<div class = "panel panel-default">
 							<div class="panel-heading">
-								<h3 class = "panel-title">Your posts</h3>
+								<h3 class = "panel-title"><?php
+					    $id = $_GET['id'];
+					    $query = "select user from ".$configValue['DB_USER_TABLE']." where id='".$id."'";
+					    $statement = $db_socket->prepare($query);
+					    $statement->execute();
+					    $name = $statement->fetchColumn(0);
+						echo $name;
+						?>'s posts</h3>
 							</div>
 							<div class ="panel-body">
 								<ul class="list-group" id="listOfPosts">
@@ -82,7 +100,8 @@
 	var postButton = document.getElementById("postButton");
 	var postBox = document.getElementById("postBox");
     disp_posts();
-    
+	var usern = document.getElementById("userName");
+	//might do an ajax request  for this because embedded php is breaking
 
 
 	jQuery.extend({
@@ -202,9 +221,7 @@
 	setupContainers();
 	setupRenderers();
 	var currentPet = <?php
-		include('library/opendb.php');
 		$id = $_GET['id'];
-		$db_socket = initSocket();
 		$query = "SELECT select_pet FROM ".$configValue['DB_USER_TABLE']." where id='".$id."'";
 	
 		$statement = $db_socket->prepare($query);
@@ -213,6 +230,7 @@
 		$ret = $ret[0];
 		echo json_encode($ret);
 	?>;
+
 	displayPet(currentPet);
 	
 	//lets do an ajex request here
