@@ -32,9 +32,9 @@
 		for($j = 0; $j < count($posts); $j++)
 		{
 			$allPosts[] = array();
-			$allPosts[$i][0] = $friendID;
-			$allPosts[$i][1] = $posts[$j][2];
-			$allPosts[$i][2] = $posts[$j][3];
+			$allPosts[$j][0] = $friendID;
+			$allPosts[$j][1] = $posts[$j][2];
+			$allPosts[$j][2] = $posts[$j][3];
 			
 		}		
 	
