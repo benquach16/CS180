@@ -604,4 +604,8 @@
     </script>
 
 </body>
+
+	<div id="chatbar">
+		<?php include ('../library/chat-bar.html');?>
+	</div>
 </html>

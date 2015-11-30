@@ -25,20 +25,20 @@
         </style>
 
         <?php include('../library/nav-bar.html'); ?>
+		<div class = "container center-text">
+	        <div id="acct-info-container">
+	            <!-- add html//js for account features-->
+	            <!-- ability to display character (pet) avatar-->
+	            <!-- perhaps display character inventory? how do we design this?-->
+	            <!-- maybe we can store an inventory as a JSON object in mysql-->
+	            <p>Username: <?php include('../library/getUser.php'); getUser(); ?> </p>
+	        </div>
 
-        <div id="acct-info-container">
-            <!-- add html//js for account features-->
-            <!-- ability to display character (pet) avatar-->
-            <!-- perhaps display character inventory? how do we design this?-->
-            <!-- maybe we can store an inventory as a JSON object in mysql-->
-            <p>Username: <?php include('../library/getUser.php'); getUser(); ?> </p>
-        </div>
-
-        <div class="pet-party-display">
-            <div id="pet-section">
-            </div>
-        </div>
-
+	        <div class="pet-party-display">
+	            <div id="pet-section">
+	            </div>
+	        </div>
+		</div>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/3.0.8/pixi.js" ></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/library/ajax-call.js'; ?>"></script>
@@ -113,4 +113,7 @@
             }
         </script>
     </body>
+		<div id="chatbar">
+		<?php include ('../library/chat-bar.html');?>
+	</div>
 </html>
