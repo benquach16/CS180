@@ -1,53 +1,56 @@
 <!doctype html>
 
+<script src=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/library/sweetalert-dev.js' ?>></script>
+<link rel="stylesheet" type="text/css" href=><?php echo 'http://'.$_SERVER['HTTP_HOST'].'/library/sweetalert.css' ?>>
+
 <html>
-    <head>
-        <title>Ice Mountain</title>
-    </head>
+<head>
+    <title>Ice Mountain</title>
+</head>
 
-    <body>
+<body>
 
-        <link rel='stylesheet' type='text/css' href='../../resources/css/stylesheet.css'>
-        <?php include('../../library/nav-bar.html'); ?>
+    <link rel='stylesheet' type='text/css' href='../../resources/css/stylesheet.css'>
+    <?php include('../../library/nav-bar.html'); ?>
+    <a href='../return-map.php'>Back to World</a>
 
-        <a href='../return-map.php'>Back to World</a>
-   
-        <div class="container center-text">
-            <div class="row">
-
-                <!-- Total Moves -->
-                <div class="col-md-2">
-                    <div class="center-text">
-                        <h3 class="panel-title" id="totMoves"></h3>
+    <div class="container">
+        <div class="row">
+            <!-- Total Moves -->
+            <div class="col-md-2">
+                <div class="center-text">
+                    <h3 class="panel-title" id="totMoves"></h3>
+                </div>
+            </div>
+            <!-- Game Board -->
+            <div class="col-md-10">
+                <div class="row">
+                    <div class="col-md-5 ">
+                        <img src="../../resources/images/banner-icemtn.jpg">
+                        <form>
+                            <br />
+                            <h1 class="panel-title col-md-offset-5">8 Puzzle Board Game</h1>
+                            <p class="page-header col-md-offset-4">Complete the puzzle to collect coins!</p>
+                        </form>
+                        <!--Number positions-->
+                        <h3 class="col-md-1 col-md-offset-6" id="colOne"></h3>
+                        <h3 class="col-md-1 col-md-offset-1" id="colTwo"></h3>
+                        <h3 class="col-md-1 col-md-offset-1" id="colThree"></h3>
                     </div>
                 </div>
-                <!-- Game Board -->
-                <div class="col-md-10">
-                    <div class="row">
-                        <div class="col-md-5">
-                            <div class="panel-heading">
-						        <img src="../../resources/images/banner-icemtn.jpg">
-                                <h3 class="panel-title">8 Puzzle Board</h3>
-                            </div>
-                            <!--Number positions-->
-                            <h3 class="col-md-1" id="colOne"></h3>
-                            <h3 class="col-md-1" id="colTwo"></h3>
-                            <h3 class="col-md-1" id="colThree"></h3>
-                        </div>
-                    </div>
 
-                    <!-- Button Sidebar -->
-                    <div class="col-md-6 btn-group">
-                        <span class="input-group-btn">
-                            <button class="btn btn-primary" type="button" id="left">Left</button>
-                            <button class="btn btn-primary" type="button" id="right">Right</button>
-                            <button class="btn btn-primary" type="button" id="up">Up</button>
-                            <button class="btn btn-primary" type="button" id="down">Down</button>
-                        </span>
-                    </div>
-                </div>                             
+                <!-- Button Sidebar -->
+                <div class="col-md-6 btn-group col-md-offset-2">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="button" id="left">Left</button>
+                        <button class="btn btn-primary" type="button" id="right">Right</button>
+                        <button class="btn btn-primary" type="button" id="up">Up</button>
+                        <button class="btn btn-primary" type="button" id="down">Down</button>
+                    </span>
+                </div>
+            </div>
         </div>
-    </body>
+</body>
 </html>
 
 
@@ -63,90 +66,105 @@
         numMatrix[i] = new Array(3);
     }
     // Hardcoded atm
-    numMatrix[0][0] = 1; numMatrix[0][1] = 2; numMatrix[0][2] = 3;
-    numMatrix[1][0] = 4; numMatrix[1][1] = 5; numMatrix[1][2] = 8;
-    numMatrix[2][0] = 6; numMatrix[2][1] = 7; numMatrix[2][2] = 0;
 
     var leftButton = document.getElementById("left");
     var rightButton = document.getElementById("right");
     var upButton = document.getElementById("up");
     var downButton = document.getElementById("down");
 
+    newGame();
+
     // Move left
     leftButton.onclick = function () {
+        goLeft();
+        totalMoves += 1;
+        dispBoard();
+        checkWin();
+    }
+    // Move right
+    rightButton.onclick = function () {
+        goRight();
+        totalMoves += 1;
+        dispBoard();
+        checkWin();
+    }
+    // Move up
+    upButton.onclick = function () {
+        goUp();
+        totalMoves += 1;
+        dispBoard();
+        checkWin();
+    }
+    // Move down
+    downButton.onclick = function () {
+        goDown();
+        totalMoves += 1;
+        dispBoard();
+        checkWin();
+    }
+
+    function goLeft() {
         if (zeroX > 0) {
             var tmp = numMatrix[zeroY][zeroX - 1];
             numMatrix[zeroY][zeroX - 1] = 0;
             numMatrix[zeroY][zeroX] = tmp;
             zeroX -= 1;
-            totalMoves += 1;
-            dispBoard();
-            checkWin();
         }
         else {
             // do nothing OOB
-            window.alert("Cannot go left!");
+            // sweetAlert("Cannot go left!");
         }
     }
-    // Move right
-    rightButton.onclick = function () {
-        if (zeroX <= 1) {
 
+    function goRight() {
+        if (zeroX <= 1) {
             var tmp = numMatrix[zeroY][zeroX + 1];
             numMatrix[zeroY][zeroX + 1] = 0;
             numMatrix[zeroY][zeroX] = tmp;
             zeroX += 1;
-            totalMoves += 1;
-            dispBoard();
-            checkWin();
         }
         else {
             // do nothing OOB
-            window.alert("Cannot go right!");
+            // window.alert("Cannot go right!");
         }
     }
-    // Move up
-    upButton.onclick = function () {
+
+    function goUp() {
         if (zeroY > 0) {
             var tmp = numMatrix[zeroY - 1][zeroX];
             numMatrix[zeroY - 1][zeroX] = 0;
             numMatrix[zeroY][zeroX] = tmp;
             zeroY -= 1;
-            totalMoves += 1;
-            dispBoard();
-            checkWin();
         }
         else {
             // do nothing OOB
-            window.alert("Cannot go up!");
+            // window.alert("Cannot go up!");
         }
     }
-    // Move down
-    downButton.onclick = function () {
+
+    function goDown() {
         if (zeroY <= 1) {
             var tmp = numMatrix[zeroY + 1][zeroX];
             numMatrix[zeroY + 1][zeroX] = 0;
             numMatrix[zeroY][zeroX] = tmp;
             zeroY += 1;
-            totalMoves += 1;
-            dispBoard();
-            checkWin();
         }
         else {
             // do nothing OOB
-            window.alert("Cannot go down!");
+            // window.alert("Cannot go down!");
         }
-    }    
+    }
 
     dispBoard();
 
     function dispBoard() {
-
+        // Clears current board columns
         while (colOne.firstChild) {
             colOne.removeChild(colOne.firstChild);
             colTwo.removeChild(colTwo.firstChild);
             colThree.removeChild(colThree.firstChild);
         }
+        // TODO moar score stuff
         while (totMoves.firstChild) {
             totMoves.removeChild(totMoves.firstChild);
         }
@@ -168,25 +186,47 @@
             newNumThree.appendChild(parPosThree);
             colThree.appendChild(newNumThree);
         }
-
-        var tmp = document.createElement('h3');
-        var tmpPost = document.createTextNode("Total moves: " + totalMoves);
-        totMoves.appendChild(tmp);
+        // TODO: Show scores
+        //var tmp = document.createElement('h3');
+        //var tmpPost = document.createTextNode("Total moves: " + totalMoves);
+        //totMoves.appendChild(tmp);
     }
 
     function checkWin() {
         if (numMatrix[0][0] == 1 & numMatrix[0][1] == 2 & numMatrix[0][2] == 3 &
             numMatrix[1][0] == 4 & numMatrix[1][1] == 5 & numMatrix[1][2] == 6 &
             numMatrix[2][0] == 7 & numMatrix[2][1] == 8 & numMatrix[2][2] == 0) {
-            if (confirm('You did it! Do you want to restart?')) newgame();
+            if (confirm('You did it! Do you want to restart?')) newGame();
             //TODO: add coins based on moves made
-          }
+        }
     }
 
-    function newgame() {
-        //TODO randomize the board or something
+    function newGame() {
+        // Starts with a matrix that is solvable
+        numMatrix[0][0] = 1; numMatrix[0][1] = 2; numMatrix[0][2] = 3;
+        numMatrix[1][0] = 4; numMatrix[1][1] = 0; numMatrix[1][2] = 8;
+        numMatrix[2][0] = 6; numMatrix[2][1] = 5; numMatrix[2][2] = 7;
+        var randVal;
+
+        // Makes moves "going backwards" so we know that it's solvable
+        for (var i = 0; i < 100; ++i) {
+            randVal = Math.floor((Math.random() * 120) + 1) % 4;
+            if (randVal == 1) {
+                goLeft();
+            }
+            else if (randVal == 2) {
+                goRight();
+            }
+            else if (randVal == 3) {
+                goUp();
+            }
+            else if (randVal == 4) {
+                goDown();
+            }
+        }
+        // And refresh the board!
+        dispBoard();
     }
-// End
+    // End
 </script>
-
 
