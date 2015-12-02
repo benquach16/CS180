@@ -82,73 +82,116 @@
 								</ul>
 							</div>
 						</div>
-
 					</div>
-
-					
+          <!-- Account info button -->
+          <button id='open_signup_btn' class='btn' type='button' data-toggle='modal' data-target='#signModal'>
+            <span class="glyphicon glyphicon-user"></span>
+            Account Settings
+          </button>
 				</div>
 			</div>
-		</div>
+		</div>    
 	</div>
-	
-	
+
+  <!-- Account info Modal Taaaaanks Calvin -->
+  <div id="signModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title" id='myModalLabel'>Edit Account Info</h4>
+        </div>
+        <div class="modal-body">
+          <div class='modal-body-inner'>
+            <div class="modal-left">
+              <form action='edit-user.php' method='POST' autocomplete="off" class="form-horizontal modal-cell" id='edit-user'>
+                <div class="form-group">
+                  <div class='col-md-12'>
+                    <input id='mod_user' class='form-control input-sm' type='text' name='new_user' placeholder='Username'/>
+                  </div>
+                  <div id='user-error'></div>
+                </div>
+                <div class="form-group">
+                  <div class='col-md-12'>
+                    <input id='mod_new_pass' class='form-control input-sm' type='password' name='new_pass' placeholder='Password'/>
+                  </div>
+                </div>
+
+                <button id='signup_submit' class='btn' type='submit' name='submit' value='false' >Confirm</button>
+              </form>
+            </div>
+            <div class='modal-mid'>&nbsp;</div>
+            <div class='modal-right select-character'>
+
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
 </body>
 <script src="library/render.js"></script>
 <!--<script src="https://www.rootcdn.com/libs/pixi.js/3.0.7/pixi.min.js" ></script>-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/3.0.8/pixi.js"></script>
 <script>
-	var postButton = document.getElementById("postButton");
-	var postBox = document.getElementById("postBox");
-    disp_posts();
-	var usern = document.getElementById("userName");
-	//might do an ajax request  for this because embedded php is breaking
+  var postButton = document.getElementById("postButton");
+  var postBox = document.getElementById("postBox");
+  var editButton = document.getElementById("signup_submit");
+  disp_posts();
 
 
-	jQuery.extend({
-		getValues: function(url, method, data, type)
-		{
-	    	var result = null;
-			$.ajax({
-	        	url: url,
-	            type: method,
-				data: data,
-				dataType: type,
-	            //contentType: 'application/json',
-				async: false,
-				success: function(data) {
-					result = jQuery.parseJSON(data);
-				},
-	                        error: function(xhr){
-	                            result = jQuery.parseJSON(xhr.responseText);
-	                        }
-			});
-			return result;
-		}
-	});
 
-	function setupContainers()
-	{
-		container = new PIXI.Container(0xFFFFFF);
-		canvas = document.createElement('CANVAS');
-		canvas.height = 230;
-		canvas.width = 230;		
-	}
+  jQuery.extend({
+  getValues: function(url, method, data, type)
+  {
+  var result = null;
+  $.ajax({
+  url: url,
+  type: method,
+  data: data,
+  dataType: type,
+  //contentType: 'application/json',
+  async: false,
+  success: function(data) {
+  result = jQuery.parseJSON(data);
+  },
+  error: function(xhr){
+  result = jQuery.parseJSON(xhr.responseText);
+  }
+  });
+  return result;
+  }
+  });
 
-	function setupRenderers()
-	{
-		renderer = new PIXI.autoDetectRenderer(canvas.width, canvas.height, {view: canvas});
-		renderer.backgroundColor = 0xFFFFFF;
-		renderer.render(container);
-	}
+  function setupContainers()
+  {
+  container = new PIXI.Container(0xFFFFFF);
+  canvas = document.createElement('CANVAS');
+  canvas.height = 230;
+  canvas.width = 230;
+  }
 
-	function displayPet(selectedpet)
-	{
-		//this is fucking horrible
-		//throw this in a js file please
-		var petImage = document.getElementById("petPic");
-		var picContainer = document.getElementById("picContainer");			
-		var petName = document.getElementById("petName");
-		var sidebar = document.getElementById("sidebar");
+  function setupRenderers()
+  {
+  renderer = new PIXI.autoDetectRenderer(canvas.width, canvas.height, {view: canvas});
+  renderer.backgroundColor = 0xFFFFFF;
+  renderer.render(container);
+  }
+
+  function displayPet(selectedpet)
+  {
+  //this is fucking horrible
+  //throw this in a js file please
+  var petImage = document.getElementById("petPic");
+  var picContainer = document.getElementById("picContainer");
+  var petName = document.getElementById("petName");
+  var sidebar = document.getElementById("sidebar");
 
 		var petList = $.getValues("account/get-pet.php", "GET", "user_id=<?php echo $_GET['id']; ?>", "application/x-www-form-urlencoded");
 		var img = petList.pet_list[selectedpet].base;
@@ -230,9 +273,36 @@
 		$ret = $ret[0];
 		echo json_encode($ret);
 	?>;
-
 	displayPet(currentPet);
 	
+  //plspls
+  editButton.onclick = function() {
+  
+    var newUser = <?php echo $_POST['new_user'];?>
+
+    <?php
+
+      //include lib to access auth db
+      include './library/opendb.php';
+    
+      //retrieve post values from form,
+      $user = $_POST['new_user'];
+      $pass = md5($_POST['new_pass']);
+      $userID = $_SESSION['curr_id'];
+
+      $db_socket = initSocket();        
+      // Edit the data for a given user id
+      $query = "UPDATE auth_list SET user='".$user."' WHERE id=".$_SESSION['curr_id'];
+      $statement = $db_socket->prepare($query);
+      $statement->execute();
+       
+      //close db
+      include './library/closedb.php';
+    ?>
+  }
+  
+  
+  
 	//lets do an ajex request here
 	postButton.onclick = function(){
     var postData = postBox.value;
