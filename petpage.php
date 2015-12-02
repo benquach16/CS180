@@ -140,11 +140,11 @@
 <!--<script src="https://www.rootcdn.com/libs/pixi.js/3.0.7/pixi.min.js" ></script>-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/3.0.8/pixi.js"></script>
 <script>
-  var postButton = document.getElementById("postButton");
-  var postBox = document.getElementById("postBox");
-  disp_posts();
-
-
+	var postButton = document.getElementById("postButton");
+	var postBox = document.getElementById("postBox");
+    disp_posts();
+	var usern = document.getElementById("userName");
+	//might do an ajax request  for this because embedded php is breaking
 
   jQuery.extend({
   getValues: function(url, method, data, type)
@@ -168,29 +168,51 @@
   }
   });
 
-  function setupContainers()
-  {
-  container = new PIXI.Container(0xFFFFFF);
-  canvas = document.createElement('CANVAS');
-  canvas.height = 230;
-  canvas.width = 230;
-  }
+	jQuery.extend({
+		getValues: function(url, method, data, type)
+		{
+	    	var result = null;
+			$.ajax({
+	        	url: url,
+	            type: method,
+				data: data,
+				dataType: type,
+	            //contentType: 'application/json',
+				async: false,
+				success: function(data) {
+					result = jQuery.parseJSON(data);
+				},
+	                        error: function(xhr){
+	                            result = jQuery.parseJSON(xhr.responseText);
+	                        }
+			});
+			return result;
+		}
+	});
 
-  function setupRenderers()
-  {
-  renderer = new PIXI.autoDetectRenderer(canvas.width, canvas.height, {view: canvas});
-  renderer.backgroundColor = 0xFFFFFF;
-  renderer.render(container);
-  }
+	function setupContainers()
+	{
+		container = new PIXI.Container(0xFFFFFF);
+		canvas = document.createElement('CANVAS');
+		canvas.height = 230;
+		canvas.width = 230;		
+	}
 
-  function displayPet(selectedpet)
-  {
-  //this is fucking horrible
-  //throw this in a js file please
-  var petImage = document.getElementById("petPic");
-  var picContainer = document.getElementById("picContainer");
-  var petName = document.getElementById("petName");
-  var sidebar = document.getElementById("sidebar");
+	function setupRenderers()
+	{
+		renderer = new PIXI.autoDetectRenderer(canvas.width, canvas.height, {view: canvas});
+		renderer.backgroundColor = 0xFFFFFF;
+		renderer.render(container);
+	}
+
+	function displayPet(selectedpet)
+	{
+		//this is fucking horrible
+		//throw this in a js file please
+		var petImage = document.getElementById("petPic");
+		var picContainer = document.getElementById("picContainer");			
+		var petName = document.getElementById("petName");
+		var sidebar = document.getElementById("sidebar");
 
 		var petList = $.getValues("account/get-pet.php", "GET", "user_id=<?php echo $_GET['id']; ?>", "application/x-www-form-urlencoded");
 		var img = petList.pet_list[selectedpet].base;
@@ -273,7 +295,7 @@
 		echo json_encode($ret);
 	?>;
 	displayPet(currentPet);
-	  
+	
 	//lets do an ajex request here
 	postButton.onclick = function(){
     var postData = postBox.value;
