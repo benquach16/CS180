@@ -82,16 +82,76 @@
 								</ul>
 							</div>
 						</div>
-
 					</div>
-
-					
+          <!-- Account info button -->
+          <button id='open_signup_btn' class='btn' type='button' data-toggle='modal' data-target='#signModal'>
+            <span class="glyphicon glyphicon-user"></span>
+            Account Settings
+          </button>
 				</div>
 			</div>
-		</div>
+		</div>    
 	</div>
-	
-	
+
+
+
+
+  <!-- Account info Modal -->
+  <div id="signModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title" id='myModalLabel'>Edit Account Info</h4>
+        </div>
+        <div class="modal-body">
+          <div class='modal-body-inner'>
+            <div class="modal-left">
+              <form action='edit-user.php' method='POST' autocomplete="off" class="form-horizontal modal-cell" id='edit-user'>
+                <div class="form-group">
+                  <div class='col-md-12'>
+                    <input id='mod_user' class='form-control input-sm' type='text' name='new_user' placeholder='Username'/>
+                  </div>
+                  <div id='user-error'></div>
+                </div>
+                <div class="form-group">
+                  <div class='col-md-12'>
+                    <input id='mod_new_pass' class='form-control input-sm' type='password' name='new_pass' placeholder='Password'/>
+                  </div>
+                </div>
+
+                <button id='signup_submit' class='btn' type='submit' name='submit' value='false' >Confirm</button>
+              </form>
+            </div>
+            <div class='modal-mid'>&nbsp;</div>
+            <div class='modal-right select-character'>
+
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </body>
 <script src="library/render.js"></script>
 <!--<script src="https://www.rootcdn.com/libs/pixi.js/3.0.7/pixi.min.js" ></script>-->
