@@ -93,7 +93,10 @@
 		</div>    
 	</div>
 
-  <!-- Account info Modal Taaaaanks Calvin -->
+
+
+
+  <!-- Account info Modal -->
   <div id="signModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <!-- Modal content-->
@@ -135,84 +138,77 @@
   </div>
   
   
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </body>
 <script src="library/render.js"></script>
 <!--<script src="https://www.rootcdn.com/libs/pixi.js/3.0.7/pixi.min.js" ></script>-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/3.0.8/pixi.js"></script>
 <script>
-  var postButton = document.getElementById("postButton");
-  var postBox = document.getElementById("postBox");
-  var editButton = document.getElementById("signup_submit");
-  disp_posts();
-
-  jQuery.extend({
-  getValues: function(url, method, data, type)
-  {
-  var result = null;
-  $.ajax({
-  url: url,
-  type: method,
-  data: data,
-  dataType: type,
-  //contentType: 'application/json',
-  async: false,
-  success: function(data) {
-  result = jQuery.parseJSON(data);
-  },
-  error: function(xhr){
-  result = jQuery.parseJSON(xhr.responseText);
-  }
-  });
-  return result;
-  }
-  });
+	var postButton = document.getElementById("postButton");
+	var postBox = document.getElementById("postBox");
+    disp_posts();
+	var usern = document.getElementById("userName");
+	//might do an ajax request  for this because embedded php is breaking
 
 
-  jQuery.extend({
-  getValues: function(url, method, data, type)
-  {
-  var result = null;
-  $.ajax({
-  url: url,
-  type: method,
-  data: data,
-  dataType: type,
-  //contentType: 'application/json',
-  async: false,
-  success: function(data) {
-  result = jQuery.parseJSON(data);
-  },
-  error: function(xhr){
-  result = jQuery.parseJSON(xhr.responseText);
-  }
-  });
-  return result;
-  }
-  });
+	jQuery.extend({
+		getValues: function(url, method, data, type)
+		{
+	    	var result = null;
+			$.ajax({
+	        	url: url,
+	            type: method,
+				data: data,
+				dataType: type,
+	            //contentType: 'application/json',
+				async: false,
+				success: function(data) {
+					result = jQuery.parseJSON(data);
+				},
+	                        error: function(xhr){
+	                            result = jQuery.parseJSON(xhr.responseText);
+	                        }
+			});
+			return result;
+		}
+	});
 
-  function setupContainers()
-  {
-  container = new PIXI.Container(0xFFFFFF);
-  canvas = document.createElement('CANVAS');
-  canvas.height = 230;
-  canvas.width = 230;
-  }
+	function setupContainers()
+	{
+		container = new PIXI.Container(0xFFFFFF);
+		canvas = document.createElement('CANVAS');
+		canvas.height = 230;
+		canvas.width = 230;		
+	}
 
-  function setupRenderers()
-  {
-  renderer = new PIXI.autoDetectRenderer(canvas.width, canvas.height, {view: canvas});
-  renderer.backgroundColor = 0xFFFFFF;
-  renderer.render(container);
-  }
+	function setupRenderers()
+	{
+		renderer = new PIXI.autoDetectRenderer(canvas.width, canvas.height, {view: canvas});
+		renderer.backgroundColor = 0xFFFFFF;
+		renderer.render(container);
+	}
 
-  function displayPet(selectedpet)
-  {
-  //this is fucking horrible
-  //throw this in a js file please
-  var petImage = document.getElementById("petPic");
-  var picContainer = document.getElementById("picContainer");
-  var petName = document.getElementById("petName");
-  var sidebar = document.getElementById("sidebar");
+	function displayPet(selectedpet)
+	{
+		//this is fucking horrible
+		//throw this in a js file please
+		var petImage = document.getElementById("petPic");
+		var picContainer = document.getElementById("picContainer");			
+		var petName = document.getElementById("petName");
+		var sidebar = document.getElementById("sidebar");
 
 		var petList = $.getValues("account/get-pet.php", "GET", "user_id=<?php echo $_GET['id']; ?>", "application/x-www-form-urlencoded");
 		var img = petList.pet_list[selectedpet].base;
@@ -294,36 +290,9 @@
 		$ret = $ret[0];
 		echo json_encode($ret);
 	?>;
+
 	displayPet(currentPet);
 	
-  //plspls
-  editButton.onclick = function() {
-  
-    var newUser = <?php echo $_POST['new_user'];?>
-
-    <?php
-
-      //include lib to access auth db
-      include './library/opendb.php';
-    
-      //retrieve post values from form,
-      $user = $_POST['new_user'];
-      $pass = md5($_POST['new_pass']);
-      $userID = $_SESSION['curr_id'];
-
-      $db_socket = initSocket();        
-      // Edit the data for a given user id
-      $query = "UPDATE auth_list SET user='".$user."' WHERE id=".$_SESSION['curr_id'];
-      $statement = $db_socket->prepare($query);
-      $statement->execute();
-       
-      //close db
-      include './library/closedb.php';
-    ?>
-  }
-  
-  
-  
 	//lets do an ajex request here
 	postButton.onclick = function(){
     var postData = postBox.value;
