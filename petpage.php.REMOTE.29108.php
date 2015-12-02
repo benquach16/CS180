@@ -22,17 +22,6 @@
 
 				<div class="media-body">
 					<h4 class="media-heading" id = "petName">Pet Name</h4>
-					<h4 class="media-heading" id = "userName"><?php
-					    include('./library/opendb.php');
-					    $id = $_GET['id'];
-					    $db_socket = initSocket();
-					    $query = "select user from ".$configValue['DB_USER_TABLE']." where id='".$id."'";
-					    $statement = $db_socket->prepare($query);
-					    $statement->execute();
-					    $name = $statement->fetchColumn(0);
-						echo $name;
-						?>
-					</h4>
 				</div>
 
 <!-- Single button -->
@@ -59,14 +48,7 @@
 						
 						<div class = "panel panel-default">
 							<div class="panel-heading">
-								<h3 class = "panel-title"><?php
-					    $id = $_GET['id'];
-					    $query = "select user from ".$configValue['DB_USER_TABLE']." where id='".$id."'";
-					    $statement = $db_socket->prepare($query);
-					    $statement->execute();
-					    $name = $statement->fetchColumn(0);
-						echo $name;
-						?>'s posts</h3>
+								<h3 class = "panel-title">Your posts</h3>
 							</div>
 							<div class ="panel-body">
 								<ul class="list-group" id="listOfPosts">
@@ -193,7 +175,7 @@
   var petName = document.getElementById("petName");
   var sidebar = document.getElementById("sidebar");
 
-		var petList = $.getValues("account/get-pet.php", "GET", "user_id=<?php echo $_GET['id']; ?>", "application/x-www-form-urlencoded");
+  var petList = $.getValues("account/get-pet.php", "GET", "user_id=<?php echo $_SESSION['curr_id']; ?>", "application/x-www-form-urlencoded");
 		var img = petList.pet_list[selectedpet].base;
 		petName.innerText = petList.pet_list[selectedpet].name;
 
@@ -264,7 +246,9 @@
 	setupContainers();
 	setupRenderers();
 	var currentPet = <?php
-		$id = $_GET['id'];
+		include('library/opendb.php');
+		$id = $_SESSION['curr_id'];
+		$db_socket = initSocket();
 		$query = "SELECT select_pet FROM ".$configValue['DB_USER_TABLE']." where id='".$id."'";
 	
 		$statement = $db_socket->prepare($query);
@@ -318,13 +302,10 @@
           disp_posts();
     }
     
-    function disp_posts() {
-
+    function disp_posts() {    
          // Returns JSON object with all user posts
-					var	id = <?php echo $_GET['id'];?>;
          $.ajax({
             url:"./library/fetch_post.php",
-			data:{id:id},
             complete: function (response) {
                 console.log(response.responseText);          
                 

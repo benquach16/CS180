@@ -140,10 +140,18 @@
 <!--<script src="https://www.rootcdn.com/libs/pixi.js/3.0.7/pixi.min.js" ></script>-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/3.0.8/pixi.js"></script>
 <script>
+<<<<<<< HEAD
+	var postButton = document.getElementById("postButton");
+	var postBox = document.getElementById("postBox");
+    disp_posts();
+	var usern = document.getElementById("userName");
+	//might do an ajax request  for this because embedded php is breaking
+=======
   var postButton = document.getElementById("postButton");
   var postBox = document.getElementById("postBox");
   var editButton = document.getElementById("signup_submit");
   disp_posts();
+>>>>>>> Can now change account info...totally a game
 
 
 
@@ -193,7 +201,11 @@
   var petName = document.getElementById("petName");
   var sidebar = document.getElementById("sidebar");
 
+<<<<<<< HEAD
 		var petList = $.getValues("account/get-pet.php", "GET", "user_id=<?php echo $_GET['id']; ?>", "application/x-www-form-urlencoded");
+=======
+  var petList = $.getValues("account/get-pet.php", "GET", "user_id=<?php echo $_SESSION['curr_id']; ?>", "application/x-www-form-urlencoded");
+>>>>>>> Can now change account info...totally a game
 		var img = petList.pet_list[selectedpet].base;
 		petName.innerText = petList.pet_list[selectedpet].name;
 
@@ -273,6 +285,7 @@
 		$ret = $ret[0];
 		echo json_encode($ret);
 	?>;
+
 	displayPet(currentPet);
 	
   //plspls

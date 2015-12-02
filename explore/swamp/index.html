@@ -1,6 +1,9 @@
 <!doctype html>
 
 <html>
+    <?php
+        session_start();
+    ?>
 <head>
     <title>Swamp Tower</title>
 </head>
@@ -49,6 +52,10 @@
         </div>
     </div>
 </body>
+
+<div id="chatbar">
+    <?php include('../../library/chat-bar.html'); ?>
+</div>
 </html>
 
 <script>
