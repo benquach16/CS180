@@ -13,7 +13,7 @@
             " FROM ".$configValue['DB_TEAM_TABLE'].
             " WHERE id=".$_POST['user_id'].")";
 
-        echo $query .= $subquery;
+         $query .= $subquery;
 
         try{
             $statement = $db_socket->prepare($query);
@@ -22,6 +22,7 @@
         }catch(PDOException $e) {
             echo 'Connection to database failed: '.$e->getMessage();
         }
+        echo json_encode(json_decode("{}"));
     }
 
 ?>

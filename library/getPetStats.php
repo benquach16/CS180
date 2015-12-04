@@ -34,7 +34,43 @@
                             $pet_base[ $key ] += $val;
                         }
                     }
+                    $img = $item_type['items'][ $pet[0]['hat'] ]['base_img'];
+                    $test = substr($img, strrpos($img, "/") + 1, strrpos($img, ".") - strrpos($img, "/") - 1);
+                    $pet_base['hat_img'] = $test;
+                } else {
+                    $pet_base['hat_img'] = "None";
                 }
+
+                if($pet[0]['top'] != 0){
+                    $hat_bonus = $item_type['items'][ $pet[0]['hat'] ]['stats'];
+                    for($i = 0; $i < count($hat_bonus); $i++ ){
+                        foreach ($hat_bonus[$i] as $key => $val) {
+                            //echo $key.' '.$val;
+                            $pet_base[ $key ] += $val;
+                        }
+                    }
+                    $img = $item_type['items'][ $pet[0]['top'] ]['base_img'];
+                    $test = substr($img, strrpos($img, "/") + 1, strrpos($img, ".") - strrpos($img, "/") - 1);
+                    $pet_base['top_img'] = $test;
+                }else {
+                    $pet_base['top_img'] = "None";
+                }
+
+                if($pet[0]['bottom'] != 0){
+                    $hat_bonus = $item_type['items'][ $pet[0]['hat'] ]['stats'];
+                    for($i = 0; $i < count($hat_bonus); $i++ ){
+                        foreach ($hat_bonus[$i] as $key => $val) {
+                            //echo $key.' '.$val;
+                            $pet_base[ $key ] += $val;
+                        }
+                    }
+                    $img = $item_type['items'][ $pet[0]['bottom'] ]['base_img'];
+                    $test = substr($img, strrpos($img, "/") + 1, strrpos($img, ".") - strrpos($img, "/") - 1);
+                    $pet_base['bottom_img'] = $test;
+                }else{
+                    $pet_base['bottom_img'] = "None";
+                }
+
                 echo json_encode($pet_base);
             }
         }
