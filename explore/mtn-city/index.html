@@ -1,13 +1,248 @@
-<!doctype html>
+﻿<!doctype html>
 
 <html>
+
+    <?php
+        session_start();
+    ?>
+
     <head>
         <title>Mountain City</title>
     </head>
     <body>
         <link rel='stylesheet' type='text/css' href='../resources/css/stylesheet.css'>
-        <?php include('../../library/nav-bar.html'); ?>
-        <img src="../../resources/images/banner-mtncity.jpg">
+        <?php include('../../library/nav-bar.html'); ?>        
         <a href='../return-map.php'>Back to World</a>
+
+
+
+        <div class="container">
+            <div class="col-md-8 col-md-offset-2">
+                <img src="../../resources/images/banner-mtncity.jpg">
+                <form name="maze">
+                    <h1 class="col-md-offset-1">Escape the maze!</h1>
+                    <p class="col-md-offset-1">Who builds a city in the mountains anyways...</p>
+                    <div class="col-md-6 col-md-offset-1">
+                        <!--board positions-->
+                        <h3 class="col-md-1 " id="colOne"></h3>
+                        <h3 class="col-md-1 col-md-offset-1" id="colTwo"></h3>
+                        <h3 class="col-md-1 col-md-offset-1" id="colThree"></h3>
+                        <h3 class="col-md-1 col-md-offset-1" id="colFour"></h3>
+                        <h3 class="col-md-1 col-md-offset-1" id="colFive"></h3>
+                        <h3 class="col-md-1 col-md-offset-1" id="colSix"></h3>
+                    </div>
+                        <div class="form-group">
+                            <!-- Button Sidebar -->
+                            <div class="col-md-6 btn-group col-md-offset-2">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-primary" type="button" id="left">Left</button>
+                                    <button class="btn btn-primary" type="button" id="right">Right</button>
+                                    <button class="btn btn-primary" type="button" id="up">Up</button>
+                                    <button class="btn btn-primary" type="button" id="down">Down</button>
+                                </span>
+                            </div>
+                        </div>
+                </form>
+            </div>
+        </div>
+
     </body>
+
+<div id="chatbar">
+    <?php include('../../library/chat-bar.html'); ?>
+</div>
 </html>
+
+<script>
+
+    var mapMatrix = [];
+    for (var i = 0; i < 6; i++) {
+        mapMatrix[i] = new Array(6);
+    }
+    var xPos = 2;
+    var yPos = 0;
+    var totalMoves = 0;
+
+    var leftButton = document.getElementById("left");
+    var rightButton = document.getElementById("right");
+    var upButton = document.getElementById("up");
+    var downButton = document.getElementById("down");
+
+    resetBoard();
+    dispBoard();
+  
+    // Move left
+    leftButton.onclick = function () {
+        goLeft();
+        totalMoves += 1;
+        dispBoard();
+        checkWin();
+    }
+    // Move right
+    rightButton.onclick = function () {
+        goRight();
+        totalMoves += 1;
+        dispBoard();
+        checkWin();
+    }
+    // Move up
+    upButton.onclick = function () {
+        goUp();
+        totalMoves += 1;
+        dispBoard();
+        checkWin();
+    }
+    // Move down
+    downButton.onclick = function () {
+        goDown();
+        totalMoves += 1;
+        dispBoard();
+        checkWin();
+    }
+
+    function goLeft() {
+        if (xPos > 0 && mapMatrix[yPos][xPos - 1] != 'l') {
+            var tmp = mapMatrix[yPos][xPos - 1];
+            mapMatrix[yPos][xPos - 1] = '☻';
+            if (tmp != '♔') {
+                mapMatrix[yPos][xPos] = tmp;
+            }
+            else {
+                mapMatrix[yPos][xPos] = '.';
+            }
+            xPos -= 1;
+        }
+        else {
+            // do nothing OOB
+            // sweetAlert("Cannot go left!");
+        }
+    }
+
+    function goRight() {
+        if (xPos <= 4 && mapMatrix[yPos][xPos + 1] != 'l') {
+            var tmp = mapMatrix[yPos][xPos + 1];
+            mapMatrix[yPos][xPos + 1] = '☻';
+            if (tmp != '♔') {
+                mapMatrix[yPos][xPos] = tmp;
+            }
+            else {
+                mapMatrix[yPos][xPos] = '.';
+            }
+            xPos += 1;
+        }
+        else {
+            // do nothing OOB
+            // window.alert("Cannot go right!");
+        }
+    }
+
+    function goUp() {
+        if (yPos > 0 && mapMatrix[yPos - 1][xPos] != 'l') {
+            var tmp = mapMatrix[yPos - 1][xPos];
+            mapMatrix[yPos - 1][xPos] = '☻';
+            if (tmp != '♔') {
+                mapMatrix[yPos][xPos] = tmp;
+            }
+            else {
+                mapMatrix[yPos][xPos] = '.';
+            }
+            yPos -= 1;
+        }
+        else {
+            // do nothing OOB
+            // window.alert("Cannot go up!");
+        }
+    }
+
+    function goDown() {
+        if (yPos <= 4 && mapMatrix[yPos + 1][xPos] != 'l') {
+            var tmp = mapMatrix[yPos + 1][xPos];
+            mapMatrix[yPos + 1][xPos] = '☻';
+            if (tmp != '♔') {
+                mapMatrix[yPos][xPos] = tmp;
+            }
+            else {
+                mapMatrix[yPos][xPos] = '.';
+            }
+            yPos += 1;
+        }
+        else {
+            // do nothing OOB
+            // window.alert("Cannot go down!");
+        }
+    }
+
+    function checkWin() {
+        if (xPos == 5 && yPos == 5) {
+            resetBoard();
+            swal("FREEEDOOOOOM!", "Congratz, You escaped this poorly designed city!", "success");
+            // Get money get paid
+            $.ajax({
+                url: "../../library/add_curr.php",
+                complete: function (response) {
+                    console.log(response.responseText);
+                }
+            });
+        }
+    }
+
+    function resetBoard() {
+        xPos = 2;
+        yPos = 0;
+        // Initial map layout
+        mapMatrix[0][0] = 'l'; mapMatrix[0][1] = '.'; mapMatrix[0][2] = '☻'; mapMatrix[0][3] = 'l'; mapMatrix[0][4] = 'l'; mapMatrix[0][5] = 'l';
+        mapMatrix[1][0] = 'l'; mapMatrix[1][1] = '.'; mapMatrix[1][2] = 'l'; mapMatrix[1][3] = '.'; mapMatrix[1][4] = '.'; mapMatrix[1][5] = '.';
+        mapMatrix[2][0] = 'l'; mapMatrix[2][1] = '.'; mapMatrix[2][2] = '.'; mapMatrix[2][3] = '.'; mapMatrix[2][4] = 'l'; mapMatrix[2][5] = 'l';
+        mapMatrix[3][0] = '.'; mapMatrix[3][1] = '.'; mapMatrix[3][2] = 'l'; mapMatrix[3][3] = '.'; mapMatrix[3][4] = '.'; mapMatrix[3][5] = '.';
+        mapMatrix[4][0] = '.'; mapMatrix[4][1] = 'l'; mapMatrix[4][2] = 'l'; mapMatrix[4][3] = 'l'; mapMatrix[4][4] = 'l'; mapMatrix[4][5] = '.';
+        mapMatrix[5][0] = '.'; mapMatrix[5][1] = '.'; mapMatrix[5][2] = '.'; mapMatrix[5][3] = '.'; mapMatrix[5][4] = 'l'; mapMatrix[5][5] = '♔';
+        dispBoard();
+    }
+
+    function dispBoard() {
+        // Clears current board columns
+        while (colOne.firstChild) {
+            colOne.removeChild(colOne.firstChild);
+            colTwo.removeChild(colTwo.firstChild);
+            colThree.removeChild(colThree.firstChild);
+            colFour.removeChild(colFour.firstChild);
+            colFive.removeChild(colFive.firstChild);
+            colSix.removeChild(colSix.firstChild);
+        }
+
+        for (var i = 0; i < 6; i++) {
+            // Set elements
+            var newNumOne = document.createElement('h3');
+            var parPosOne = document.createTextNode(mapMatrix[i][0]);
+            newNumOne.appendChild(parPosOne);
+            colOne.appendChild(newNumOne);
+
+            var newNumTwo = document.createElement('h3');
+            var parPosTwo = document.createTextNode(mapMatrix[i][1]);
+            newNumTwo.appendChild(parPosTwo);
+            colTwo.appendChild(newNumTwo);
+
+            var newNumThree = document.createElement('h3');
+            var parPosThree = document.createTextNode(mapMatrix[i][2]);
+            newNumThree.appendChild(parPosThree);
+            colThree.appendChild(newNumThree);
+
+            var newNumFour = document.createElement('h3');
+            var parPosFour = document.createTextNode(mapMatrix[i][3]);
+            newNumFour.appendChild(parPosFour);
+            colFour.appendChild(newNumFour);
+
+            var newNumFive = document.createElement('h3');
+            var parPosFive = document.createTextNode(mapMatrix[i][4]);
+            newNumFive.appendChild(parPosFive);
+            colFive.appendChild(newNumFive);
+
+            var newNumSix = document.createElement('h3');
+            var parPosSix = document.createTextNode(mapMatrix[i][5]);
+            newNumSix.appendChild(parPosSix);
+            colSix.appendChild(newNumSix);
+        }
+    }
+
+
+</script>

@@ -1,13 +1,117 @@
 <!doctype html>
 
 <html>
-    <head>
-        <title>Swamp Tower</title>
-    </head>
-    <body>
-        <link rel='stylesheet' type='text/css' href='../resources/css/stylesheet.css'>
-        <?php include('../../library/nav-bar.html'); ?>
-        <img src="../../resources/images/banner-swamp.jpg">
-        <a href='../return-map.php'>Back to World</a>
-    </body>
+    <?php
+        session_start();
+    ?>
+<head>
+    <title>Swamp Tower</title>
+</head>
+<body>
+    <link rel='stylesheet' type='text/css' href='../resources/css/stylesheet.css'>
+    <?php include('../../library/nav-bar.html'); ?>
+    <a href='../return-map.php'>Back to World</a>
+
+
+    <div class="container">
+        <div class="col-md-6 col-md-offset-2">
+            <img src="../../resources/images/banner-swamp.jpg">
+            <form name="lotto">
+                <h1 class="col-md-offset-3">Lotto numbers!</h1>
+                <p class="col-md-offset-1">You ended up in the swamp, might as well try and get lucky!</p>
+
+                <div class="form-group">
+                    <div class="col-xs-3">
+                        <label for="lottoNums">Pick amount of numbers:</label>
+                        <select class="form-control" id="lottoNums">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                            <option>6</option>
+                        </select>
+
+                        <div>
+                            <label for=" maxnums">
+                                From 1 to
+                            </label>
+                            <input type="text" class="form-control col-xs-2" value="50" id="maxNums">
+                        </div>
+                    </div>
+
+                    <br />
+                    <div class="col-md-5">
+                        <button class="btn btn-primary" type="button" id="gen">Generate numbers!</button>
+                    </div>
+                </div>
+                <div class="col-md-8 col-md-offset-1">
+                    <h2 id="output"></h2>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+<div id="chatbar">
+    <?php include('../../library/chat-bar.html'); ?>
+</div>
 </html>
+
+<script>
+    var genBut = document.getElementById("gen");
+    var firstClick = 0;
+    var totNums = 0;
+    var newNuml;
+    genBut.onclick = function () {
+        if (firstClick == 0) {
+            swal("Win Conditions!", "Try to get a certain total value! But what could it be?");
+            firstClick += 1;
+        }
+        getNums();
+    }
+
+    // Get dropdown menu element
+    var lotDMenu = document.lotto.lottoNums;
+    // Get selected element from dropdown menu
+    var amtToGen;
+    // Get maximum value in lotto
+    var maxNum;
+
+    function getNums() {
+        amtToGen = lotDMenu.options[lotDMenu.selectedIndex].value;
+        maxNum = document.lotto.maxNums.value;
+        // Choose some negative value
+        if (1 > maxNum) {
+            //TODO sweetalert
+            swal({title: "Invalid Input", text: "Be sure to select a max lottery number value!", type: "warning"});
+        }
+        else {
+            lottoVals = new Array(amtToGen);
+            while (output.firstChild) {
+                output.removeChild(output.firstChild);
+            }
+            // display the numbers
+            for (var i = 1; i <= amtToGen; i++) {
+                var newLNum = document.createElement("h2");
+                newNum = Math.floor(Math.random() * (maxNum)) + 1;
+                totNums += newNum;
+                var newLOutput = document.createTextNode(newNum);
+                newLNum.appendChild(newLOutput);
+                output.appendChild(newLNum);
+            }
+            // Lucky wincon
+            if (totNums == maxNum * 3) {
+                swal("NICUUUU!", "You found the lucky numbers!", "success");
+                // Get money get paid
+                $.ajax({
+                    url: "../../library/add_curr.php",
+                    complete: function (response) {
+                        console.log(response.responseText);
+                    }
+                });
+            }
+            totNums = 0;
+        }
+    }
+</script>
