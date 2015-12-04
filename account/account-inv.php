@@ -26,6 +26,10 @@
             border-width: 1px;
             display: table-cell;
         }
+        #trashcan{
+            float: left;
+            display: block;
+        }
     </style>
     <?php include('../library/nav-bar.html'); ?>
 	<div class = "container center-text">
@@ -44,7 +48,12 @@
 	    <!-- store the pet default type somewhere, maybe a div? seems hacky -->
 	    <div id="drop-target"  style="height:200px; width:200px; position: absolute;">
 	        <canvas id="testCanv" ondrop="drop(event, this)" ondragover="allowDrop(event)" height="200" width="200"></canvas>
-	    </div>
+            <div id="trashcan" ondrop="drop_trash(event, this)" ondragover="allowDrop(event)">
+                <img width="100" height="100">
+            </div>
+        </div>
+
+
 
 	    <div id="inventory" >
 	        <!-- do db call here for avilible items, also set a value to know what kind of item it is -->
@@ -53,12 +62,25 @@
 	        <div id="row3" class="inv-row"></div>
 	        <div id="row4" class="inv-row"></div>
 	    </div>
+
 	</div>
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/3.0.8/pixi.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/library/contextMenu.js' ?>></script>
+    <link rel="stylesheet" type="text/css" href=<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/library/contextMenu.css' ?>>
+
 
     <script type="text/javascript">
+
+        var sellMenu = [{
+            name: 'sell',
+            title: 'sell item' ,
+            fun: function () {
+
+            }
+        }];
+        //$('body').contextMenu(sellMenu,{triggerOn:'contextmenu'});
 
         var pets_JSON;
         var globalID, canvas, renderer;
@@ -136,14 +158,16 @@
 
                         $('#row'+i).append(apd_val);
                     } else {
-                        var apd_val = "<div id="+i+'_'+j+" ondragover='allowDrop(event)' ondrop='drop_empty(event, this)' ><img id=item"+i+'_'+j+
+                        var apd_val = "<div id="+i+'_'+j+" class='hasItem' ondragover='allowDrop(event)' ondrop='drop_empty(event, this)' ><img id=item"+i+'_'+j+
                             " draggable='true' ondragstart='drag(event)' ondragend='dragend(event)' src="+
                             user_inv.item_ary[((i - 1)*7) + j].img+ " value="+user_inv.item_ary[((i - 1)*7) + j].item_id+" type="+
                             user_inv.item_ary[((i - 1)*7) + j].type+" name='"+
                             user_inv.item_ary[((i - 1)*7) + j].name +"' height='50' width='50'></div>";
+
                         if(user_inv.item_ary[((i - 1)*7) + j].type == "Empty"){
                             apd_val = "<div id="+i+'_'+j+" class='empty' ondragover='allowDrop(event)' ondrop='drop_empty(event, this)'><img width='50' height='50' class='empty-slot'></div>";
                         }
+
 
                         $('#row'+i).append(apd_val);
                     }
@@ -597,9 +621,51 @@
             } );
         }
 
+        function drop_trash(ev, t){
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            var dragged = document.getElementById(data);
+            ev.target.appendChild(dragged);
+            console.log(dragged);
+            swal({
+                    title: "Sell Item",
+                    text: "Are you sure you want to sell this item?",
+                    showCancelButton: true,
+                    confirmButtonText: "Confirm",
+                    closeOnConfirm: false
+                }, function() {
+                    //sell the item
+                    var itemId = $(dragged).attr('value');
+                    var slot = $(dragged).attr('id').replace(/[a-z]+/,'').split('_');
+                    var slotId = (parseInt(slot[0])-1) * 7 + parseInt(slot[1])+1;
+                    var userId = <?php echo $_SESSION['curr_id']; ?>;
+                    var input = "slotId="+slotId+"&itemId="+itemId+"&userId="+userId;
+                    $.getValues("sell-item.php", "POST", input, "application/x-www-form-urlencoded");
+
+                    swal({
+                        title: "Test",
+                        text: "this is s test",
+                        confirmButtonText: "Confirm",
+                    },function(){
+                        location.reload();
+                    });
+                }
+            );
+            updateClientInv();
+        }
+
         function allowDrop(ev) {
             ev.preventDefault();
         }
+
+        //selling item functions
+
+        $('#inventory').on('DOMNodeInserted', 'div.hasItem', function () {
+            //console.log($(this).children('img')[0].getAttribute('value'));
+
+            $(this).contextMenu(sellMenu,{triggerOn:'contextmenu'});
+        });
+
 
     </script>
 

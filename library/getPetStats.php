@@ -34,7 +34,9 @@
                             $pet_base[ $key ] += $val;
                         }
                     }
-                    $pet_base['hat_img'] = $item_type['items'][ $pet[0]['hat'] ]['base_img'];
+                    $img = $item_type['items'][ $pet[0]['hat'] ]['base_img'];
+                    $test = substr($img, strrpos($img, "/") + 1, strrpos($img, ".") - strrpos($img, "/") - 1);
+                    $pet_base['hat_img'] = $test;
                 } else {
                     $pet_base['hat_img'] = "None";
                 }
@@ -47,7 +49,9 @@
                             $pet_base[ $key ] += $val;
                         }
                     }
-                    $pet_base['top_img'] = $item_type['items'][ $pet[0]['top'] ]['base_img'];
+                    $img = $item_type['items'][ $pet[0]['top'] ]['base_img'];
+                    $test = substr($img, strrpos($img, "/") + 1, strrpos($img, ".") - strrpos($img, "/") - 1);
+                    $pet_base['top_img'] = $test;
                 }else {
                     $pet_base['top_img'] = "None";
                 }
@@ -60,7 +64,9 @@
                             $pet_base[ $key ] += $val;
                         }
                     }
-                    $pet_base['bottom_img'] = $item_type['items'][ $pet[0]['bottom'] ]['base_img'];
+                    $img = $item_type['items'][ $pet[0]['bottom'] ]['base_img'];
+                    $test = substr($img, strrpos($img, "/") + 1, strrpos($img, ".") - strrpos($img, "/") - 1);
+                    $pet_base['bottom_img'] = $test;
                 }else{
                     $pet_base['bottom_img'] = "None";
                 }
