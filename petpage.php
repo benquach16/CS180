@@ -142,7 +142,6 @@
 <script>
   var postButton = document.getElementById("postButton");
   var postBox = document.getElementById("postBox");
-  var editButton = document.getElementById("signup_submit");
   disp_posts();
 
   jQuery.extend({
@@ -296,35 +295,7 @@
 	?>;
 	displayPet(currentPet);
 	
-  //plspls
-  editButton.onclick = function() {
-  
-    var newUser = <?php echo $_POST['new_user'];?>
-
-    <?php
-
-      //include lib to access auth db
-      include './library/opendb.php';
-    
-      //retrieve post values from form,
-      $user = $_POST['new_user'];
-      $pass = md5($_POST['new_pass']);
-      $userID = $_SESSION['curr_id'];
-
-      $db_socket = initSocket();        
-      // Edit the data for a given user id
-      $query = "UPDATE auth_list SET user='".$user."' WHERE id=".$_SESSION['curr_id'];
-      $statement = $db_socket->prepare($query);
-      $statement->execute();
-       
-      //close db
-      include './library/closedb.php';
-    ?>
-  }
-  
-  
-  
-	//lets do an ajex request here
+  //lets do an ajex request here
 	postButton.onclick = function(){
     var postData = postBox.value;
       // Stores user post in database
