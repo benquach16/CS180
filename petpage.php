@@ -144,6 +144,8 @@
   var postBox = document.getElementById("postBox");
   disp_posts();
 
+
+
   jQuery.extend({
   getValues: function(url, method, data, type)
   {
@@ -271,9 +273,7 @@
 		echo json_encode($ret);
 	?>;
 	displayPet(currentPet);
-	
-
-  
+	  
 	//lets do an ajex request here
 	postButton.onclick = function(){
     var postData = postBox.value;
