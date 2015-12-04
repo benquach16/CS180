@@ -29,7 +29,7 @@
                         <img src="../../resources/images/banner-icemtn.jpg">
                         <form>
                             <br />
-                            <h1 class="panel-title col-md-offset-5">8 Puzzle Board Game</h1>
+                            <h2 class="col-md-offset-5">8 Puzzle Game!</h2>
                             <p class="page-header col-md-offset-4">Complete the puzzle to collect coins!</p>
                         </form>
                         <!--Number positions-->
@@ -81,28 +81,24 @@
     // Move left
     leftButton.onclick = function () {
         goLeft();
-        totalMoves += 1;
         dispBoard();
         checkWin();
     }
     // Move right
     rightButton.onclick = function () {
         goRight();
-        totalMoves += 1;
         dispBoard();
         checkWin();
     }
     // Move up
     upButton.onclick = function () {
         goUp();
-        totalMoves += 1;
         dispBoard();
         checkWin();
     }
     // Move down
     downButton.onclick = function () {
         goDown();
-        totalMoves += 1;
         dispBoard();
         checkWin();
     }
@@ -113,6 +109,7 @@
             numMatrix[zeroY][zeroX - 1] = 0;
             numMatrix[zeroY][zeroX] = tmp;
             zeroX -= 1;
+            totalMoves += 1;
         }
         else {
             // do nothing OOB
@@ -126,6 +123,7 @@
             numMatrix[zeroY][zeroX + 1] = 0;
             numMatrix[zeroY][zeroX] = tmp;
             zeroX += 1;
+            totalMoves += 1;
         }
         else {
             // do nothing OOB
@@ -139,6 +137,7 @@
             numMatrix[zeroY - 1][zeroX] = 0;
             numMatrix[zeroY][zeroX] = tmp;
             zeroY -= 1;
+            totalMoves += 1;
         }
         else {
             // do nothing OOB
@@ -152,6 +151,7 @@
             numMatrix[zeroY + 1][zeroX] = 0;
             numMatrix[zeroY][zeroX] = tmp;
             zeroY += 1;
+            totalMoves += 1;
         }
         else {
             // do nothing OOB
@@ -189,6 +189,10 @@
             colThree.appendChild(newNumThree);
         }
         // TODO: Show scores
+        var scoreDisp = document.createElement('h4');
+        var newScore = document.createTextNode("Total Moves: " + totalMoves);
+        scoreDisp.appendChild(newScore);
+        totMoves.appendChild(scoreDisp);
         
     }
 
@@ -196,14 +200,16 @@
         if (numMatrix[0][0] == 1 & numMatrix[0][1] == 2 & numMatrix[0][2] == 3 &
             numMatrix[1][0] == 4 & numMatrix[1][1] == 5 & numMatrix[1][2] == 6 &
             numMatrix[2][0] == 7 & numMatrix[2][1] == 8 & numMatrix[2][2] == 0) {
-            //TODO: Sweetalert
-            if (confirm('You did it! Do you want to restart?')) newGame();
+            swal("Congratz!", "You solved the puzzle! Starting a new game!", "success");
+            // Get money get paid
+            newGame();
             $.ajax({
                 url: "../../library/add_curr.php",
                 complete: function (response) {
                     console.log(response.responseText);
                 }
             });
+            totalMoves = 0;
         }
     }
 
@@ -231,6 +237,7 @@
                 goDown();
             }
         }
+        totalMoves = 0;
         // And refresh the board!
         dispBoard();
     }

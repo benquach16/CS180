@@ -1,13 +1,246 @@
 <!doctype html>
 
 <html>
-    <head>
-        <title>Low Lands</title>
-    </head>
-    <body>
-        <link rel='stylesheet' type='text/css' href='../resources/css/stylesheet.css'>
-        <?php include('../../library/nav-bar.html'); ?>
-        <img src="../../resources/images/banner-lowland.jpg">
-        <a href='../return-map.php'>Back to World</a>
-    </body>
+    <?php
+        session_start();
+    ?>
+<head>
+    <title>Ice Mountain</title>
+</head>
+
+<body>
+
+    <link rel='stylesheet' type='text/css' href='../../resources/css/stylesheet.css'>
+    <?php include('../../library/nav-bar.html'); ?>
+    <a href='../return-map.php'>Back to World</a>
+
+    <div class="container">
+        <div class="row">
+            <!-- Total Moves -->
+            <div class="col-md-2">
+                <div class="center-text">
+                    <h3 class="panel-title" id="totMoves"></h3>
+                </div>
+            </div>
+            <!-- Game Board -->
+            <div class="col-md-10">
+                <div class="row">
+                    <div class="col-md-5 ">
+                        <img src="../../resources/images/banner-lowland.jpg">
+                        <form>
+                            <br />
+                            <h4 class="col-md-offset-5">Magical Mushroom Brain Trainer!</h4>
+                            <p class="page-header col-md-offset-4">The mushroom people can solve these in 10 moves!</p>
+                        </form>
+                        <!--Number positions-->
+                        <h3 class="col-md-1 col-md-offset-5" id="colOne"></h3>
+                        <h3 class="col-md-1 col-md-offset-1" id="colTwo"></h3>
+                        <h3 class="col-md-1 col-md-offset-1" id="colThree"></h3>
+                    </div>
+                </div>
+
+                <!-- Button Sidebar -->
+                <div class="col-md-5 btn-group col-md-offset-2">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="button" id="left">Left</button>
+                        <button class="btn btn-primary" type="button" id="right">Right</button>
+                        <button class="btn btn-primary" type="button" id="up">Up</button>
+                        <button class="btn btn-primary" type="button" id="down">Down</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<div id="chatbar">
+    <?php include('../../library/chat-bar.html'); ?>
+</div>
 </html>
+
+
+<script>
+
+    numMatrix = [];
+    // So sorry Ben, couldnt figure out how to make pairs T.T
+    var zeroX = 2;
+    var zeroY = 2;
+    var totalMoves = 0;
+
+    for (var i = 0; i < 3; i++) {
+        numMatrix[i] = new Array(3);
+    }
+    // Hardcoded atm
+
+    var leftButton = document.getElementById("left");
+    var rightButton = document.getElementById("right");
+    var upButton = document.getElementById("up");
+    var downButton = document.getElementById("down");
+    newGame();
+
+    // Move left
+    leftButton.onclick = function () {
+        goLeft();
+        dispBoard();
+        checkWin();
+    }
+    // Move right
+    rightButton.onclick = function () {
+        goRight();
+        dispBoard();
+        checkWin();
+    }
+    // Move up
+    upButton.onclick = function () {
+        goUp();
+        dispBoard();
+        checkWin();
+    }
+    // Move down
+    downButton.onclick = function () {
+        goDown();
+        dispBoard();
+        checkWin();
+    }
+
+    function goLeft() {
+        if (zeroX > 0) {
+            var tmp = numMatrix[zeroY][zeroX - 1];
+            numMatrix[zeroY][zeroX - 1] = 0;
+            numMatrix[zeroY][zeroX] = tmp;
+            zeroX -= 1;
+            totalMoves += 1;
+        }
+        else {
+            // do nothing OOB
+            // sweetAlert("Cannot go left!");
+        }
+    }
+
+    function goRight() {
+        if (zeroX <= 1) {
+            var tmp = numMatrix[zeroY][zeroX + 1];
+            numMatrix[zeroY][zeroX + 1] = 0;
+            numMatrix[zeroY][zeroX] = tmp;
+            zeroX += 1;
+            totalMoves += 1;
+        }
+        else {
+            // do nothing OOB
+            // window.alert("Cannot go right!");
+        }
+    }
+
+    function goUp() {
+        if (zeroY > 0) {
+            var tmp = numMatrix[zeroY - 1][zeroX];
+            numMatrix[zeroY - 1][zeroX] = 0;
+            numMatrix[zeroY][zeroX] = tmp;
+            zeroY -= 1;
+            totalMoves += 1;
+        }
+        else {
+            // do nothing OOB
+            // window.alert("Cannot go up!");
+        }
+    }
+
+    function goDown() {
+        if (zeroY <= 1) {
+            var tmp = numMatrix[zeroY + 1][zeroX];
+            numMatrix[zeroY + 1][zeroX] = 0;
+            numMatrix[zeroY][zeroX] = tmp;
+            zeroY += 1;
+            totalMoves += 1;
+        }
+        else {
+            // do nothing OOB
+            // window.alert("Cannot go down!");
+        }
+    }
+
+    function dispBoard() {
+        // Clears current board columns
+        while (colOne.firstChild) {
+            colOne.removeChild(colOne.firstChild);
+            colTwo.removeChild(colTwo.firstChild);
+            colThree.removeChild(colThree.firstChild);
+        }
+        // TODO moar score stuff
+        while (totMoves.firstChild) {
+            totMoves.removeChild(totMoves.firstChild);
+        }
+
+        for (var i = 0; i < 3; i++) {
+            // Set elements
+            var newNumOne = document.createElement('h3');
+            var parPosOne = document.createTextNode(numMatrix[i][0]);
+            newNumOne.appendChild(parPosOne);
+            colOne.appendChild(newNumOne);
+
+            var newNumTwo = document.createElement('h3');
+            var parPosTwo = document.createTextNode(numMatrix[i][1]);
+            newNumTwo.appendChild(parPosTwo);
+            colTwo.appendChild(newNumTwo);
+
+            var newNumThree = document.createElement('h3');
+            var parPosThree = document.createTextNode(numMatrix[i][2]);
+            newNumThree.appendChild(parPosThree);
+            colThree.appendChild(newNumThree);
+        }
+        // TODO: Show scores
+        var scoreDisp = document.createElement('h4');
+        var newScore = document.createTextNode("Total Moves: " + totalMoves);
+        scoreDisp.appendChild(newScore);
+        totMoves.appendChild(scoreDisp);
+
+    }
+
+    function checkWin() {
+        if (numMatrix[0][0] == 1 & numMatrix[0][1] == 2 & numMatrix[0][2] == 3 &
+            numMatrix[1][0] == 4 & numMatrix[1][1] == 5 & numMatrix[1][2] == 6 &
+            numMatrix[2][0] == 7 & numMatrix[2][1] == 8 & numMatrix[2][2] == 0) {
+            swal("Congratz!", "Not quite as fast as them, but good enough!", "success");
+            // Get money get paid
+            newGame();
+            $.ajax({
+                url: "../../library/add_curr.php",
+                complete: function (response) {
+                    console.log(response.responseText);
+                }
+            });
+            totalMoves = 0;
+        }
+    }
+
+    function newGame() {
+        // Starts with a matrix that is solvable
+        zeroX = 1; zeroY = 1;
+        numMatrix[0][0] = 1; numMatrix[0][1] = 2; numMatrix[0][2] = 3;
+        numMatrix[1][0] = 4; numMatrix[1][1] = 0; numMatrix[1][2] = 5;
+        numMatrix[2][0] = 6; numMatrix[2][1] = 7; numMatrix[2][2] = 8;
+        var randVal;
+
+        // Makes moves "going backwards" so we know that it's solvable
+        for (var i = 0; i < 100; ++i) {
+            randVal = Math.floor((Math.random() * 120) + 1) % 4;
+            if (randVal == 1) {
+                goLeft();
+            }
+            else if (randVal == 2) {
+                goRight();
+            }
+            else if (randVal == 3) {
+                goUp();
+            }
+            else if (randVal == 4) {
+                goDown();
+            }
+        }
+        totalMoves = 0;
+        // And refresh the board!
+        dispBoard();
+    }
+    // End
+</script>
+

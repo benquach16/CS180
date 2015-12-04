@@ -18,7 +18,7 @@
             <img src="../../resources/images/banner-swamp.jpg">
             <form name="lotto">
                 <h1 class="col-md-offset-3">Lotto numbers!</h1>
-                <p class="col-md-offset-1">You ended up in the swamp, might as well try and get lucky.</p>
+                <p class="col-md-offset-1">You ended up in the swamp, might as well try and get lucky!</p>
 
                 <div class="form-group">
                     <div class="col-xs-3">
@@ -60,7 +60,14 @@
 
 <script>
     var genBut = document.getElementById("gen");
+    var firstClick = 0;
+    var totNums = 0;
+    var newNuml;
     genBut.onclick = function () {
+        if (firstClick == 0) {
+            swal("Win Conditions!", "Try to get a certain total value! But what could it be?");
+            firstClick += 1;
+        }
         getNums();
     }
 
@@ -77,19 +84,34 @@
         // Choose some negative value
         if (1 > maxNum) {
             //TODO sweetalert
-            alert("Be sure to select a max lottery number value!");
+            swal({title: "Invalid Input", text: "Be sure to select a max lottery number value!", type: "warning"});
         }
         else {
             lottoVals = new Array(amtToGen);
             while (output.firstChild) {
                 output.removeChild(output.firstChild);
             }
+            // display the numbers
             for (var i = 1; i <= amtToGen; i++) {
                 var newLNum = document.createElement("h2");
-                var newLOutput = document.createTextNode(Math.floor(Math.random() * (maxNum)) + 1);
+                newNum = Math.floor(Math.random() * (maxNum)) + 1;
+                totNums += newNum;
+                var newLOutput = document.createTextNode(newNum);
                 newLNum.appendChild(newLOutput);
                 output.appendChild(newLNum);
             }
+            // Lucky wincon
+            if (totNums == maxNum * 3) {
+                swal("NICUUUU!", "You found the lucky numbers!", "success");
+                // Get money get paid
+                $.ajax({
+                    url: "../../library/add_curr.php",
+                    complete: function (response) {
+                        console.log(response.responseText);
+                    }
+                });
+            }
+            totNums = 0;
         }
     }
 </script>

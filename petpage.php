@@ -146,6 +146,7 @@
 
 
 
+
   jQuery.extend({
   getValues: function(url, method, data, type)
   {
@@ -273,8 +274,8 @@
 		echo json_encode($ret);
 	?>;
 	displayPet(currentPet);
-	  
-	//lets do an ajex request here
+	
+  //lets do an ajex request here
 	postButton.onclick = function(){
     var postData = postBox.value;
       // Stores user post in database
