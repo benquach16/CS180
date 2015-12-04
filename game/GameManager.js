@@ -4,17 +4,19 @@ var grid;
 var playerLeft;
 var playerRight;
 var input;
-var peerID = "";
 var gameOver;
+var enemyPlayerID = 0;
+var enemyPetID = 0;
 
 var ConnData = {
 	Null: "Null",
     Weapon : "Weapon",
     Move : "Move",
-    TakeDamage : "TakeDamage"
+    TakeDamage : "TakeDamage",
+	InitializeConnection : "InitializeConnection"
 }
 
-function recData(data) {
+function recievedDataFromPeer(data) {
 	console.log(data);
 	//(string)type, (Projectile)projectile
 	//console.log(data.type +", " + data["type"]);
@@ -40,18 +42,25 @@ function recData(data) {
 		playerRight.takeDamage(data["damage"]);
 		healthRight.update(playerRight.health, playerRight.fullHealth);
 	}
+	else if(data["type"] == ConnData.InitializeConnection)
+	{
+		console.log(data);
+		enemyPlayerID = data[playerID];
+		enemyPetID = data[petID];
+	}
 };
 
 //TODO:
 //Well, we have to create a peer name, probably should keep it as the PlayerID
-var peerName = "Sender";
+var peerName = curPlayerID;
 var peer = new Peer(peerName, {key: 'lwjd5qra8257b9'});
 var conn;
 
 
 
 
-function preload() {
+function preload() 
+{
 	game.load.image('gatorLeft', 'assets/gatorIdleLeft.png');
 	game.load.image('gatorRight', 'assets/gatorIdleRight.png');
 	game.load.image('gatorDamagedLeft', 'assets/gatorDamagedLeft.png');
@@ -62,18 +71,6 @@ function preload() {
 	game.load.image('redTile', 'assets/redTile.png');
 	game.load.image('yellowTile', 'assets/yellowTile.png');
 	game.load.spritesheet('background', 'assets/background.png', 256, 256);
-	
-	
-	//get json from database
-	/*game.load.onFileComplete.add(function(key) {
-    if (key === 'data') {
-      var data = game.cache.getJSON(key);
-      // data is now populated with the contents of the JSON file
-    }
-  }, this);
-
-  game.load.json('data', 'assets/data.json');*/
-  
 }
 
 function reset() 
@@ -102,7 +99,7 @@ function reset()
 }
 
 function create() {
-
+	game.stage.disableVisibilityChange = true;
 	gameOver = false;
 
 	grid = new Grid(70, 450, 800, 600, 6, 3);
@@ -139,7 +136,8 @@ function create() {
 	{
 		if (xhttp.readyState == 4 && xhttp.status == 200) 
 		{
-			var recData = xhttp.responseText;
+			var recData = JSON.parse(xhttp.responseText);
+			console.log(recData);
 			//Assume we are given a JSON Object of format:
 			//Peer connection type: (0 == Host, 1 == Client),
 			//Peer ID
@@ -147,56 +145,38 @@ function create() {
 			//If the player has been promoted to a host,
 			if(recData.connType == 0)
 			{
-				hostConnectToPeer();
-			}
-			//Else, connect as the client
-			else
-			{
 				peer.on('connection', function(con) {
 					conn = con;
 					console.log("P2 Connected");
 					conn.on('open',function() {
 						conn.on('data', function(data) {
-							recData(data);
+							recievedDataFromPeer(data);
 						});
+					});
+				});
+			}
+			//Else, connect as the client
+			else
+			{
+				conn = peer.connect(recData.peerID);
+				conn.on('open',function() {
+					var connectionPacket = {};
+					connectionPacket["playerID"] = curPlayerID;
+					//TODO: make this the actual petID
+					connectionPacket["petID"] = 0;
+					connectionPacket["type"] = ConnData.InitializeConnection;
+					conn.send(connectionPacket);
+					console.log(connectionPacket);
+					conn.on('data', function(data) {
+						recievedDataFromPeer(data);
 					});
 				});
 			}
 		}
 	};
 	//TODO: Make a post call to php to query the database, giving it our PeerID
-	xhttp.open("POST", peerName, true);
+	xhttp.open("GET", "matchmaking.php?playerID="+curPlayerID+"&petID=1&peerID="+curPlayerID, true);
 	xhttp.send();
-}
-
-function hostConnectToPeer()
-{
-	//Create the async call
-	var xhttp = new XMLHttpRequest();
-	//the function to be called when async call comes back.
-	xhttp.onreadystatechange = function()
-	{
-		//If we do not get a peerID, then wait 1 second before checking again
-		if(recData.peerID === "")
-		{
-			setTimeout(hostConnectToPeer(), 1000);
-		}
-		//We recieved a peer id, so connect to it as host
-		else
-		{
-			conn = peer.connect(recData.peerID);
-			conn.on('open',function() {
-				conn.on('data', function(data) {
-					recData(data);
-				});
-			});
-		}
-	}
-	//TODO: Make a post call to php to query the database, giving it our PeerID
-	xhttp.open("POST", peerName, true);
-	xhttp.send();
-
-	reset();
 }
 
 function update() {
