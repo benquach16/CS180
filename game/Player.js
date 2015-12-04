@@ -54,19 +54,11 @@ function Player(posX, posY, spriteName, weapons)
 		game.input.keyboard.addKey(Phaser.Keyboard.D).onDown.add(this.moveRight, this);
 		game.input.keyboard.addKey(Phaser.Keyboard.W).onDown.add(this.moveUp, this);
 		game.input.keyboard.addKey(Phaser.Keyboard.S).onDown.add(this.moveDown, this);
-		game.input.keyboard.addKey(Phaser.Keyboard.SHIFT).onDown.add(this.shootBullet, this);
+		game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).onDown.add(this.shootBullet, this);
 		game.input.keyboard.addKey(Phaser.Keyboard.F).onDown.add(this.switchWeapon, this);
-	}
-	
-	else
+	}else
 	{
 		this.type = TileType.Blue;
-		game.input.keyboard.addKey(Phaser.Keyboard.J).onDown.add(this.moveLeft, this);
-		game.input.keyboard.addKey(Phaser.Keyboard.L).onDown.add(this.moveRight, this);
-		game.input.keyboard.addKey(Phaser.Keyboard.I).onDown.add(this.moveUp, this);
-		game.input.keyboard.addKey(Phaser.Keyboard.K).onDown.add(this.moveDown, this);
-		game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).onDown.add(this.shootBullet, this);
-		game.input.keyboard.addKey(Phaser.Keyboard.H).onDown.add(this.switchWeapon, this);
 	}
 };
 
@@ -176,6 +168,22 @@ Player.prototype.moveDown = function()
 		this.nextPos.y--;
 		conn.send({type:"Move", x:this.nextPos.x, y:this.nextPos.y});
 	}
+}
+
+Player.prototype.disableInput = function()
+{
+	game.input.keyboard.removeKey(Phaser.Keyboard.W);
+	game.input.keyboard.removeKey(Phaser.Keyboard.A);
+	game.input.keyboard.removeKey(Phaser.Keyboard.S);
+	game.input.keyboard.removeKey(Phaser.Keyboard.D);
+	game.input.keyboard.removeKey(Phaser.Keyboard.F);
+	game.input.keyboard.removeKey(Phaser.Keyboard.SPACEBAR);
+}
+
+Player.prototype.reset = function()
+{
+	this.gameObject.x = 99999;
+	this.gameObject.y = 99999;
 }
 
 Player.prototype.update = function()
