@@ -19,10 +19,14 @@
             .pet-party-display > div > div{
                 display: table-cell;
             }
-            .pet-party-display > div > div > p{
+            .pet-party-display > div > div > div > p{
                 text-align: center;
             }
         </style>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/3.0.8/pixi.js" ></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/library/ajax-call.js'; ?>"></script>
+        <script src="<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/library/render.js'; ?>"></script>
 
         <?php include('../library/nav-bar.html'); ?>
 		<div class = "container center-text">
@@ -39,10 +43,36 @@
 	            </div>
 	        </div>
 		</div>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/3.0.8/pixi.js" ></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-        <script src="<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/library/ajax-call.js'; ?>"></script>
-        <script src="<?php echo 'http://'.$_SERVER['HTTP_HOST'].'/library/render.js'; ?>"></script>
+
+        <!-- Modal -->
+        <div id="petNameChange" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title" id='myModalLabel'>Change pet name</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class='modal-body-inner'>
+                            <div class="modal-left">
+                                <label for="new-name">
+                                    <input id="new-name">
+                                </label>
+                                <button class="btn btn-default submit-name-change">Change</button>
+                            </div>
+                            <div class='modal-mid'>&nbsp;</div>
+                            <div class='modal-right select-character'>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <script>
 
@@ -56,7 +86,7 @@
                 for(var i = 0; i < pet_ary.pet_list.length; i++){
                     var pet = document.createElement('DIV');
                     $(pet).attr('style', 'width: 250px; height: 270; border: solid 1px; border-color: lime;');
-                    pet.id = "pet"+i;
+                    pet.id = i + 1;
 
                     var canvas = document.createElement('CANVAS');
                     canvas.id = 'canvas' + i;
@@ -64,10 +94,16 @@
                     canvas.width = 250;
                     $(pet).append(canvas);
 
+                    var name_div = document.createElement('DIV');
                     var name = document.createElement('P');
                     $(name).attr('style', 'width: 250px; border: solid 1px; border-color: lime');
+                    //$(name).attr('data-toggle', 'modal');
+                    //$(name).attr('data-target', '#petNameChange');
+                    $(name).addClass('name-change');
+                    $(name_div).addClass('name-hold');
                     $(name).append(pet_ary.pet_list[i].name);
-                    $(pet).append(name);
+                    $(name_div).append(name);
+                    $(pet).append(name_div);
 
                     section.append(pet);
 
@@ -111,9 +147,26 @@
                     animate(timestamp);
                 } );
             }
+
+            $('.pet-party-display').on('click','p.name-change',function(){
+                $('#petNameChange').modal('show');
+                $('#new-name').attr( 'value', $(this).text() );
+                $('#new-name').attr( 'name', $(this).parent().parent().attr('id') );
+            });
+
+            $('.submit-name-change').on('click', function(){
+                var newName = $('#new-name').val();
+                var petId = $('#new-name').attr('name');
+                var userId = <?php echo $_SESSION['curr_id']; ?>;
+                var input = "new_name="+newName+"&pet_id="+petId+"&user_id="+userId;
+                $.getValues("change-pet-name.php", "POST", input, "application/x-www-form-urlencoded");
+                $('#'+petId).children('div.name-hold').children('p.name-change').text(newName);
+                //console.log($('#'+petId).children('div.name-hold').children('p.name-change').text());
+            });
+
         </script>
     </body>
 		<div id="chatbar">
-		<?php include ('../library/chat-bar.html');?>
-	</div>
+		    <?php include ('../library/chat-bar.html');?>
+	    </div>
 </html>
