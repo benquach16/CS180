@@ -4,6 +4,7 @@ var grid;
 var playerLeft;
 var playerRight;
 var input;
+var peerID = "";
 
 var ConnData = {
 	Null: "Null",
@@ -39,28 +40,12 @@ function recData(data) {
 		healthRight.update(playerRight.health, playerRight.fullHealth);
 	}
 };
-	
-var peerName = "Reciever";
+
+//TODO:
+//Well, we have to create a peer name, probably should keep it as the PlayerID
+var peerName = "Sender";
 var peer = new Peer(peerName, {key: 'lwjd5qra8257b9'});
 var conn;
-if(peerName == "Sender") {
-    conn = peer.connect("Reciever");
-    conn.on('open',function() {
-        conn.on('data', function(data) {
-            recData(data);
-        });
-    });
-} else {
-    peer.on('connection', function(con) {
-		conn = con;
-		console.log("P2 Connected");
-        conn.on('open',function() {
-            conn.on('data', function(data) {
-                recData(data);
-            });
-        });
-    });
-}
 
 
 
@@ -120,6 +105,68 @@ function create() {
 	projectileGroup.allowGravity = false;
 	healthLeft = new Bar(50, 50, 300, 20, 0xff0000);
 	healthRight = new Bar(450, 50, 300, 20, 0x0000ff);
+	
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() 
+	{
+		if (xhttp.readyState == 4 && xhttp.status == 200) 
+		{
+			var recData = xhttp.responseText;
+			//Assume we are given a JSON Object of format:
+			//Peer connection type: (0 == Host, 1 == Client),
+			//Peer ID
+			
+			//If the player has been promoted to a host,
+			if(recData.connType == 0)
+			{
+				hostConnectToPeer();
+			}
+			//Else, connect as the client
+			else
+			{
+				peer.on('connection', function(con) {
+					conn = con;
+					console.log("P2 Connected");
+					conn.on('open',function() {
+						conn.on('data', function(data) {
+							recData(data);
+						});
+					});
+				});
+			}
+		}
+	};
+	//TODO: Make a post call to php to query the database, giving it our PeerID
+	xhttp.open("POST", peerName, true);
+	xhttp.send();
+}
+
+function hostConnectToPeer()
+{
+	//Create the async call
+	var xhttp = new XMLHttpRequest();
+	//the function to be called when async call comes back.
+	xhttp.onreadystatechange = function()
+	{
+		//If we do not get a peerID, then wait 1 second before checking again
+		if(recData.peerID === "")
+		{
+			setTimeout(hostConnectToPeer(), 1000);
+		}
+		//We recieved a peer id, so connect to it as host
+		else
+		{
+			conn = peer.connect(recData.peerID);
+			conn.on('open',function() {
+				conn.on('data', function(data) {
+					recData(data);
+				});
+			});
+		}
+	}
+	//TODO: Make a post call to php to query the database, giving it our PeerID
+	xhttp.open("POST", peerName, true);
+	xhttp.send();
 }
 
 function update() {
