@@ -33,6 +33,6 @@
     //close db
     include './library/closedb.php';
     
-    header("Location: http://localhost/petpage.php");
+    header("Location: http://localhost/hud.php");
 die();
 ?>

@@ -144,27 +144,7 @@
   var postBox = document.getElementById("postBox");
   disp_posts();
 
-  jQuery.extend({
-  getValues: function(url, method, data, type)
-  {
-  var result = null;
-  $.ajax({
-  url: url,
-  type: method,
-  data: data,
-  dataType: type,
-  //contentType: 'application/json',
-  async: false,
-  success: function(data) {
-  result = jQuery.parseJSON(data);
-  },
-  error: function(xhr){
-  result = jQuery.parseJSON(xhr.responseText);
-  }
-  });
-  return result;
-  }
-  });
+
 
 
   jQuery.extend({
