@@ -34,7 +34,37 @@
                             $pet_base[ $key ] += $val;
                         }
                     }
+                    $pet_base['hat_img'] = $item_type['items'][ $pet[0]['hat'] ]['base_img'];
+                } else {
+                    $pet_base['hat_img'] = "None";
                 }
+
+                if($pet[0]['top'] != 0){
+                    $hat_bonus = $item_type['items'][ $pet[0]['hat'] ]['stats'];
+                    for($i = 0; $i < count($hat_bonus); $i++ ){
+                        foreach ($hat_bonus[$i] as $key => $val) {
+                            //echo $key.' '.$val;
+                            $pet_base[ $key ] += $val;
+                        }
+                    }
+                    $pet_base['top_img'] = $item_type['items'][ $pet[0]['top'] ]['base_img'];
+                }else {
+                    $pet_base['top_img'] = "None";
+                }
+
+                if($pet[0]['bottom'] != 0){
+                    $hat_bonus = $item_type['items'][ $pet[0]['hat'] ]['stats'];
+                    for($i = 0; $i < count($hat_bonus); $i++ ){
+                        foreach ($hat_bonus[$i] as $key => $val) {
+                            //echo $key.' '.$val;
+                            $pet_base[ $key ] += $val;
+                        }
+                    }
+                    $pet_base['bottom_img'] = $item_type['items'][ $pet[0]['bottom'] ]['base_img'];
+                }else{
+                    $pet_base['bottom_img'] = "None";
+                }
+
                 echo json_encode($pet_base);
             }
         }
