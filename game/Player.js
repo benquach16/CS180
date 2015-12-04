@@ -106,6 +106,10 @@ Player.prototype.takeDamage = function(dmg)
 		{
 			this.gameObject.loadTexture('gatorDamagedRight');
 		}
+		for(var i = 0; i < this.gameObject.children.length; i++)
+		{
+			this.gameObject.children[i].visible = false;
+		}
 		this.immuneTimer = 500;
 		
 		return true;
@@ -218,6 +222,10 @@ Player.prototype.update = function()
 			this.standardScale*((1.0-this.moveTimer/this.moveDuration)*.125+1.0));
 		
 		this.gameObject.anchor.y = 1-1/((1-this.moveTimer/this.moveDuration)*.125+1.0);
+		for(var i = 0; i < this.gameObject.children.length; i++)
+		{
+			this.gameObject.children[i].anchor.y = 1-1/((1-this.moveTimer/this.moveDuration)*.125+1.0);
+		}
 		
 		if(this.moveTimer <= 0) 
 		{
@@ -230,7 +238,11 @@ Player.prototype.update = function()
 			this.mask.y = -9000;
 			this.gameObject.scale.setTo(this.standardScale, this.standardScale);
 			this.gameObject.anchor.y = 0;
-		}
+			for(var i = 0; i < this.gameObject.children.length; i++)
+			{
+				this.gameObject.children[i].anchor.y = 0;
+			}
+		}	
 	}
 	if(this.immuneTimer > 0)
 	{
@@ -253,6 +265,10 @@ Player.prototype.update = function()
 			else if(this.type == TileType.Blue)
 			{
 				this.gameObject.loadTexture('gatorRight');
+			}
+			for(var i = 0; i < this.gameObject.children.length; i++)
+			{
+				this.gameObject.children[i].visible = true;
 			}
 			this.gameObject.alpha = 1.0;
 		}

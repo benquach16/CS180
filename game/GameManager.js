@@ -56,7 +56,52 @@ var peerName = curPlayerID;
 var peer = new Peer(peerName, {key: 'lwjd5qra8257b9'});
 var conn;
 
-
+function populateItems(player)
+{
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() 
+	{
+		if (xhttp.readyState == 4 && xhttp.status == 200) 
+		{
+			var recData = JSON.parse(xhttp.responseText);
+			console.log(recData);
+			if(recData.hat_img != "None")
+			{
+				//player.gameObject.addChild(game.make.sprite(0,0, recData.hat_img));
+				if(player.type == TileType.Red)
+				{
+					var sprite = game.make.sprite(60,-8,'blue-head');
+					sprite.scale.x = -1;
+				}
+				else
+				{
+					var sprite = game.make.sprite(-57,-7,'blue-head');
+				}
+				player.gameObject.addChild(sprite);
+			}
+			if(recData.top_img != "None")
+			{
+				//player.gameObject.addChild(game.make.sprite(0,0, recData.top_img));
+				if(player.type == TileType.Red)
+				{
+					var sprite = game.make.sprite(35,-9,'blue-wheel');
+					sprite.scale.x = -1;
+				}
+				else
+				{
+					var sprite = game.make.sprite(-33,-9,'blue-wheel');
+				}
+				player.gameObject.addChild(sprite);
+			}
+			if(recData.bottom_img != "None")
+			{
+				player.gameObject.addChild(game.make.sprite(0,0, recData.bottom_img));
+			}
+		}	
+	};	
+	xhttp.open("GET", "../library/getPetStats.php?user_id=1&pet_id=1", true);
+	xhttp.send();
+}
 
 
 function preload() 
@@ -71,6 +116,8 @@ function preload()
 	game.load.image('redTile', 'assets/redTile.png');
 	game.load.image('yellowTile', 'assets/yellowTile.png');
 	game.load.spritesheet('background', 'assets/background.png', 256, 256);
+	game.load.image('blue-head', 'assets/blue-head.png');
+	game.load.image('blue-wheel', 'assets/blue-wheel.png');
 }
 
 function reset() 
@@ -88,6 +135,7 @@ function reset()
 	weaponsRight[0] = new Weapon(10, 1000, 250, TileType.Blue);
 	weaponsRight[1] = new Weapon(20, 500, 1000, TileType.Blue);
     playerLeft = new Player(0,1, 'gatorLeft', weaponsLeft);
+	populateItems(playerLeft);
 	playerRight = new Player(5, 1, 'gatorRight', weaponsRight);
 	projectileGroup = game.add.group();
 	projectileGroup.enableBody = true;
@@ -124,7 +172,9 @@ function create() {
 	weaponsRight[0] = new Weapon(10, 1000, 250, TileType.Blue);
 	weaponsRight[1] = new Weapon(20, 500, 1000, TileType.Blue);
     playerLeft = new Player(1,1, 'gatorLeft', weaponsLeft);
+	populateItems(playerLeft);
 	playerRight = new Player(4, 1, 'gatorRight', weaponsRight);
+	populateItems(playerRight);
 	projectileGroup = game.add.group();
 	projectileGroup.enableBody = true;
 	projectileGroup.allowGravity = false;

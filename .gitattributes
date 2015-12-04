@@ -19,3 +19,5 @@
 .\resources\images\park.jpg filter=lfs diff=lfs merge=lfs -text
 .\resources\images\Virtual-Pets.png filter=lfs diff=lfs merge=lfs -text
 .\resources\images\intro_bg.png filter=lfs diff=lfs merge=lfs -text
+.\game\assets\blue-head.png filter=lfs diff=lfs merge=lfs -text
+.\game\assets\blue-wheel.png filter=lfs diff=lfs merge=lfs -text
