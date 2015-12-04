@@ -14,10 +14,11 @@ var ConnData = {
 	Null: "Null",
     Weapon : "Weapon",
     Move : "Move",
-    TakeDamage : "TakeDamage"
+    TakeDamage : "TakeDamage",
+	InitializeConnection : "InitializeConnection"
 }
 
-function recData(data) {
+function recievedDataFromPeer(data) {
 	console.log(data);
 	//(string)type, (Projectile)projectile
 	//console.log(data.type +", " + data["type"]);
@@ -51,9 +52,19 @@ function recData(data) {
 		enemyPetID = data["petID"];
 		populateItems(playerRight, enemyPlayerID, enemyPetID);
 	}
+	else if(data["type"] == ConnData.InitializeConnection)
+	{
+		console.log("=======================================================");
+		console.log(data);
+		console.log("=======================================================");
+		enemyPlayerID = data[playerID];
+		enemyPetID = data[petID];
+	}
 };
-	
-var peerName = "Reciever";
+
+//TODO:
+//Well, we have to create a peer name, probably should keep it as the PlayerID
+var peerName = curPlayerID;
 var peer = new Peer(peerName, {key: 'lwjd5qra8257b9'});
 var conn;
 
@@ -67,6 +78,7 @@ function populateItems(player, playerID, petID)
 		if (itemRequest.readyState == 4 && itemRequest.status == 200) 
 		{
 			console.log(itemRequest.responseText);
+			console.log("PlayerID:" + playerID);
 			var petData = JSON.parse(itemRequest.responseText);
 			if(petData.hat_img != "None")
 			{
@@ -107,9 +119,8 @@ function populateItems(player, playerID, petID)
 }
 
 
-
-
-function preload() {
+function preload() 
+{
 	game.load.image('gatorLeft', 'assets/gatorIdleLeft.png');
 	game.load.image('gatorRight', 'assets/gatorIdleRight.png');
 	game.load.image('gatorDamagedLeft', 'assets/gatorDamagedLeft.png');
@@ -120,22 +131,12 @@ function preload() {
 	game.load.image('redTile', 'assets/redTile.png');
 	game.load.image('yellowTile', 'assets/yellowTile.png');
 	game.load.spritesheet('background', 'assets/background.png', 256, 256);
-	
-	
-	//get json from database
-	/*game.load.onFileComplete.add(function(key) {
-    if (key === 'data') {
-      var data = game.cache.getJSON(key);
-      // data is now populated with the contents of the JSON file
-    }
-  }, this);
-
-  game.load.json('data', 'assets/data.json');*/
-  
+	game.load.image('blue-head', 'assets/blue-head.png');
+	game.load.image('blue-wheel', 'assets/blue-wheel.png');
 }
 
 function reset() 
-{
+{	
 	if(gameOver)
 	{
 		playerLeft.reset();
@@ -161,7 +162,7 @@ function reset()
 }
 
 function create() {
-
+	game.stage.disableVisibilityChange = true;
 	gameOver = false;
 
 	grid = new Grid(70, 450, 800, 600, 6, 3);
@@ -186,13 +187,13 @@ function create() {
 	weaponsRight[0] = new Weapon(10, 1000, 250, TileType.Blue);
 	weaponsRight[1] = new Weapon(20, 500, 1000, TileType.Blue);
     playerLeft = new Player(1,1, 'gatorLeft', weaponsLeft);
+	populateItems(playerLeft, curPlayerID, curPetID);
 	playerRight = new Player(4, 1, 'gatorRight', weaponsRight);
 	projectileGroup = game.add.group();
 	projectileGroup.enableBody = true;
 	projectileGroup.allowGravity = false;
 	healthLeft = new Bar(50, 50, 300, 20, 0xff0000);
 	healthRight = new Bar(450, 50, 300, 20, 0x0000ff);
-	populateItems(playerLeft, curPlayerID, curPetID);
 	
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() 
@@ -224,12 +225,13 @@ function create() {
 				conn = peer.connect(recData.peerID);
 				conn.on('open',function() {
 					var connectionPacket = {};
+					console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 					connectionPacket["playerID"] = curPlayerID;
 					//TODO: make this the actual petID
 					connectionPacket["petID"] = curPetID;
 					connectionPacket["type"] = ConnData.InitializeConnection;
 					conn.send(connectionPacket);
-					console.log(connectionPacket);
+					console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 					enemyPlayerID = recData["playerID"];
 					enemyPetID = recData["petID"];
 					populateItems(playerRight, enemyPlayerID, enemyPetID);
