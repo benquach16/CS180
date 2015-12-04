@@ -56,6 +56,9 @@ function Player(posX, posY, spriteName, weapons)
 		game.input.keyboard.addKey(Phaser.Keyboard.S).onDown.add(this.moveDown, this);
 		game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).onDown.add(this.shootBullet, this);
 		game.input.keyboard.addKey(Phaser.Keyboard.F).onDown.add(this.switchWeapon, this);
+	}else
+	{
+		this.type = TileType.Blue;
 	}
 };
 
