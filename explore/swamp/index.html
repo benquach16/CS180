@@ -103,6 +103,7 @@
             // Lucky wincon
             if (totNums == maxNum * 3) {
                 swal("NICUUUU!", "You found the lucky numbers!", "success");
+                // Get money get paid
                 $.ajax({
                     url: "../../library/add_curr.php",
                     complete: function (response) {
