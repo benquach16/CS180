@@ -1,9 +1,14 @@
 var game = new Phaser.Game(840, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update }, false, false);
 
+//TODO: get actual curPetID
+var curPetID = 1;
+
 var grid;
 var playerLeft;
 var playerRight;
-var input;
+var gameOver;
+var enemyPlayerID = 0;
+var enemyPetID = 1;
 
 var ConnData = {
 	Null: "Null",
@@ -37,29 +42,68 @@ function recData(data) {
 		playerRight.immuneTimer = 0;
 		playerRight.takeDamage(data["damage"]);
 		healthRight.update(playerRight.health, playerRight.fullHealth);
+		destroyProjectile(data["index"])
+	}
+	else if(data["type"] == ConnData.InitializeConnection)
+	{
+		console.log(data);
+		enemyPlayerID = data["playerID"];
+		enemyPetID = data["petID"];
+		populateItems(playerRight, enemyPlayerID, enemyPetID);
 	}
 };
 	
 var peerName = "Reciever";
 var peer = new Peer(peerName, {key: 'lwjd5qra8257b9'});
 var conn;
-if(peerName == "Sender") {
-    conn = peer.connect("Reciever");
-    conn.on('open',function() {
-        conn.on('data', function(data) {
-            recData(data);
-        });
-    });
-} else {
-    peer.on('connection', function(con) {
-		conn = con;
-		console.log("P2 Connected");
-        conn.on('open',function() {
-            conn.on('data', function(data) {
-                recData(data);
-            });
-        });
-    });
+
+function populateItems(player, playerID, petID)
+{
+	console.log(player + ", " + playerID + ", " + petID);
+	
+	var itemRequest = new XMLHttpRequest();
+	itemRequest.onreadystatechange = function() 
+	{
+		if (itemRequest.readyState == 4 && itemRequest.status == 200) 
+		{
+			console.log(itemRequest.responseText);
+			var petData = JSON.parse(itemRequest.responseText);
+			if(petData.hat_img != "None")
+			{
+				//player.gameObject.addChild(game.make.sprite(0,0, recData.hat_img));
+				if(player.type == TileType.Red)
+				{
+					var sprite = game.make.sprite(60,-8,'blue-head');
+					sprite.scale.x = -1;
+				}
+				else
+				{
+					var sprite = game.make.sprite(-57,-7,'blue-head');
+				}
+				player.gameObject.addChild(sprite);
+			}
+			if(petData.top_img != "None")
+			{
+				//player.gameObject.addChild(game.make.sprite(0,0, recData.top_img));
+				if(player.type == TileType.Red)
+				{
+					var sprite = game.make.sprite(35,-9,'blue-wheel');
+					sprite.scale.x = -1;
+				}
+				else
+				{
+					var sprite = game.make.sprite(-33,-9,'blue-wheel');
+				}
+				player.gameObject.addChild(sprite);
+			}
+			if(petData.bottom_img != "None")
+			{
+				player.gameObject.addChild(game.make.sprite(0,0, petData.bottom_img));
+			}
+		}	
+	};	
+	itemRequest.open("GET", "../library/getPetStats.php?user_id=" + playerID +"&pet_id=" + petID, true);
+	itemRequest.send();
 }
 
 
@@ -90,10 +134,38 @@ function preload() {
   
 }
 
+function reset() 
+{
+	if(gameOver)
+	{
+		playerLeft.reset();
+		playerRight.reset();
+	}
+	
+	var weaponsLeft = [];
+	weaponsLeft[0] = new Weapon(10, 1000, 250, TileType.Red);
+	weaponsLeft[1] = new Weapon(20, 500, 1000, TileType.Red);
+	var weaponsRight = [];
+	weaponsRight[0] = new Weapon(10, 1000, 250, TileType.Blue);
+	weaponsRight[1] = new Weapon(20, 500, 1000, TileType.Blue);
+    playerLeft = new Player(0,1, 'gatorLeft', weaponsLeft);
+	populateItems(playerLeft, curPlayerID, curPetID);
+	playerRight = new Player(5, 1, 'gatorRight', weaponsRight);
+	projectileGroup = game.add.group();
+	projectileGroup.enableBody = true;
+	projectileGroup.allowGravity = false;
+	healthLeft = new Bar(50, 50, 300, 20, 0xff0000);
+	healthRight = new Bar(450, 50, 300, 20, 0x0000ff);
+	
+	gameOver = false;
+}
+
 function create() {
 
-	grid = new Grid(70, 450, 800, 600, 6, 3);
+	gameOver = false;
 
+	grid = new Grid(70, 450, 800, 600, 6, 3);
+	
     //  We're going to be using physics, so enable the Arcade Physics system
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -120,6 +192,57 @@ function create() {
 	projectileGroup.allowGravity = false;
 	healthLeft = new Bar(50, 50, 300, 20, 0xff0000);
 	healthRight = new Bar(450, 50, 300, 20, 0x0000ff);
+	populateItems(playerLeft, curPlayerID, curPetID);
+	
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() 
+	{
+		if (xhttp.readyState == 4 && xhttp.status == 200) 
+		{
+			var recData = JSON.parse(xhttp.responseText);
+			console.log(recData);
+			//Assume we are given a JSON Object of format:
+			//Peer connection type: (0 == Host, 1 == Client),
+			//Peer ID
+			
+			//If the player has been promoted to a host,
+			if(recData.connType == 0)
+			{
+				peer.on('connection', function(con) {
+					conn = con;
+					console.log("P2 Connected");
+					conn.on('open',function() {
+						conn.on('data', function(data) {
+							recievedDataFromPeer(data);
+						});
+					});
+				});
+			}
+			//Else, connect as the client
+			else
+			{
+				conn = peer.connect(recData.peerID);
+				conn.on('open',function() {
+					var connectionPacket = {};
+					connectionPacket["playerID"] = curPlayerID;
+					//TODO: make this the actual petID
+					connectionPacket["petID"] = curPetID;
+					connectionPacket["type"] = ConnData.InitializeConnection;
+					conn.send(connectionPacket);
+					console.log(connectionPacket);
+					enemyPlayerID = recData["playerID"];
+					enemyPetID = recData["petID"];
+					populateItems(playerRight, enemyPlayerID, enemyPetID);
+					conn.on('data', function(data) {
+						recievedDataFromPeer(data);
+					});
+				});
+			}
+		}
+	};
+	//TODO: Make a post call to php to query the database, giving it our PeerID
+	xhttp.open("GET", "matchmaking.php?playerID="+curPlayerID+"&petID=1&peerID="+curPlayerID, true);
+	xhttp.send();
 }
 
 function update() {
@@ -129,6 +252,11 @@ function update() {
 	playerRight.update();
 	
 	grid.tileUpdate();
+	if(gameOver)
+	{
+		playerLeft.disableInput();
+	}
+	
 	for(var i = 0; i < projectiles.length; i++)
 	{
 		if(projectiles[i].isFinished(i)){continue;}
@@ -144,7 +272,7 @@ function update() {
 				if(playerLeft.takeDamage(projectiles[i].damage))
 				{
 					healthLeft.update(playerLeft.health, playerLeft.fullHealth);
-					conn.send({type: ConnData.TakeDamage, damage: projectiles[i].damage});
+					conn.send({type: ConnData.TakeDamage, damage: projectiles[i].damage, index: i});
 					projectileHit = true;
 				}
 			}
