@@ -133,6 +133,8 @@ function preload()
 	game.load.spritesheet('background', 'assets/background.png', 256, 256);
 	game.load.image('blue-head', 'assets/blue-head.png');
 	game.load.image('blue-wheel', 'assets/blue-wheel.png');
+	this.game.stage.scale.pageAlignHorizontally = true;
+	this.game.stage.scale.pageAlignVeritcally = true;
 }
 
 function reset() 

@@ -81,6 +81,10 @@ Player.prototype.switchWeapon = function()
 Player.prototype.deathAnim = function()
 {
 	this.deathTimer = this.deathDuration;
+	for(var i = 0; i < this.gameObject.children.length; i++)
+	{
+		this.gameObject.children[i].visible = false;
+	}
 	if(this.type == TileType.Red)
 	{
 		this.gameObject.loadTexture('gatorDamagedLeft');
@@ -99,6 +103,7 @@ Player.prototype.takeDamage = function(dmg)
 		if(this.health <= 0)
 		{
 			this.deathAnim();
+			gameOver = true;
 			return true;
 		}
 		if(this.type == TileType.Red)

@@ -20,6 +20,7 @@
     </style>
 </head>
 <body>
+    <?php include('../library/nav-bar.html'); ?>
 	<script type="text/javascript" src="./GameManager.js"></script>
 </body>
 </html>
